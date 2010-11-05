@@ -6,9 +6,11 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
+import play.data.validation.Error;
 import play.data.validation.Valid;
 import play.i18n.Messages;
 import play.mvc.*;
+import play.mvc.results.RenderJson;
 import models.*;
 
 /**
@@ -30,8 +32,13 @@ public class Users extends Application {
 	 * @param email
 	 * @param password
 	 */
-    public static void create(String email, String password) {
-    	User user = new User(email, password, "", "");
+    public static void create(User user) {
+    	if (validation.hasErrors()) {
+    		for (Error error : validation.errors()) {
+    			Logger.debug(error.getKey() + " : " + error.message());
+    		}
+			error(500, "Validation Errors");
+		}
     	user.save();
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("id", user.id);
@@ -56,14 +63,10 @@ public class Users extends Application {
      * Update
      * @param user
      */
-    public static void update(User user) {
+    public static void update(@Valid User user) {
     	if (validation.hasErrors()) {
 			render("@create", user);
 		}
-    	// Save before merging in case connections gets updated.
-    	for (UserConnection connection : user.connections) {
-    		connection.save();
-    	}
     	user = user.merge();
     	user.save();
 		index();

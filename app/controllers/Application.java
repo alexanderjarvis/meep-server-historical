@@ -22,7 +22,7 @@ public class Application extends Controller {
 	
 	@Finally
     static void log() {
-        Logger.info("Response contains:\n" + response.out);
+        //Logger.info("Response contains:\n" + response.out);
     }
 
     public static void index() {
