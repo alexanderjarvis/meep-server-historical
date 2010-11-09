@@ -6,11 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import factories.UserConnectionFactory;
-
-import play.Logger;
 import play.test.Fixtures;
 import play.test.UnitTest;
+import factories.UserConnectionFactory;
 
 /**
  * 
@@ -42,10 +40,11 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Test 
 	public void testDeleteConnection() {
-		
 		assertEquals(1, user1.connections.size());
+		assertEquals(1, user2.connections.size());
 		con.delete();
 		assertEquals(0, user1.connections.size());
+		assertEquals(0, user2.connections.size());
 	}
 	
 	@After
