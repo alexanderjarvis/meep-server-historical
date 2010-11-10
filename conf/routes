@@ -14,6 +14,10 @@ GET     /public/                                staticDir:public
 # CRUD module
 *       /admin             						module:crud
 
+#
+GET		/auth/?									Security.authenticate
+POST	/auth/?									Security.authenticate
+
 # 
 # Application specific routes
 #
