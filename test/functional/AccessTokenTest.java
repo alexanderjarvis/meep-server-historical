@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import play.Logger;
+import play.mvc.Http.Request;
 import play.mvc.Http.Response;
 import play.test.FunctionalTest;
 
@@ -13,7 +14,12 @@ public class AccessTokenTest extends FunctionalTest {
 	private Response response;
 	
 	private void requestKey() {
-		response = POST("/auth/?grant_type=password&client_id=id&client_secret=secret");
+		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com&client_secret=secret");
+	}
+	
+	@Before
+	public void loadFixtures() {
+		
 	}
 	
 	@Test
@@ -38,13 +44,8 @@ public class AccessTokenTest extends FunctionalTest {
 	}
 	
 	@Test
-	public void testOtherGrantTypes() {
-		// authorization_code
-		response = POST("/auth/?grant_type=authorization_code&client_id=id&client_secret=secret");
-		assertStatus(400, response);
-		
-		// unknown
-		response = POST("/auth/?grant_type=unknown&client_id=id&client_secret=secret");
+	public void testUnknownGrantTypes() {	
+		response = POST("/oauth2/?grant_type=unknown&client_id=bob@gmail.com&client_secret=secret");
 		assertStatus(400, response);
 	}
 	
@@ -52,6 +53,12 @@ public class AccessTokenTest extends FunctionalTest {
 	public void testValidationErrors() {
 		//TODO: test when missing params
 	}
+	
+	@Test
+    public void testBadRequest() {
+        Response response = GET("/");
+        assertStatus(400, response);
+    }
 	
 	@After
 	public void log() {

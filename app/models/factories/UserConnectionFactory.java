@@ -1,4 +1,4 @@
-package factories;
+package models.factories;
 
 import models.User;
 import models.UserConnection;

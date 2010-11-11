@@ -1,11 +1,13 @@
 package models;
 
-import play.*;
-import play.data.validation.Required;
-import play.db.jpa.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-import javax.persistence.*;
-import java.util.*;
+import play.db.jpa.GenericModel;
+import play.db.jpa.Model;
 
 @Entity
 @Table( uniqueConstraints = { @UniqueConstraint(columnNames = {"user1_id", "user2_id" }) })
@@ -40,7 +42,7 @@ public class UserConnection extends Model {
 	}
 	
 	@Override
-	public JPASupport delete() {
+	public GenericModel delete() {
 		user1.removeConnectionWithId(user2.id);
 		user2.removeConnectionWithId(user1.id);
 		

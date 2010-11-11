@@ -1,6 +1,7 @@
 package unit;
 import models.User;
 import models.UserConnection;
+import models.factories.UserConnectionFactory;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +9,6 @@ import org.junit.Test;
 
 import play.test.Fixtures;
 import play.test.UnitTest;
-import factories.UserConnectionFactory;
 
 /**
  * 

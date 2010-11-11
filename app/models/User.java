@@ -11,8 +11,8 @@ import play.data.validation.Email;
 import play.data.validation.Match;
 import play.data.validation.MinSize;
 import play.data.validation.Required;
+import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import play.db.jpa.JPASupport;
 import play.db.jpa.Model;
 
 @Entity
@@ -64,7 +64,7 @@ public class User extends Model {
     }
     
     @Override
-	public JPASupport delete() {
+	public GenericModel delete() {
     	Query query = JPA.em().createQuery("SELECT uc FROM UserConnection uc WHERE user1.id = :user or user2.id = :user");
 		query.setParameter("user", this.id);
 		List<UserConnection> connections = query.getResultList();

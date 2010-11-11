@@ -15,8 +15,8 @@ GET     /public/                                staticDir:public
 *       /admin             						module:crud
 
 #
-GET		/auth/?									AccessToken.auth
-POST	/auth/?									AccessToken.auth
+GET		/oauth2/?								oauth2.AccessToken.auth
+POST	/oauth2/?								oauth2.AccessToken.auth
 
 # 
 # Application specific routes

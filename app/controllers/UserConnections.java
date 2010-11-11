@@ -3,10 +3,10 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import factories.UserConnectionFactory;
 
 import models.User;
 import models.UserConnection;
+import models.factories.UserConnectionFactory;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Router;

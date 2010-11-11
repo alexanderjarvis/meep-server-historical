@@ -42,6 +42,7 @@ public class Users extends Application {
     	String url = Router.reverse("Users.show", map).url;
     	Logger.debug("Entity Created - Redirect URL: %s", url);
     	redirect(url);
+    	//TODO: return 201 ?
     }
     
     /**

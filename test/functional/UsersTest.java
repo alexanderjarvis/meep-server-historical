@@ -1,6 +1,8 @@
 package functional;
 import java.util.Map;
 
+import models.User;
+
 import org.junit.Test;
 
 import play.Logger;
@@ -10,11 +12,12 @@ import play.test.FunctionalTest;
 
 public class UsersTest extends FunctionalTest {
 
-	private static String CONTROLLER_PATH = "/Users";
+	private static final String BASE_CONTROLLER_PATH = "/Users";
+	private static final String BASE_QUERY = "?oauth_token=&";
 
 	@Test
 	public void testIndexPage() {
-		Response response = GET(CONTROLLER_PATH);
+		Response response = GET(BASE_CONTROLLER_PATH + BASE_QUERY);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset("utf-8", response);
@@ -22,8 +25,8 @@ public class UsersTest extends FunctionalTest {
 
 	@Test
 	public void testCreateGET() {
-		Response response = GET(CONTROLLER_PATH
-				+ "?user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
+		Response response = GET(BASE_CONTROLLER_PATH + BASE_QUERY
+				+ "user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset("utf-8", response);
@@ -31,15 +34,16 @@ public class UsersTest extends FunctionalTest {
 
 	@Test
 	public void testCreatePOST() {
-		Response response = POST(CONTROLLER_PATH
-				+ "?user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
+		Response response = POST(BASE_CONTROLLER_PATH + BASE_QUERY
+				+ "user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
 		assertStatus(302, response);
 	}
 	
 	@Test
 	public void testShow() {
 		//TODO: fix this test
-		Response response = GET(CONTROLLER_PATH + "/3");
+		User user = (User)User.findAll().get(0);
+		Response response = GET(BASE_CONTROLLER_PATH + "/" + user.id + BASE_QUERY);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset("utf-8", response);
