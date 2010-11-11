@@ -1,23 +1,27 @@
 package controllers;
 
+import oauth2.OAuth2Constants;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Finally;
-import play.mvc.With;
+import play.mvc.Router;
 
 /**
  *
  */
 public class Application extends Controller {
 	
-	//TODO: fill out method.
 	@Before
 	static void authenticationCheck() {
 		// Check that HTTPS is being used.
-		if (request.secure) {
-			//continue
-		} else {
-			
+		if (request.secure == false) {
+			error(500, "not secure");
+		}
+		// Check oauth_token present in request, if not, error
+		if (params._contains(OAuth2Constants.PARAM_OAUTH_TOKEN)) {
+			// good
+		} else if (!request.path.equals(Router.reverse("AccessToken.auth"))) {
+			error(400, "invalid request");
 		}
 	}
 	

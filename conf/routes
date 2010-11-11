@@ -13,12 +13,10 @@ GET     /public/                                staticDir:public
 
 # CRUD module
 *       /admin             						module:crud
-# OAuth provider module
-*		/oauth									module:oauthprovider
 
 #
-GET		/auth/?									Security.authenticate
-POST	/auth/?									Security.authenticate
+GET		/auth/?									AccessToken.auth
+POST	/auth/?									AccessToken.auth
 
 # 
 # Application specific routes
