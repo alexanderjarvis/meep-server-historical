@@ -1,7 +1,28 @@
 package oauth2;
 
-public interface CheckUserAuthentication {
+import models.User;
+
+public class CheckUserAuthentication   {
 	
-	public boolean validCredentials(String client_id, String client_secret);
+	private User authorizedUser;
+	
+	public CheckUserAuthentication() {
+	}
+
+	public boolean validateCredentials(String client_id, String client_secret) {
+		User user = User.find("byEmail", client_id).first();
+		if (user != null) {
+			// TODO: hash password
+			if (client_secret.equals(user.password)) {
+				authorizedUser = user;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public User getAuthroizedUser() {
+		return this.authorizedUser;
+	}
 
 }
