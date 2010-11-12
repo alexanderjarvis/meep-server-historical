@@ -1,5 +1,6 @@
 package oauth2.unit;
 
+import models.User;
 import oauth2.CheckUserAuthentication;
 
 import org.junit.After;
@@ -11,6 +12,10 @@ import play.test.UnitTest;
 
 public class TestCheckUserAuthentication extends UnitTest {
 	
+	private static final String TEST_CLIENT_ID = "bob@gmail.com";
+	private static final String TEST_CLIENT_SECRET = "secret";
+	private CheckUserAuthentication checkUserAuthentication;
+	
 	@Before
 	public void loadFixtures() {
 		Fixtures.load("data.yml");
@@ -18,20 +23,28 @@ public class TestCheckUserAuthentication extends UnitTest {
 	
 	@Test
 	public void testValidCredentials() {
-		CheckUserAuthentication checkUserAuthentication = new CheckUserAuthentication();
-		assertTrue(checkUserAuthentication.validateCredentials("bob@gmail.com", "secret"));
+		checkUserAuthentication = new CheckUserAuthentication();
+		assertTrue(checkUserAuthentication.validateCredentials(TEST_CLIENT_ID, TEST_CLIENT_SECRET));
 	}
 	
 	@Test
 	public void testNonValidClientId() {
-		CheckUserAuthentication checkUserAuthentication = new CheckUserAuthentication();
-		assertFalse(checkUserAuthentication.validateCredentials("a@gmail.com", "secret"));
+		checkUserAuthentication = new CheckUserAuthentication();
+		assertFalse(checkUserAuthentication.validateCredentials("a@gmail.com", TEST_CLIENT_SECRET));
 	}
 	
 	@Test
 	public void testNonValidClientSecret() {
-		CheckUserAuthentication checkUserAuthentication = new CheckUserAuthentication();
-		assertFalse(checkUserAuthentication.validateCredentials("bob@gmail.com", "a"));
+		checkUserAuthentication = new CheckUserAuthentication();
+		assertFalse(checkUserAuthentication.validateCredentials(TEST_CLIENT_ID, "a"));
+	}
+	
+	@Test
+	public void testReturnsUser() {
+		testValidCredentials();
+		User user = checkUserAuthentication.getAuthroizedUser();
+		assertNotNull(user);
+		assertEquals(user.email, TEST_CLIENT_ID);
 	}
 	
 	@After
