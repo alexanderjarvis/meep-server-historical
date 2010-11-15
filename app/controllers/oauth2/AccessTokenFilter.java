@@ -16,8 +16,7 @@ public class AccessTokenFilter extends Controller {
 	@Before
 	static void checkSSL() {
 		// Check that HTTPS is being used.
-		final Properties p = Play.configuration;
-		final boolean sslRequired = Boolean.parseBoolean(p.getProperty(OAuth2Constants.SSL_REQUIRED, Boolean.TRUE.toString()));
+		final boolean sslRequired = Boolean.parseBoolean(Play.configuration.getProperty(OAuth2Constants.SSL_REQUIRED, Boolean.TRUE.toString()));
 		if (sslRequired && !request.secure) {
 			error(500, "not secure");
 		}
@@ -34,7 +33,7 @@ public class AccessTokenFilter extends Controller {
 			// good
 			// Check token exists in system
 		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth"))) {
-			error(400, "invalid request");
+			badRequest();
 		}
 	}
 	
