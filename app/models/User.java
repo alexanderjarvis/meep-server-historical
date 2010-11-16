@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Query;
 
 import play.data.validation.Email;
@@ -33,6 +34,9 @@ public class User extends Model {
 	public String fullName;
 	public Date dateCreated;
 	public Date dateModified;
+	
+	@OneToOne
+	public UserDetail userDetail;
     
     /**
      * A simple list of the relationships of this user to other users.

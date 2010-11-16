@@ -12,8 +12,9 @@ public class CheckUserAuthentication   {
 	public boolean validateCredentials(String client_id, String client_secret) {
 		User user = User.find("byEmail", client_id).first();
 		if (user != null) {
-			// TODO: hash password
-			if (client_secret.equals(user.password)) {
+			String client_secret_hash = Security.sha256hexWithSalt(client_secret);
+			
+			if (client_secret_hash.equals(user.userDetail.passwordHash)) {
 				authorizedUser = user;
 				return true;
 			}

@@ -10,7 +10,9 @@ import play.mvc.Router;
 
 public class AccessToken extends Controller {
 	
-    public static void auth(@Required String grant_type, @Required String client_id, String client_secret) {
+    public static void auth(@Required String grant_type, 
+    						@Required String client_id, 
+    						@Required String client_secret) {
     	
     	if (validation.hasErrors()) {
     		error(400, "validation has errors");
@@ -25,7 +27,7 @@ public class AccessToken extends Controller {
     		renderJSON(result);
     		
     	} else {
-    		error(400, "grant_type: " + grant_type);
+    		error(400, "grant_type unknown: " + grant_type);
     	}
     	
     }

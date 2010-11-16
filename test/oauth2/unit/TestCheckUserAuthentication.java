@@ -13,7 +13,7 @@ import play.test.UnitTest;
 public class TestCheckUserAuthentication extends UnitTest {
 	
 	private static final String TEST_CLIENT_ID = "bob@gmail.com";
-	private static final String TEST_CLIENT_SECRET = "secret";
+	private static final String TEST_CLIENT_SECRET = "password";
 	private CheckUserAuthentication checkUserAuthentication;
 	
 	@Before

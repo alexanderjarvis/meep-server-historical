@@ -1,4 +1,4 @@
-package functional;
+package oauth2.functional;
 
 import org.junit.After;
 import org.junit.Before;
