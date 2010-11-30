@@ -14,7 +14,7 @@ public class CheckUserAuthentication   {
 		if (user != null) {
 			String client_secret_hash = Security.sha256hexWithSalt(client_secret);
 			
-			if (client_secret_hash.equals(user.userDetail.passwordHash)) {
+			if (client_secret_hash.equals(user.passwordHash)) {
 				authorizedUser = user;
 				return true;
 			}

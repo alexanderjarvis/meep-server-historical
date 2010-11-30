@@ -1,15 +1,12 @@
 # you describe your data using the YAML notation here
 # and then load them using Fixtures.load("data.yml")
 
-UserDetail(detail_bob):
-  passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
- 
 User(bob):
   email: bob@gmail.com
   password: password
   firstName: Bob
   lastName: X
-  userDetail: [detail_bob]
+  passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
   
 User(bob2):
   email: bob2@gmail.com

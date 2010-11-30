@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Query;
 
 import play.data.validation.Email;
@@ -14,10 +14,9 @@ import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import play.db.jpa.Model;
 
 @Entity
-public class User extends Model {
+public class User extends Item {
 	
 	@Email
 	@Required
@@ -26,17 +25,13 @@ public class User extends Model {
 	@Match("[A-Za-z0-9]{6,16}")
 	@Required
     public String password;
+	public String passwordHash;
 	@MinSize(2)
 	@Required
     public String firstName;
 	@Required
     public String lastName;
 	public String fullName;
-	public Date dateCreated;
-	public Date dateModified;
-	
-	@OneToOne
-	public UserDetail userDetail;
     
     /**
      * A simple list of the relationships of this user to other users.
@@ -45,6 +40,12 @@ public class User extends Model {
      * be a cyclic representation.
      */
     public ArrayList<Long> connections;
+    
+    @OneToMany(mappedBy="owner")
+    public List<Meeting> meetingsCreated;
+    
+    @OneToMany(mappedBy="user")
+    public List<Attendee> meetingsRelated;
     
     public User(String email, String password, String firstName, String lastName) {
         this.email = email;

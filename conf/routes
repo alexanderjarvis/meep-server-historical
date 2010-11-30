@@ -39,3 +39,6 @@ GET		/UserConnections/{id} 					UserConnections.show
 #no update
 GET		/UserConnections/delete/{id}			UserConnections.delete
 DELETE	/UserConnections/{id}					UserConnections.delete
+
+
+GET		/long/									LongPoll.index
