@@ -18,6 +18,9 @@ public class Attendee extends Model {
 	@ManyToOne
 	public User user;
 	
+	@ManyToOne
+	public Meeting meeting;
+	
 	@Enumerated(EnumType.STRING)
 	public MeetingResponse rsvp;
 	
@@ -26,4 +29,3 @@ public class Attendee extends Model {
 	}
 
 }
-

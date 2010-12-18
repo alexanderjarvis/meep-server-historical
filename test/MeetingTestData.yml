@@ -1,22 +1,12 @@
-# you describe your data using the YAML notation here
-# and then load them using Fixtures.load("data.yml")
-
- 
 User(user1):
   email: bob@gmail.com
-  password: password
   firstName: Bob
   lastName: 
   
 User(user2):
   email: bob2@gmail.com
-  password: password
   firstName: Bob
   lastName: 
-  
-UserConnection(con):
-  user1_id: [user1]
-  user2_id: [user2]
   
 Attendee(attendee1):
   user: [user1]

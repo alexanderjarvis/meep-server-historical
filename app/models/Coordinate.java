@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Entity;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 /**
@@ -11,10 +12,13 @@ import play.db.jpa.Model;
 @Entity
 public class Coordinate extends Model {
 	
-	public double longitude;
-	public double latitude;
+	@Required
+	public Double longitude;
 	
-	public Coordinate(double longitude, double latitude) {
+	@Required
+	public Double latitude;
+	
+	public Coordinate(Double longitude, Double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}

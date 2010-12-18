@@ -3,11 +3,12 @@ package models;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import play.data.validation.Required;
 
 /**
  * 
@@ -17,12 +18,13 @@ import javax.persistence.OneToOne;
 @Entity
 public class Meeting extends Item {
 	
+	@Required
 	public Date time;
 	
 	@OneToOne
 	public Coordinate place;
 	
-	@OneToMany
+	@OneToMany(mappedBy="meeting")
 	public List<Attendee> attendees;
 	
 	@ManyToOne
@@ -33,8 +35,6 @@ public class Meeting extends Item {
 	public String type;
 	
 	public Meeting(Date time, Coordinate place, List<Attendee> attendees, User owner) {
-		
-		super();
 		this.time = time;
 		this.place = place;
 		this.attendees = attendees;

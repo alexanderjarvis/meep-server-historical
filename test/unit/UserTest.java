@@ -18,7 +18,7 @@ public class UserTest extends UnitTest {
 	
 	@Test
 	public void testAddUser() {
-		User user = new User("alex@alex.com", "ASDFGH", "alex", "");
+		User user = new User();
 		assertNotNull(user);
 	}
 

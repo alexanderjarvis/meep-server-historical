@@ -1,58 +1,69 @@
 package unit;
+
 import models.User;
 import models.UserConnection;
-import models.factories.UserConnectionFactory;
+import models.helpers.UserConnectionHelper;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.yaml.snakeyaml.JavaBeanDumper;
 
+import play.Logger;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
 /**
  * 
- * @author alex
+ * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserConnectionTest extends UnitTest {
 	
-	private User user1;
-	private User user2;
-	private UserConnection con;
+	User user1;
+	User user2;
 	
 	@Before
 	public void setUp() {
 		Fixtures.deleteAll();
-		
-		user1 = new User("user1", "password", "", "");
-		user2 = new User("user2", "password", "", "");
-		user1.save();
-		user2.save();
-		con = UserConnectionFactory.createUserConnection(user1, user2);
-		con.save();
+		Fixtures.load("UserConnectionTestData.yml");
+		user1 = new User();
+		user2 = new User();
+		UserConnectionHelper.createUserConnection(user1, user2);
 	}
 	
 	@Test
-	public void testUserConnectionSize() {	
-		assertEquals(1, user1.connections.size());
-		assertEquals(1, user2.connections.size());
+	public void testModelSizes() {
+		assertEquals(2, User.findAll().size());
+		assertEquals(2, UserConnection.findAll().size());
 	}
 	
-	@Test 
-	public void testDeleteConnection() {
-		assertEquals(1, user1.connections.size());
-		assertEquals(1, user2.connections.size());
-		con.delete();
-		assertEquals(0, user1.connections.size());
-		assertEquals(0, user2.connections.size());
+	@Test
+	public void testUserConnectionsSize() {
+		User user = User.all().first();
+		assertEquals(1, user.connections.size());
 	}
 	
-	@After
-	public void tearDown() {
-		Fixtures.deleteAll();
+	@Test
+	public void testTraverseUserConnectionGraph() {
+		// Test owner of connection
+		assertTrue(user1.connections.get(0).user.equals(user1));
+		
+		// Test traversing to other user equals the other user
+		assertTrue(user1.connections.get(0).userConnection.user.equals(user2));
+		assertTrue(user2.connections.get(0).userConnection.user.equals(user1));
 	}
 	
-	
-	
+	@Test(expected=IllegalArgumentException.class)
+	public void testDeleteUserConnection() {
+		UserConnection con1 = user1.connections.get(0);
+		
+		int sizeBefore = user1.connections.size();
+		user1.connections.remove(0);
+		int sizeAfter = user1.connections.size();
+		
+		assertTrue(sizeAfter < sizeBefore);
+		
+		// Expects exception as entity no longer exists
+		con1.refresh();
+	}
 
 }

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
+import javax.persistence.Transient;
 
 import play.data.validation.Email;
 import play.data.validation.Match;
@@ -21,53 +23,37 @@ public class User extends Item {
 	@Email
 	@Required
 	public String email;
-	//TODO: include special chars
-	@Match("[A-Za-z0-9]{6,16}")
-	@Required
-    public String password;
+	
 	public String passwordHash;
-	@MinSize(2)
+	
 	@Required
     public String firstName;
+	
 	@Required
     public String lastName;
-	public String fullName;
+	
+	public String serviceName;
+	
+	public String telephone;
     
-    /**
-     * A simple list of the relationships of this user to other users.
-     * The application also stores this information in the UserConnection class,
-     * but this representation is maintained as well because otherwise there would
-     * be a cyclic representation.
-     */
-    public ArrayList<Long> connections;
-    
-    @OneToMany(mappedBy="owner")
+    @OneToMany(mappedBy="owner", cascade={CascadeType.ALL}, orphanRemoval=true)
     public List<Meeting> meetingsCreated;
     
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
     public List<Attendee> meetingsRelated;
     
-    public User(String email, String password, String firstName, String lastName) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        
-        Date today = new Date();
-        this.dateCreated = today;
-        this.dateModified = today; 
-        
-        this.connections = new ArrayList<Long>();
+    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
+    public List<UserConnection> connections;
+    
+    public User() {
+    	connections = new ArrayList<UserConnection>();
     }
     
     public static User connect(String email, String password) {
         return find("byEmailAndPassword", email, password).first();
     }
     
-    public void removeConnectionWithId(Long id) {
-    	connections.remove(connections.indexOf(id));
-    }
-    
+    //TODO: revisit
     @Override
 	public GenericModel delete() {
     	Query query = JPA.em().createQuery("SELECT uc FROM UserConnection uc WHERE user1.id = :user or user2.id = :user");

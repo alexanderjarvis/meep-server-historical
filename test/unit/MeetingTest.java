@@ -27,11 +27,9 @@ public class MeetingTest extends UnitTest {
 	 */
 	@Test
 	public void testRelations() {
-		
 		assertNotNull(meeting.place);
 		assertNotNull(meeting.attendees);
 		assertNotNull(meeting.owner);
-		
 	}
 	
 	/****
