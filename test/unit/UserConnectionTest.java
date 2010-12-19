@@ -26,14 +26,16 @@ public class UserConnectionTest extends UnitTest {
 		Fixtures.deleteAll();
 		Fixtures.load("UserConnectionTestData.yml");
 		user1 = new User();
+		user1.save();
 		user2 = new User();
+		user2.save();
 		UserConnectionHelper.createUserConnection(user1, user2);
 	}
 	
 	@Test
 	public void testModelSizes() {
-		assertEquals(2, User.findAll().size());
-		assertEquals(2, UserConnection.findAll().size());
+		assertEquals(4, User.findAll().size());
+		assertEquals(4, UserConnection.findAll().size());
 	}
 	
 	@Test
@@ -52,18 +54,27 @@ public class UserConnectionTest extends UnitTest {
 		assertTrue(user2.connections.get(0).userConnection.user.equals(user1));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testDeleteUserConnection() {
-		UserConnection con1 = user1.connections.get(0);
-		
+	@Test
+	public void testDeleteUserConnectionSize() {	
 		int sizeBefore = user1.connections.size();
-		user1.connections.remove(0);
+		UserConnectionHelper.removeUserConnection(user1, user2);
 		int sizeAfter = user1.connections.size();
 		
 		assertTrue(sizeAfter < sizeBefore);
-		
-		// Expects exception as entity no longer exists
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testDeleteUserConnection1() {
+		UserConnection con1 = user1.connections.get(0);
+		UserConnectionHelper.removeUserConnection(user1, user2);
 		con1.refresh();
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testDeleteUserConnection2() {
+		UserConnection con2 = user2.connections.get(0);
+		UserConnectionHelper.removeUserConnection(user1, user2);
+		con2.refresh();
 	}
 
 }

@@ -42,7 +42,7 @@ public class User extends Item {
     @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
     public List<Attendee> meetingsRelated;
     
-    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy="user", cascade={CascadeType.REMOVE}, orphanRemoval=true)
     public List<UserConnection> connections;
     
     public User() {
