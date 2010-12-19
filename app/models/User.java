@@ -26,6 +26,8 @@ public class User extends Item {
 	
 	public String passwordHash;
 	
+	public String accessToken;
+	
 	@Required
     public String firstName;
 	

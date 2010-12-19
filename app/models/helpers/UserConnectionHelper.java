@@ -1,12 +1,13 @@
 package models.helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
 
-import play.db.jpa.JPA;
 import models.User;
 import models.UserConnection;
+import play.db.jpa.JPA;
 
 /**
  * 
@@ -41,6 +42,14 @@ public class UserConnectionHelper {
 		// Delete the UserConnection objects
 		con1.delete();
 		con2.delete();
+	}
+	
+	public static List<User> connectionsAsUsers(User user) {
+		List<User> connections = new ArrayList<User>();
+		for (UserConnection connection : user.connections) {
+			connections.add(connection.userConnection.user);
+		}
+		return connections;
 	}
 
 }

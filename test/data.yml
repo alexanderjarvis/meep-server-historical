@@ -14,7 +14,4 @@ User(bob2):
   firstName: Bob
   lastName: X
   
-UserConnection(con):
-  user1_id: [bob]
-  user2_id: [bob2]
-  
+

@@ -8,6 +8,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import play.Logger;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class Security {
 	
 	private final static String SALT = "salt";

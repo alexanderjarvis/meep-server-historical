@@ -1,5 +1,7 @@
 package oauth2.functional;
 
+import oauth2.OAuth2Constants;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,39 +9,43 @@ import org.junit.Test;
 import play.Logger;
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
+import play.test.Fixtures;
 import play.test.FunctionalTest;
 
 public class AccessTokenTest extends FunctionalTest {
 	
 	private Response response;
+	private String access_token;
 	
-	private void requestKey() {
-		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com&client_secret=secret");
+	private void requestAccessToken() {
+		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com&client_secret=password");
+		access_token = response.out.toString();
 	}
 	
 	@Before
 	public void loadFixtures() {
+		Fixtures.load("data.yml");
 		
 	}
 	
 	@Test
 	public void testResponseOK() {
-		requestKey();
+		requestAccessToken();
 		assertIsOk(response);
 	}
 	
 	@Test
 	public void testResponseKeyLength() {
-		requestKey();
-		assertEquals(32, response.out.toString().length());
+		requestAccessToken();
+		assertEquals(32, access_token.length());
 	}
 	
 	@Test
 	public void testKeyIsRandom() {
-		requestKey();
-		String key1 = response.out.toString();
-		requestKey();
-		String key2 = response.out.toString();
+		requestAccessToken();
+		String key1 = access_token;
+		requestAccessToken();
+		String key2 = access_token;
 		assertNotSame(key1, key2);
 	}
 	
@@ -51,14 +57,22 @@ public class AccessTokenTest extends FunctionalTest {
 	
 	@Test
 	public void testValidationErrors() {
-		//TODO: test when missing params
+		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com");
+		assertStatus(400, response);
 	}
 	
 	@Test
     public void testBadRequest() {
-        Response response = GET("/");
+        response = GET("/");
         assertStatus(400, response);
     }
+	
+	@Test
+	public void testAccessWithToken() {
+		requestAccessToken();
+		response = GET("/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		assertStatus(200, response);
+	}
 	
 	@After
 	public void log() {

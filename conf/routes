@@ -32,13 +32,8 @@ GET		/Users/delete/{id}						Users.delete
 DELETE	/Users/{id}								Users.delete
 
 
-GET		/UserConnections/?						UserConnections.index
-GET		/UserConnections/create					UserConnections.create
-POST	/UserConnections/?						UserConnections.create
-GET		/UserConnections/{id} 					UserConnections.show
-#no update
-GET		/UserConnections/delete/{id}			UserConnections.delete
-DELETE	/UserConnections/{id}					UserConnections.delete
+
+
 
 
 GET		/long/									LongPoll.index

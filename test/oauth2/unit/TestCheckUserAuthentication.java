@@ -24,19 +24,19 @@ public class TestCheckUserAuthentication extends UnitTest {
 	@Test
 	public void testValidCredentials() {
 		checkUserAuthentication = new CheckUserAuthentication();
-		assertTrue(checkUserAuthentication.validateCredentials(TEST_CLIENT_ID, TEST_CLIENT_SECRET));
+		assertTrue(checkUserAuthentication.validCredentials(TEST_CLIENT_ID, TEST_CLIENT_SECRET));
 	}
 	
 	@Test
 	public void testNonValidClientId() {
 		checkUserAuthentication = new CheckUserAuthentication();
-		assertFalse(checkUserAuthentication.validateCredentials("a@gmail.com", TEST_CLIENT_SECRET));
+		assertFalse(checkUserAuthentication.validCredentials("a@gmail.com", TEST_CLIENT_SECRET));
 	}
 	
 	@Test
 	public void testNonValidClientSecret() {
 		checkUserAuthentication = new CheckUserAuthentication();
-		assertFalse(checkUserAuthentication.validateCredentials(TEST_CLIENT_ID, "a"));
+		assertFalse(checkUserAuthentication.validCredentials(TEST_CLIENT_ID, "a"));
 	}
 	
 	@Test
