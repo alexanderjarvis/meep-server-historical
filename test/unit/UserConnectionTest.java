@@ -24,7 +24,6 @@ public class UserConnectionTest extends UnitTest {
 	@Before
 	public void setUp() {
 		Fixtures.deleteAll();
-		Fixtures.load("UserConnectionTestData.yml");
 		user1 = new User();
 		user1.save();
 		user2 = new User();
@@ -34,8 +33,8 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Test
 	public void testModelSizes() {
-		assertEquals(4, User.findAll().size());
-		assertEquals(4, UserConnection.findAll().size());
+		assertEquals(2, User.findAll().size());
+		assertEquals(2, UserConnection.findAll().size());
 	}
 	
 	@Test

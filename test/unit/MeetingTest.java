@@ -1,6 +1,9 @@
 package unit;
 
+import java.util.Date;
+
 import models.Attendee;
+import models.Coordinate;
 import models.Meeting;
 import models.User;
 import models.Attendee.MeetingResponse;
@@ -18,8 +21,12 @@ public class MeetingTest extends UnitTest {
 	@Before
 	public void setup() {
 		Fixtures.deleteAll();
-		Fixtures.load("MeetingTestData.yml");
-		meeting = Meeting.all().first();
+		
+		User owner = new User();
+		Date today = new Date();
+		Coordinate place = new Coordinate(new Double(2), new Double(2));
+		
+		meeting = new Meeting(today, place, owner);
 	}
 	
 	/**
@@ -32,28 +39,35 @@ public class MeetingTest extends UnitTest {
 		assertNotNull(meeting.owner);
 	}
 	
-	/****
+	/**
 	 * Attendees
 	 */
-	
 	@Test
 	public void testAttendeesSize() {
-		assertEquals(2, meeting.attendees.size());
+		assertEquals(0, meeting.attendees.size());
 	}
 	
 	@Test
 	public void testAddAttendee() {
-		Attendee attendee = new Attendee();
-		User user = User.all().first();
-		attendee.user = user;
-		attendee.rsvp = MeetingResponse.YES;
-		meeting.attendees.add(attendee);
-		assertEquals(3, meeting.attendees.size());
+		User user = new User();
+		
+		int sizeBefore = meeting.attendees.size();
+		meeting.addAttendee(user);
+		int sizeAfter = meeting.attendees.size();
+		
+		assertTrue(sizeAfter > sizeBefore);
 	}
 	
 	@Test
 	public void testRemoveAttendee() {
+		testAddAttendee();
 		meeting.attendees.remove(0);
+	}
+	
+	@Test
+	public void testSetRSVP() {
+		testAddAttendee();
+		assertTrue(meeting.setAttendeeRSVP(meeting.attendees.get(0).getUser(), MeetingResponse.YES));
 	}
 
 }

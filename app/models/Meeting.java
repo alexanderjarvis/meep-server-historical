@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,11 +35,26 @@ public class Meeting extends Item {
 	public String description;
 	public String type;
 	
-	public Meeting(Date time, Coordinate place, List<Attendee> attendees, User owner) {
+	public Meeting(Date time, Coordinate place, User owner) {
 		this.time = time;
 		this.place = place;
-		this.attendees = attendees;
 		this.owner = owner;
+		this.attendees = new ArrayList<Attendee>();
+	}
+	
+	public boolean addAttendee(User user) {
+		Attendee attendee = new Attendee(user, this);
+		return attendees.add(attendee);
+	}
+	
+	public boolean setAttendeeRSVP(User user, Attendee.MeetingResponse rsvp) {
+		for (Attendee attendee : attendees) {
+			if (attendee.getUser().equals(user)) {
+				attendee.rsvp = rsvp;
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

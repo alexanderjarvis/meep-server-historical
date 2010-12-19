@@ -16,16 +16,29 @@ import play.db.jpa.Model;
 public class Attendee extends Model {
 	
 	@ManyToOne
-	public User user;
+	private User user;
 	
 	@ManyToOne
-	public Meeting meeting;
+	private Meeting meeting;
 	
 	@Enumerated(EnumType.STRING)
 	public MeetingResponse rsvp;
 	
 	public enum MeetingResponse {
 		YES, MAYBE, NO
+	}
+	
+	public Attendee(User user, Meeting meeting) {
+		this.user = user;
+		this.meeting = meeting;
+	}
+	
+	public User getUser() {
+		return this.user;
+	}
+	
+	public Meeting getMeeting() {
+		return this.meeting;
 	}
 
 }
