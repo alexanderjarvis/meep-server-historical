@@ -26,8 +26,6 @@ public class UserConnectionHelper {
 		con2.userConnection = con1;
 		con1.save();
 		con2.save();
-		user1.connections.add(con1);
-		user2.connections.add(con2);
 	}
 	
 	public static void removeUserConnection(User user1, User user2) {
