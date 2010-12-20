@@ -1,14 +1,16 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import models.User;
-
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
 import play.mvc.Router;
+import DTO.UserSummaryDTO;
+import assemblers.UserSummaryAssembler;
 
 /**
  * 
@@ -21,7 +23,8 @@ public class Users extends Application {
 	 * TODO: this should only be available to admins.
 	 */
 	public static void index() {
-		renderJSON(User.findAll());
+		User authUser = userAuth.getAuthroizedUser();
+		renderJSON(UserSummaryAssembler.writeDTOs(authUser));
 	}
     
 	/**

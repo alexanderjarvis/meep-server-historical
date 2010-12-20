@@ -3,15 +3,14 @@
 
 User(bob):
   email: bob@gmail.com
-  password: password
   firstName: Bob
-  lastName: X
+  lastName: Smith
   passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
+  accessToken: blxdlxyxVnNk8aGIMGbKiZHa9T9XWdiL
   
 User(bob2):
   email: bob2@gmail.com
-  password: password
   firstName: Bob
-  lastName: X
+  lastName: Smith
   
 

@@ -19,7 +19,7 @@ import play.mvc.Router;
  */
 public class AccessTokenFilter extends NoCookieFilter {
 	
-	private static CheckUserAuthentication userAuth;
+	protected static CheckUserAuthentication userAuth;
 	
 	/**
 	 * Checks that the request is secure and therefore encrypted.
