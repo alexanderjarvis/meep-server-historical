@@ -20,6 +20,8 @@ public class UserConnectionHelper {
 		UserConnection con2 = new UserConnection();
 		con1.user = user1;
 		con2.user = user2;
+		// It is necessary to save the UserConnection objects to obtain id's for
+		// referencing each other.
 		con1.save();
 		con2.save();
 		con1.userConnection = con2;

@@ -4,6 +4,7 @@ import models.User;
 import models.UserConnection;
 import models.helpers.UserConnectionHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.yaml.snakeyaml.JavaBeanDumper;
@@ -23,12 +24,15 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		user1 = new User();
-		user1.save();
-		user2 = new User();
-		user2.save();
+		Fixtures.load("data.yml");
+		user1 = User.find("byEmail", "bob@gmail.com").first();
+		user2 = User.find("byEmail", "bob2@gmail.com").first();
 		UserConnectionHelper.createUserConnection(user1, user2);
+	}
+	
+	@After
+	public void tearDown() {
+		Fixtures.deleteAll();
 	}
 	
 	@Test
@@ -39,8 +43,7 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Test
 	public void testUserConnectionsSize() {
-		User user = User.all().first();
-		assertEquals(1, user.connections.size());
+		assertEquals(1, user1.connections.size());
 	}
 	
 	@Test

@@ -2,6 +2,10 @@ package DTO;
 
 import play.data.validation.Required;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class UserSummaryDTO {
 	
 	public String email;
