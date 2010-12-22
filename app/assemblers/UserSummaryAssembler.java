@@ -27,15 +27,16 @@ public class UserSummaryAssembler {
 	
 	public static UserSummaryDTO writeDTO(User user) {
 		
-		UserSummaryDTO userSummary = new UserSummaryDTO();
+		UserSummaryDTO userSummaryDTO = new UserSummaryDTO();
 		
-		userSummary.email = user.email;
-		userSummary.firstName = user.firstName;
-		userSummary.lastName = user.lastName;
-		userSummary.serviceName = user.serviceName;
-		userSummary.telephone = user.telephone;
+		userSummaryDTO.id = user.id;
+		userSummaryDTO.email = user.email;
+		userSummaryDTO.firstName = user.firstName;
+		userSummaryDTO.lastName = user.lastName;
+		userSummaryDTO.serviceName = user.serviceName;
+		userSummaryDTO.telephone = user.telephone;
 		
-		return userSummary;
+		return userSummaryDTO;
 	}
 
 }

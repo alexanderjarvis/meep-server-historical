@@ -19,6 +19,8 @@ import play.db.jpa.JPA;
 
 public class UserDTO {
 	
+	public Long id;
+	
 	@Email
 	@Required
 	public String email;
@@ -36,7 +38,6 @@ public class UserDTO {
     public List<UserSummaryDTO> connections;
     
     public UserDTO() {
-    	connections = new ArrayList<UserSummaryDTO>();
     }
     
 }

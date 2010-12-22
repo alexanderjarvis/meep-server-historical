@@ -23,17 +23,13 @@ POST	/oauth2/?								oauth2.AccessToken.auth
 #
 
 GET		/users/?								Users.index
-GET		/users/create							Users.create
 POST	/users/?								Users.create
 GET		/users/{id} 							Users.show
-GET		/users/update/{id}						Users.update
-PUT		/users/{id}								Users.update
-GET		/users/delete/{id}						Users.delete
-DELETE	/users/{id}								Users.delete
+POST	/users/{id}								Users.update
 
 
 
 
 
-
+# test
 GET		/long/									LongPoll.index

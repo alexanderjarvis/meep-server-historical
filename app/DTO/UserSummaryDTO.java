@@ -8,6 +8,8 @@ import play.data.validation.Required;
  */
 public class UserSummaryDTO {
 	
+	public Long id;
+	
 	public String email;
 	
     public String firstName;
