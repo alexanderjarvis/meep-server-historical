@@ -68,7 +68,7 @@ public class UsersTest extends FunctionalTest {
 	}
 
 	@Test
-	public void testCreatePOST() {
+	public void testCreate() {
 		baseQuery = "";
 		
 		response = POST(BASE_CONTROLLER_PATH
@@ -80,6 +80,42 @@ public class UsersTest extends FunctionalTest {
 					+ "&user.telephone=123");
 		
 		assertStatus(201, response);
+	}
+	
+	@Test
+	public void testCreateErrorExistingEmail() {
+		testCreate();
+		
+		assertStatus(201, response);
+		
+		response = POST(BASE_CONTROLLER_PATH
+				+ "?user.email=axj7@aber.ac.uk"
+				+ "&user.password=password"
+				+ "&user.firstName=alex"
+				+ "&user.lastName=hello"
+				+ "&user.serviceName=alex"
+				+ "&user.telephone=123");
+		
+		assertStatus(400, response);
+		assertContentEquals("Email already exists", response);
+	}
+	
+	@Test
+	public void testCreateErrorExistingServiceName() {
+		testCreate();
+		
+		assertStatus(201, response);
+		
+		response = POST(BASE_CONTROLLER_PATH
+				+ "?user.email=axj77@aber.ac.uk"
+				+ "&user.password=password"
+				+ "&user.firstName=alex"
+				+ "&user.lastName=hello"
+				+ "&user.serviceName=alex"
+				+ "&user.telephone=123");
+		
+		assertStatus(400, response);
+		assertContentEquals("ServiceName already exists", response);
 	}
 	
 	@Test
