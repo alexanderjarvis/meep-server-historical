@@ -9,6 +9,13 @@ import play.Logger;
  */
 public class ModelMerger {
 	
+	/**
+	 * Copies all fields from object1 to object2 (where the fields exist on object2).
+	 * 
+	 * @param object1
+	 * @param object2
+	 * @return
+	 */
 	public static Object merge(Object object1, Object object2) {
 		Field[] fields = object1.getClass().getDeclaredFields();
 		for (Field dtoField : fields) {
