@@ -19,7 +19,7 @@ import play.db.jpa.JPA;
 
 @Entity
 public class User extends Item {
-	
+	//TODO: make unique
 	@Email
 	@Required
 	public String email;
@@ -49,10 +49,6 @@ public class User extends Item {
     
     public User() {
     	connections = new ArrayList<UserConnection>();
-    }
-    
-    public static User connect(String email, String password) {
-        return find("byEmailAndPassword", email, password).first();
     }
     
     //TODO: revisit

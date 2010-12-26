@@ -28,7 +28,7 @@ public class UsersTest extends FunctionalTest {
 	private Http.Response response;
 
 	private static final String BASE_CONTROLLER_PATH = "/users";
-	private static String BASE_QUERY = "?oauth_token=";
+	private String baseQuery = "?oauth_token=";
 	
 	User user1;
 	User user2;
@@ -41,7 +41,7 @@ public class UsersTest extends FunctionalTest {
 		Fixtures.load("data.yml");
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
-		BASE_QUERY += user1.accessToken + "&";
+		baseQuery += user1.accessToken + "&";
 		
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
 		UserConnectionHelper.createUserConnection(user1, user2);
@@ -62,30 +62,29 @@ public class UsersTest extends FunctionalTest {
 
 	@Test
 	public void testIndexPage() {
-		response = GET(BASE_CONTROLLER_PATH + BASE_QUERY);
+		response = GET(BASE_CONTROLLER_PATH + baseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 	}
 
-//	@Test
-//	public void testCreateGET() {
-//		response = GET(BASE_CONTROLLER_PATH + BASE_QUERY
-//				+ "user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
-//		assertIsOk(response);
-//		assertContentType("application/json", response);
-//		assertCharset("utf-8", response);
-//	}
-//
-//	@Test
-//	public void testCreatePOST() {
-//		response = POST(BASE_CONTROLLER_PATH + BASE_QUERY
-//				+ "user.email=alex@alex.com&user.password=ASDFGH&user.firstName=alex&user.lastName=hello");
-//		assertStatus(302, response);
-//	}
+	@Test
+	public void testCreatePOST() {
+		baseQuery = "";
+		
+		response = POST(BASE_CONTROLLER_PATH
+					+ "?user.email=axj7@aber.ac.uk"
+					+ "&user.password=password"
+					+ "&user.firstName=alex"
+					+ "&user.lastName=hello"
+					+ "&user.serviceName=alex"
+					+ "&user.telephone=123");
+		
+		assertStatus(201, response);
+	}
 	
 	@Test
 	public void testShowAuthUser() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user1.id + BASE_QUERY);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -95,7 +94,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowUser() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user2.id + BASE_QUERY);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -105,7 +104,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowNonUser() {
-		response = GET(request, BASE_CONTROLLER_PATH + "/" + "9999999999" + BASE_QUERY);
+		response = GET(request, BASE_CONTROLLER_PATH + "/" + "9999999999" + baseQuery);
 		assertIsNotFound(response);
 		assertContentType("application/json", response);
 	}

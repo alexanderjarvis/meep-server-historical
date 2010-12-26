@@ -1,17 +1,13 @@
 package controllers.oauth2;
 
-import java.util.Properties;
-
-import controllers.NoCookieFilter;
-
 import models.User;
-
 import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
 import play.Play;
 import play.mvc.Before;
-import play.mvc.Controller;
 import play.mvc.Router;
+import play.mvc.Router.ActionDefinition;
+import controllers.NoCookieFilter;
 
 /**
  * 
@@ -48,8 +44,10 @@ public class AccessTokenFilter extends NoCookieFilter {
 			if (!userAuth.validToken(params.get(OAuth2Constants.PARAM_OAUTH_TOKEN))) {
 				badRequest();
 			}
-			
-		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth"))) {
+		
+		// Resources that do not require an access token
+		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth").url) &&
+				(!request.path.equals(Router.reverse("Users.create").url)) && !request.method.equals(Router.reverse("Users.create").method)) {
 			badRequest();
 		}
 	}

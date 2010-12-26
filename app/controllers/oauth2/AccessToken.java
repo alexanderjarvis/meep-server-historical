@@ -1,6 +1,7 @@
 package controllers.oauth2;
 
 import models.User;
+import oauth2.AccessTokenGenerator;
 import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
 
@@ -32,9 +33,8 @@ public class AccessToken extends NoCookieFilter {
     		CheckUserAuthentication checkUserAuthentication = new CheckUserAuthentication();
     		if (checkUserAuthentication.validCredentials(client_id, client_secret)) {
     			// if correct, generate access token
-        		String accessToken = RandomStringUtils.randomAlphanumeric(32);
+        		String accessToken = AccessTokenGenerator.generate();
         		
-        		//TODO: set token in cache
         		User user = checkUserAuthentication.getAuthroizedUser();
         		Cache.set(OAuth2Constants.CACHE_PREFIX + accessToken, user, OAuth2Constants.CACHE_TIME);
         		

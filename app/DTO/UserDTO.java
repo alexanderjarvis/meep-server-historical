@@ -17,6 +17,10 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class UserDTO {
 	
 	public Long id;
@@ -24,6 +28,12 @@ public class UserDTO {
 	@Email
 	@Required
 	public String email;
+	
+	@Required
+	public String password;
+	
+	
+	public String accessToken;
 	
 	@Required
     public String firstName;

@@ -1,10 +1,14 @@
 package controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import models.User;
 import models.UserConnection;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
+import play.mvc.Router;
 import DTO.UserDTO;
 import assemblers.UserAssembler;
 import assemblers.UserSummaryAssembler;
@@ -16,8 +20,8 @@ import assemblers.UserSummaryAssembler;
 public class Users extends Application {
 	
 	/**
-	 * Returns all users
-	 * TODO: this should only be available to admins.
+	 * Returns all users that the current authorised user is connected to
+	 * (not all users in the system).
 	 */
 	public static void index() {
 		User authUser = userAuth.getAuthroizedUser();
@@ -25,28 +29,32 @@ public class Users extends Application {
 	}
     
 	/**
-	 * Create
-	 * @param email
-	 * @param password
+	 * Creates a new user in the system.
+	 * 
+	 * @param userDTO
 	 */
     public static void create(@Valid UserDTO user) {
     	if (validation.hasErrors()) {
     		for (Error error : validation.errors()) {
     			Logger.debug(error.getKey() + " : " + error.message());
     		}
-			error(500, "Validation Errors");
+			error(400, "Validation Errors");
 		}
     	
+    	// Check for existing users
+    	User checkUser = User.find("byEmail", user.email).first();
+		if (checkUser != null) {
+			error(400, "Email already exists");
+		}
+		checkUser = User.find("byServiceName", user.serviceName).first();
+		if (checkUser != null) {
+			error(400, "ServiceName already exists");
+		}
     	
-    	
-    	
-//    	user.save();
-//    	Map<String, Object> map = new HashMap<String, Object>();
-//    	map.put("id", user.id);
-//    	String url = Router.reverse("Users.show", map).url;
-//    	Logger.debug("Entity Created - Redirect URL: %s", url);
-//    	redirect(url);
-    	//TODO: return 201 ?
+    	// Create user
+		UserDTO newUserDTO = UserAssembler.createUser(user);
+		response.status = 201;
+		renderJSON(newUserDTO);
     }
     
     /**
@@ -82,6 +90,8 @@ public class Users extends Application {
     
     /**
      * Update
+     * TODO: revisit
+     * 
      * @param user
      */
     public static void update(@Valid User user) {

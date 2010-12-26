@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="views/**" kind="src" path="app"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="crud"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/alex/bin/play-1.1/framework/play.jar"/>
 	<classpathentry kind="lib" path="/Users/alex/bin/play-1.1/framework/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>

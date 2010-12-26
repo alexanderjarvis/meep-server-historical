@@ -27,21 +27,6 @@
 			<location>/Users/alex/bin/play-1.0.3.2/modules/crud/app</location>
 		</link>
 		<link>
-			<name>secure</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/secure/app</location>
-		</link>
-		<link>
-			<name>stax-1.0.1</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/stax-1.0.1/app</location>
-		</link>
-		<link>
-			<name>conf/crud</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/crud/conf</location>
-		</link>
-		<link>
 			<name>conf/stax-1.0.1</name>
 			<type>2</type>
 			<location>/Users/alex/bin/play-1.0.3.2/modules/stax-1.0.1/conf</location>
