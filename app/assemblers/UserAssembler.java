@@ -1,7 +1,13 @@
 package assemblers;
 
+import java.lang.reflect.Field;
+
+import assemblers.helpers.ModelMerger;
+
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
+import play.Logger;
+import sun.reflect.Reflection;
 import models.User;
 import DTO.UserDTO;
 
@@ -45,6 +51,17 @@ public class UserAssembler {
 		
 		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
 		user.accessToken = AccessTokenGenerator.generate();
+		
+		user.save();
+		
+		return writeDTO(user, true);
+	}
+	
+	public static UserDTO updateUser(UserDTO userDTO) {
+		
+		User user = User.findById(userDTO.id);
+		
+		ModelMerger.merge(userDTO, user);
 		
 		user.save();
 		

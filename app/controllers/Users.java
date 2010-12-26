@@ -94,13 +94,25 @@ public class Users extends Application {
      * 
      * @param user
      */
-    public static void update(@Valid User user) {
-    	if (validation.hasErrors()) {
-			render("@create", user);
-		}
-    	user = user.merge();
-    	user.save();
-		index();
+    public static void update(Long id, @Valid UserDTO user) {
+    	
+    	// Only able to update the authorised user
+    	if (id.equals(userAuth.getAuthroizedUser().id)) {
+    		
+	    	if (validation.hasErrors()) {
+	    		for (Error error : validation.errors()) {
+	    			Logger.debug(error.getKey() + " : " + error.message());
+	    		}
+				error(400, "Validation Errors");
+			}
+	    	
+	    	// Update user
+	    	user.id = id;
+	    	renderJSON(UserAssembler.updateUser(user));
+	    	
+    	} else {
+    		badRequest();
+    	}
     }
 
 }

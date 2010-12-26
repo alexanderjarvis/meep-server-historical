@@ -144,4 +144,32 @@ public class UsersTest extends FunctionalTest {
 		assertIsNotFound(response);
 		assertContentType("application/json", response);
 	}
+	
+	@Test
+	public void testUpdateAuthUser() {
+		
+		String data = "user.email="
+						+ user1.email
+						+ "&user.password=password"
+						+ "&user.firstName=alex";
+		
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/json", "");
+
+		assertStatus(200, response);
+		assertTrue("FirstName has not been updated", response.out.toString().contains("\"firstName\":\"alex\""));
+	}
+	
+//	@Test
+//	public void testUpdateNonAuthUser() {
+//		response = POST(BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery
+//				+ "user.email=" + user1.email
+//				+ "&user.password=password"
+//				+ "&user.firstName=alex"
+//				+ "&user.lastName=hello"
+//				+ "&user.serviceName=alex"
+//				+ "&user.telephone=123");
+//		
+//		assertStatus(400, response);
+//	
+//	}
 }

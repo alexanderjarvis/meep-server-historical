@@ -26,19 +26,14 @@ public class UserDTO {
 	public Long id;
 	
 	@Email
-	@Required
 	public String email;
 	
-	@Required
 	public String password;
-	
 	
 	public String accessToken;
 	
-	@Required
     public String firstName;
 	
-	@Required
     public String lastName;
 	
 	public String serviceName;
