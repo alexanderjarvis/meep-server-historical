@@ -63,6 +63,8 @@ public class UserAssembler {
 		
 		ModelMerger.merge(userDTO, user);
 		
+		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
+		
 		user.save();
 		
 		return writeDTO(user, true);

@@ -7,6 +7,9 @@ import junit.framework.Assert;
 import models.User;
 import models.helpers.UserConnectionHelper;
 
+import oauth2.Security;
+import oauth2.functional.AccessTokenTest;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,8 +89,6 @@ public class UsersTest extends FunctionalTest {
 	public void testCreateErrorExistingEmail() {
 		testCreate();
 		
-		assertStatus(201, response);
-		
 		response = POST(BASE_CONTROLLER_PATH
 				+ "?user.email=axj7@aber.ac.uk"
 				+ "&user.password=password"
@@ -103,8 +104,6 @@ public class UsersTest extends FunctionalTest {
 	@Test
 	public void testCreateErrorExistingServiceName() {
 		testCreate();
-		
-		assertStatus(201, response);
 		
 		response = POST(BASE_CONTROLLER_PATH
 				+ "?user.email=axj77@aber.ac.uk"
@@ -147,29 +146,45 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testUpdateAuthUser() {
-		
+		String newPassword = "newpassword";
 		String data = "user.email="
 						+ user1.email
-						+ "&user.password=password"
+						+ "&user.password=" + newPassword
 						+ "&user.firstName=alex";
 		
-		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/json", "");
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/x-www-form-urlencoded", "");
 
 		assertStatus(200, response);
 		assertTrue("FirstName has not been updated", response.out.toString().contains("\"firstName\":\"alex\""));
+		
+		// Verify that the old password can no longer be used to authenticate the user
+		AccessTokenTest accessTokenTest = new AccessTokenTest();
+		accessTokenTest.requestAccessToken();
+		assertStatus(400, accessTokenTest.response);
 	}
 	
-//	@Test
-//	public void testUpdateNonAuthUser() {
-//		response = POST(BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery
-//				+ "user.email=" + user1.email
-//				+ "&user.password=password"
-//				+ "&user.firstName=alex"
-//				+ "&user.lastName=hello"
-//				+ "&user.serviceName=alex"
-//				+ "&user.telephone=123");
-//		
-//		assertStatus(400, response);
-//	
-//	}
+	@Test
+	public void testUpdateNonAuthUser() {
+		String data = "user.email=" + user1.email
+						+ "&user.password=password"
+						+ "&user.firstName=alex"
+						+ "&user.lastName=hello"
+						+ "&user.serviceName=alex"
+						+ "&user.telephone=123";
+		
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery + data, "application/x-www-form-urlencoded", "");
+		
+		assertStatus(400, response);
+	}
+	
+	//TODO: updates for fields where there are clashes
+	
+	@Test
+	public void testUpdateClashes() {
+		String data = "user.email=" + user2.email;
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/x-www-form-urlencoded", "");
+		
+		assertStatus(400, response);
+		assertContentEquals("Email already exists", response);
+	}
 }

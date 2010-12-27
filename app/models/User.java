@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.Transient;
+import javax.persistence.Column;
 
 import play.data.validation.Email;
 import play.data.validation.Match;
@@ -19,9 +20,10 @@ import play.db.jpa.JPA;
 
 @Entity
 public class User extends Item {
-	//TODO: make unique
+	
 	@Email
 	@Required
+	@Column(unique=true) 
 	public String email;
 	
 	public String passwordHash;
@@ -34,6 +36,7 @@ public class User extends Item {
 	@Required
     public String lastName;
 	
+	@Column(unique=true)
 	public String serviceName;
 	
 	public String telephone;

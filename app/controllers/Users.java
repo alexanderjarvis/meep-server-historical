@@ -106,6 +106,12 @@ public class Users extends Application {
 				error(400, "Validation Errors");
 			}
 	    	
+	    	// Check for existing emails
+	    	User checkUser = User.find("byEmail", user.email).first();
+			if (checkUser != null && !id.equals(checkUser.id)) {
+				error(400, "Email already exists");
+			}
+	    	
 	    	// Update user
 	    	user.id = id;
 	    	renderJSON(UserAssembler.updateUser(user));

@@ -14,10 +14,10 @@ import play.test.FunctionalTest;
 
 public class AccessTokenTest extends FunctionalTest {
 	
-	private Response response;
-	private String access_token;
+	public Response response;
+	public String access_token;
 	
-	private void requestAccessToken() {
+	public void requestAccessToken() {
 		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com&client_secret=password");
 		access_token = response.out.toString();
 	}
