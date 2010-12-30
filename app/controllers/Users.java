@@ -41,20 +41,24 @@ public class Users extends Application {
 			error(400, "Validation Errors");
 		}
     	
-    	// Check for existing users
-    	User checkUser = User.find("byEmail", user.email).first();
-		if (checkUser != null) {
-			error(400, "Email already exists");
-		}
-		checkUser = User.find("byServiceName", user.serviceName).first();
-		if (checkUser != null) {
-			error(400, "ServiceName already exists");
-		}
-    	
-    	// Create user
-		UserDTO newUserDTO = UserAssembler.createUser(user);
-		response.status = 201;
-		renderJSON(newUserDTO);
+    	if (user != null) {
+	    	// Check for existing users
+	    	User checkUser = User.find("byEmail", user.email).first();
+			if (checkUser != null) {
+				error(400, "Email already exists");
+			}
+			checkUser = User.find("byServiceName", user.serviceName).first();
+			if (checkUser != null) {
+				error(400, "ServiceName already exists");
+			}
+	    	
+	    	// Create user
+			UserDTO newUserDTO = UserAssembler.createUser(user);
+			response.status = 201;
+			renderJSON(newUserDTO);
+    	} else {
+    		error(500, "User is null");
+    	}
     }
     
     /**
