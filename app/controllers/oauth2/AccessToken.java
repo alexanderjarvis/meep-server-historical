@@ -4,9 +4,6 @@ import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
-
-import org.apache.commons.lang.RandomStringUtils;
-
 import play.cache.Cache;
 import play.data.validation.Required;
 import controllers.NoCookieFilter;

@@ -6,7 +6,6 @@ import oauth2.OAuth2Constants;
 import play.Play;
 import play.mvc.Before;
 import play.mvc.Router;
-import play.mvc.Router.ActionDefinition;
 import controllers.NoCookieFilter;
 
 /**

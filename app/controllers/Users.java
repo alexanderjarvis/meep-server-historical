@@ -1,21 +1,17 @@
 package controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import models.User;
 import models.UserConnection;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
-import play.mvc.Router;
 import DTO.UserDTO;
 import assemblers.UserAssembler;
 import assemblers.UserSummaryAssembler;
 
 /**
  * 
- * @author alex
+ * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class Users extends Application {
 	

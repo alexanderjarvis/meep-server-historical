@@ -170,8 +170,6 @@ public class UsersTest extends FunctionalTest {
 		assertStatus(400, response);
 	}
 	
-	//TODO: updates for fields where there are clashes
-	
 	@Test
 	public void testUpdateClashes() {
 		String data = "user.email=" + user2.email;
