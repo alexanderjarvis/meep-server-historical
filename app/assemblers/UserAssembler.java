@@ -1,15 +1,10 @@
 package assemblers;
 
-import java.lang.reflect.Field;
-
-import assemblers.helpers.ModelMerger;
-
+import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
-import play.Logger;
-import sun.reflect.Reflection;
-import models.User;
 import DTO.UserDTO;
+import assemblers.helpers.ModelMerger;
 
 /**
  * 
@@ -17,10 +12,21 @@ import DTO.UserDTO;
  */
 public class UserAssembler {
 	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static UserDTO writeDTO(User user) {
 		return writeDTO(user, false);
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @param authorisedUser
+	 * @return
+	 */
 	public static UserDTO writeDTO(User user, boolean authorisedUser) {
 		
 		UserDTO userDTO = new UserDTO();
@@ -39,6 +45,11 @@ public class UserAssembler {
 		return userDTO;
 	}
 	
+	/**
+	 * 
+	 * @param userDTO
+	 * @return
+	 */
 	public static UserDTO createUser(UserDTO userDTO) {
 		
 		User user = new User();
@@ -57,13 +68,20 @@ public class UserAssembler {
 		return writeDTO(user, true);
 	}
 	
+	/**
+	 * 
+	 * @param userDTO
+	 * @return
+	 */
 	public static UserDTO updateUser(UserDTO userDTO) {
 		
 		User user = User.findById(userDTO.id);
 		
 		ModelMerger.merge(userDTO, user);
 		
-		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
+		if (userDTO.password != null) {
+			user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
+		}
 		
 		user.save();
 		
