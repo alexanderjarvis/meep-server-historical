@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import play.Logger;
-import play.mvc.Http.Request;
+import play.cache.Cache;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -25,7 +25,12 @@ public class AccessTokenTest extends FunctionalTest {
 	@Before
 	public void loadFixtures() {
 		Fixtures.load("data.yml");
-		
+	}
+	
+	@After
+	public void tearDown() {
+		Fixtures.deleteAll();
+		Cache.clear();
 	}
 	
 	@Test

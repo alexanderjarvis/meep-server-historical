@@ -1,13 +1,7 @@
 package functional;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import junit.framework.Assert;
 import models.User;
 import models.helpers.UserConnectionHelper;
-
-import oauth2.Security;
 import oauth2.functional.AccessTokenTest;
 
 import org.junit.After;
@@ -17,7 +11,6 @@ import org.junit.Test;
 import play.Logger;
 import play.cache.Cache;
 import play.mvc.Http;
-import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 
