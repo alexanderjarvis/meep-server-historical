@@ -6,7 +6,9 @@ import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
 import play.cache.Cache;
 import play.data.validation.Required;
+import play.mvc.With;
 import controllers.NoCookieFilter;
+import controllers.RequestTypeFilter;
 
 /**
  * 
@@ -15,6 +17,8 @@ import controllers.NoCookieFilter;
  *
  * @author Alex Jarvis axj7@aber.ac.uk
  */
+
+@With(RequestTypeFilter.class)
 public class AccessToken extends NoCookieFilter {
 	
     public static void auth(@Required String grant_type, 

@@ -43,6 +43,7 @@ public class Users extends Application {
 			if (checkUser != null) {
 				error(400, "Email already exists");
 			}
+			//TODO: remove service name
 			checkUser = User.find("byServiceName", user.serviceName).first();
 			if (checkUser != null) {
 				error(400, "ServiceName already exists");
