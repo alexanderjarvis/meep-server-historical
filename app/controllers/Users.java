@@ -67,21 +67,46 @@ public class Users extends Application {
      * 
      * @param id
      */
-    public static void show(Long id) {
+    public static void show(String id) {
     	
     	User authUser = userAuth.getAuthroizedUser();
     	
-    	if (id.equals(authUser.id)) {
-    		renderJSON(UserAssembler.writeDTO(authUser, true));
+		if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
+			renderJSON(UserAssembler.writeDTO(authUser, true));
     	} else {
-    		// is the user connected
-    		User user = User.findById(id);
+    		// get the user, first by ID and then by email
+    		boolean emailID = true;
+    		try {
+    			Long longID = new Long(id);
+    			emailID = false;
+    		} catch (NumberFormatException e) {
+    			Logger.debug("User id is not a number, maybe an email");
+    		}
+    		
+    		User user = null;
+    		if (emailID) {
+    			user = User.find("byEmail", id).first();
+    		} else {
+    			user = User.findById(new Long(id));
+    		}
+    		
+    		// is the user connected?
     		if (user != null) {
-		    	for (UserConnection connection : authUser.connections) {
-		    		if (id.equals(connection.userConnection.user.id)) {
-		    			renderJSON(UserAssembler.writeDTO(user, false));
-		    		}
-		    	}
+		    	
+	    		if (emailID) {
+	    			for (UserConnection connection : authUser.connections) {
+	    				if (id.equals(connection.userConnection.user.email)) {
+			    			renderJSON(UserAssembler.writeDTO(user, false));
+			    		}
+	    			}
+	    		} else {
+	    			for (UserConnection connection : authUser.connections) {
+	    				if (id.equals(connection.userConnection.user.id.toString())) {
+			    			renderJSON(UserAssembler.writeDTO(user, false));
+			    		}
+	    			}
+	    		}
+		    	
 		    	error(400, "User not connected");
     		} else {
     			error(404, "User does not exist");

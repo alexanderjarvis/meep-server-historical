@@ -138,6 +138,26 @@ public class UsersTest extends FunctionalTest {
 	}
 	
 	@Test
+	public void testShowAuthUserWithEmail() {
+		response = GET(BASE_CONTROLLER_PATH + "/" + user1.email + baseQuery);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		
+		// Contains the connections to other users
+		assertTrue(response.out.toString().contains("connections"));
+	}
+	
+	@Test
+	public void testShowUserWithEmail() {
+		response = GET(BASE_CONTROLLER_PATH + "/" + user2.email + baseQuery);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		
+		// Does not contain the connections to other users
+		assertFalse(response.out.toString().contains("connections"));
+	}
+	
+	@Test
 	public void testUpdateAuthUser() {
 		String newPassword = "newpassword";
 		String data = "user.email="

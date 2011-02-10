@@ -22,11 +22,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>crud</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/crud/app</location>
-		</link>
-		<link>
 			<name>conf/stax-1.0.1</name>
 			<type>2</type>
 			<location>/Users/alex/bin/play-1.0.3.2/modules/stax-1.0.1/conf</location>
