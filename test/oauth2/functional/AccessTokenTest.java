@@ -79,6 +79,17 @@ public class AccessTokenTest extends FunctionalTest {
 		assertStatus(200, response);
 	}
 	
+	@Test
+	public void testDestroyToken() {
+		requestAccessToken();
+		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		assertStatus(200, response);
+		
+		// Second time will show a bad request
+		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		assertStatus(400, response);
+	}
+	
 	@After
 	public void log() {
 		if (response != null) {
