@@ -17,6 +17,7 @@ GET     /public/                                staticDir:public
 #
 GET		/oauth2/?								oauth2.AccessToken.auth
 POST	/oauth2/?								oauth2.AccessToken.auth
+DELETE	/oauth2/?								oauth2.AccessTokenDestroy.destroy
 
 # 
 # Application specific routes
