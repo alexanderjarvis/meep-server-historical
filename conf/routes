@@ -24,8 +24,8 @@ POST	/oauth2/?								oauth2.AccessToken.auth
 
 GET		/users/?								Users.index
 POST	/users/?								Users.create
-GET		/users/{id} 							Users.show
-PUT 	/users/{id}								Users.update
+GET		/users/{id}/? 							Users.show
+PUT 	/users/{id}/?							Users.update
 
 
 
