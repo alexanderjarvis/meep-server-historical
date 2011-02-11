@@ -35,7 +35,7 @@ public class UserAssembler {
 		userDTO.email = user.email;
 		userDTO.firstName = user.firstName;
 		userDTO.lastName = user.lastName;
-		userDTO.telephone = user.telephone;
+		userDTO.mobileNumber = user.mobileNumber;
 		if (authorisedUser) {
 			userDTO.accessToken = user.accessToken;
 			userDTO.connections = UserSummaryAssembler.writeDTOs(user);
@@ -56,7 +56,7 @@ public class UserAssembler {
 		user.email = userDTO.email;
 		user.firstName = userDTO.firstName;
 		user.lastName = userDTO.lastName;
-		user.telephone = userDTO.telephone;
+		user.mobileNumber = userDTO.mobileNumber;
 		
 		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
 		user.accessToken = AccessTokenGenerator.generate();

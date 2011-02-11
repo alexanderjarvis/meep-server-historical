@@ -13,18 +13,18 @@ public class UserDTO implements Serializable {
 	
 	public Long id;
 	
+	public String accessToken;
+	
 	@Email
 	public String email;
 	
 	public String password;
 	
-	public String accessToken;
-	
     public String firstName;
 	
     public String lastName;
 	
-	public String telephone;
+	public String mobileNumber;
     
     public List<UserSummaryDTO> connections;
     

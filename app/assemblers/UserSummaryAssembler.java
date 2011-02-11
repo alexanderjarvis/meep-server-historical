@@ -33,7 +33,7 @@ public class UserSummaryAssembler {
 		userSummaryDTO.email = user.email;
 		userSummaryDTO.firstName = user.firstName;
 		userSummaryDTO.lastName = user.lastName;
-		userSummaryDTO.telephone = user.telephone;
+		userSummaryDTO.mobileNumber = user.mobileNumber;
 		
 		return userSummaryDTO;
 	}

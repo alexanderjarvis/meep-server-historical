@@ -36,7 +36,7 @@ public class User extends Item {
 	@Required
     public String lastName;
 	
-	public String telephone;
+	public String mobileNumber;
     
     @OneToMany(mappedBy="owner", cascade={CascadeType.ALL}, orphanRemoval=true)
     public List<Meeting> meetingsCreated;
