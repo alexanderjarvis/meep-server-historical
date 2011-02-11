@@ -16,8 +16,6 @@ public class UserSummaryDTO {
 	
     public String lastName;
 	
-	public String serviceName;
-	
 	public String telephone;
 
 }

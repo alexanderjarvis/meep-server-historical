@@ -24,8 +24,6 @@ public class UserDTO implements Serializable {
 	
     public String lastName;
 	
-	public String serviceName;
-	
 	public String telephone;
     
     public List<UserSummaryDTO> connections;
