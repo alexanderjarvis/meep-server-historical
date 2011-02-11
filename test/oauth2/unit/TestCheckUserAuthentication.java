@@ -42,7 +42,7 @@ public class TestCheckUserAuthentication extends UnitTest {
 	@Test
 	public void testReturnsUser() {
 		testValidCredentials();
-		User user = checkUserAuthentication.getAuthroizedUser();
+		User user = checkUserAuthentication.getAuthroisedUser();
 		assertNotNull(user);
 		assertEquals(user.email, TEST_CLIENT_ID);
 	}

@@ -1,8 +1,9 @@
 package controllers.oauth2;
 
+import models.User;
 import oauth2.OAuth2Constants;
 import play.cache.Cache;
-import models.User;
+import DTO.UserDTO;
 
 /**
  * 
@@ -11,12 +12,11 @@ import models.User;
 public class AccessTokenDestroy extends AccessTokenFilter {
 	
 	public static void destroy() {
-		User authUser = userAuth.getAuthroizedUser();
-		User user = User.findById(authUser.id);
-		if (authUser != null && user != null) {
-			Cache.delete(OAuth2Constants.CACHE_PREFIX + authUser.accessToken);
-			user.accessToken = "";
-			user.save();
+		User authorisedUser = userAuth.getAuthroisedUser();
+		if (authorisedUser != null) {
+			Cache.delete(OAuth2Constants.CACHE_PREFIX + authorisedUser.accessToken);
+			authorisedUser.accessToken = "";
+			authorisedUser.save();
 		} else {
 			badRequest();
 		}

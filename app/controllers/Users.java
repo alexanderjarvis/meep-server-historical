@@ -20,7 +20,7 @@ public class Users extends Application {
 	 * (not all users in the system).
 	 */
 	public static void index() {
-		User authUser = userAuth.getAuthroizedUser();
+		User authUser = userAuth.getAuthroisedUser();
 		renderJSON(UserSummaryAssembler.writeDTOs(authUser));
 	}
     
@@ -69,7 +69,7 @@ public class Users extends Application {
      */
     public static void show(String id) {
     	
-    	User authUser = userAuth.getAuthroizedUser();
+    	User authUser = userAuth.getAuthroisedUser();
     	
 		if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
 			renderJSON(UserAssembler.writeDTO(authUser, true));
@@ -116,14 +116,14 @@ public class Users extends Application {
     
     /**
      * Update
-     * TODO: revisit
+     * TODO: revisit to enable updating via email id.
      * 
      * @param user
      */
     public static void update(Long id, @Valid UserDTO user) {
     	
     	// Only able to update the authorised user
-    	if (id.equals(userAuth.getAuthroizedUser().id)) {
+    	if (id.equals(userAuth.getAuthroisedUser().id)) {
     		
 	    	if (validation.hasErrors()) {
 	    		for (Error error : validation.errors()) {

@@ -36,8 +36,7 @@ public class AccessToken extends NoCookieFilter {
     			// if correct, generate access token
         		String accessToken = AccessTokenGenerator.generate();
         		
-        		User user = checkUserAuthentication.getAuthroizedUser();
-        		Cache.set(OAuth2Constants.CACHE_PREFIX + accessToken, user, OAuth2Constants.CACHE_TIME);
+        		User user = checkUserAuthentication.getAuthroisedUser();
         		
         		user.accessToken = accessToken;
         		user.save();

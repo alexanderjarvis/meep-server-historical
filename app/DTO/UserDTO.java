@@ -1,5 +1,6 @@
 package DTO;
 
+import java.io.Serializable;
 import java.util.List;
 
 import play.data.validation.Email;
@@ -8,7 +9,7 @@ import play.data.validation.Email;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 	
 	public Long id;
 	
