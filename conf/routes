@@ -27,6 +27,7 @@ GET		/users/?								Users.index
 POST	/users/?								Users.create
 GET		/users/{id}/? 							Users.show
 PUT 	/users/{id}/?							Users.update
+POST	/users/{id}/add/?						Users.addUserConnection
 
 
 

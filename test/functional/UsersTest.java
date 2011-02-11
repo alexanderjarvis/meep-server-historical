@@ -198,4 +198,17 @@ public class UsersTest extends FunctionalTest {
 		assertStatus(400, response);
 		assertContentEquals("Email already exists", response);
 	}
+	
+	@Test
+	public void testAddUserConnection() {
+		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + baseQuery);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+	}
+	
+	@Test
+	public void testAddUserConnectionWithAuthUser() {
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/add/" + baseQuery);
+		assertStatus(400, response);
+	}
 }

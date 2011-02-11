@@ -2,6 +2,7 @@ package controllers;
 
 import models.User;
 import models.UserConnection;
+import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
@@ -144,6 +145,44 @@ public class Users extends Application {
 	    	
     	} else {
     		badRequest();
+    	}
+    }
+    
+    /**
+     * 
+     * @param id
+     */
+    public static void addUserConnection(String id) {
+    	
+    	User authUser = userAuth.getAuthroisedUser();
+    	
+    	// If the id is the authorised user (trying to add themselves)
+    	if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
+    		badRequest();
+    	} else {
+    		
+    		// determine the ID type
+    		boolean emailID = true;
+    		try {
+    			Long longID = new Long(id);
+    			emailID = false;
+    		} catch (NumberFormatException e) {
+    			Logger.debug("User id is not a number, maybe an email");
+    		}
+    		// get the User
+    		User otherUser = null;
+    		if (emailID) {
+    			otherUser = User.find("byEmail", id).first();
+    		} else {
+    			otherUser = User.findById(new Long(id));
+    		}
+    		
+    		// Create the UserConnection
+    		if (otherUser != null) {
+    			UserConnectionHelper.createUserConnection(authUser, otherUser);
+    			renderJSON("");
+    		}
+    		
     	}
     }
 
