@@ -36,9 +36,6 @@ public class User extends Item {
 	@Required
     public String lastName;
 	
-	@Column(unique=true)
-	public String serviceName;
-	
 	public String telephone;
     
     @OneToMany(mappedBy="owner", cascade={CascadeType.ALL}, orphanRemoval=true)

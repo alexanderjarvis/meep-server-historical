@@ -96,22 +96,6 @@ public class UsersTest extends FunctionalTest {
 	}
 	
 	@Test
-	public void testCreateErrorExistingServiceName() {
-		testCreate();
-		
-		response = POST(BASE_CONTROLLER_PATH
-				+ "?user.email=axj77@aber.ac.uk"
-				+ "&user.password=password"
-				+ "&user.firstName=alex"
-				+ "&user.lastName=hello"
-				+ "&user.serviceName=alex"
-				+ "&user.telephone=123");
-		
-		assertStatus(400, response);
-		assertContentEquals("ServiceName already exists", response);
-	}
-	
-	@Test
 	public void testShowAuthUser() {
 		response = GET(BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery);
 		assertIsOk(response);
