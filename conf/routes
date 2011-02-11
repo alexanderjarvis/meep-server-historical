@@ -29,6 +29,8 @@ GET		/users/{id}/? 							Users.show
 PUT 	/users/{id}/?							Users.update
 POST	/users/{id}/add/?						Users.addUserConnection
 
+GET		/search/users/{search}					Users.searchUser
+
 
 
 

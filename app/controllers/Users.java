@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import models.User;
 import models.UserConnection;
 import models.helpers.UserConnectionHelper;
@@ -7,6 +10,7 @@ import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
 import DTO.UserDTO;
+import DTO.UserSummaryDTO;
 import assemblers.UserAssembler;
 import assemblers.UserSummaryAssembler;
 
@@ -184,6 +188,25 @@ public class Users extends Application {
     		}
     		
     	}
+    }
+    
+    /**
+     * For now, just search by firstname
+     * @param search
+     */
+    public static void searchUser(String search) {
+    	List<User> userResults = User.find("byFirstName", search).fetch();
+    	
+    	if (userResults != null && userResults.size() > 0) {
+    		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();
+    		for (User user : userResults) {
+    			userSummaryList.add(UserSummaryAssembler.writeDTO(user));
+    		}
+    		renderJSON(userSummaryList);
+    	} else {
+    		error(404, "Not found");
+    	}
+    
     }
 
 }

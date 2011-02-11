@@ -52,6 +52,7 @@ public class UsersTest extends FunctionalTest {
 	@After
 	public void log() {
 		if (response != null) {
+			Logger.debug("Response Status: " + response.status.toString());
 			Logger.debug("Response: \n\n" + response.out.toString());
 		}
 	}
@@ -210,5 +211,17 @@ public class UsersTest extends FunctionalTest {
 	public void testAddUserConnectionWithAuthUser() {
 		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/add/" + baseQuery);
 		assertStatus(400, response);
+	}
+	
+	@Test
+	public void testSearchUser() {
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Bob" + baseQuery);
+		assertIsOk(response);
+	}
+	
+	@Test
+	public void testSearchUserNotExist() {
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Alex" + baseQuery);
+		assertStatus(404, response);
 	}
 }
