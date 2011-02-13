@@ -34,7 +34,7 @@ public class UserConnectionHelper {
 		
 		// Create the user connection request
 		user1.userConnectionRequestsTo.add(user2);
-		user2.userConnectionRequestsFrom.add(user1);
+		user1.save();
 		return true;
 	}
 	

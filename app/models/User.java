@@ -1,19 +1,16 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
-import javax.persistence.Transient;
-import javax.persistence.Column;
 
 import play.data.validation.Email;
-import play.data.validation.Match;
-import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -47,10 +44,10 @@ public class User extends Item {
     @OneToMany(mappedBy="user", cascade={CascadeType.REMOVE}, orphanRemoval=true)
     public List<UserConnection> connections;
     
-    @OneToMany
+    @ManyToMany
     public List<User> userConnectionRequestsTo;
     
-    @OneToMany
+    @ManyToMany(mappedBy="userConnectionRequestsTo")
     public List<User> userConnectionRequestsFrom;
     
     public User() {
@@ -67,6 +64,13 @@ public class User extends Item {
 		List<UserConnection> connections = query.getResultList();
 		for (UserConnection userConnection : connections) {
 			userConnection.delete();
+		}
+		
+		
+		// Remove userConnectionRequest links to this user
+		for (User user : userConnectionRequestsFrom) {
+			user.userConnectionRequestsTo.remove(this);
+			user.save();
 		}
 		
 		return super.delete();
