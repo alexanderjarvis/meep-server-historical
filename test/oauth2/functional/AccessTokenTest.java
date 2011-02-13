@@ -68,7 +68,7 @@ public class AccessTokenTest extends FunctionalTest {
 	
 	@Test
     public void testBadRequest() {
-        response = GET("/");
+        response = GET("/users/");
         assertStatus(400, response);
     }
 	
@@ -93,6 +93,7 @@ public class AccessTokenTest extends FunctionalTest {
 	@After
 	public void log() {
 		if (response != null) {
+			Logger.debug("Response Status: " + response.status.toString());
 			Logger.debug("Response: " + response.out.toString());
 		}
 	}

@@ -9,16 +9,19 @@ import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
+import play.mvc.With;
 import DTO.UserDTO;
 import DTO.UserSummaryDTO;
 import assemblers.UserAssembler;
 import assemblers.UserSummaryAssembler;
+import controllers.oauth2.AccessTokenFilter;
 
 /**
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class Users extends Application {
+@With(JSONRequestTypeFilter.class)
+public class Users extends AccessTokenFilter {
 	
 	/**
 	 * Returns all users that the current authorised user is connected to

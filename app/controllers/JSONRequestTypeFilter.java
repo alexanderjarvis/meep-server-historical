@@ -7,7 +7,7 @@ import play.mvc.Controller;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class RequestTypeFilter extends Controller {
+public class JSONRequestTypeFilter extends Controller {
 	
 	/**
 	 * Sets the default format of all requests to accept JSON

@@ -3,12 +3,10 @@ package controllers.oauth2;
 import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.CheckUserAuthentication;
-import oauth2.OAuth2Constants;
-import play.cache.Cache;
 import play.data.validation.Required;
 import play.mvc.With;
+import controllers.JSONRequestTypeFilter;
 import controllers.NoCookieFilter;
-import controllers.RequestTypeFilter;
 
 /**
  * 
@@ -18,7 +16,7 @@ import controllers.RequestTypeFilter;
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 
-@With(RequestTypeFilter.class)
+@With(JSONRequestTypeFilter.class)
 public class AccessToken extends NoCookieFilter {
 	
 	/**

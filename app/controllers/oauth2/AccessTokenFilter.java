@@ -25,7 +25,7 @@ public class AccessTokenFilter extends NoCookieFilter {
 		// Check that HTTPS is being used.
 		final boolean sslRequired = Boolean.parseBoolean(Play.configuration.getProperty(OAuth2Constants.SSL_REQUIRED, Boolean.TRUE.toString()));
 		if (sslRequired && !request.secure) {
-			error(500, "not secure");
+			error(400, "HTTPS required");
 		}
 	}
 	
@@ -41,13 +41,13 @@ public class AccessTokenFilter extends NoCookieFilter {
 			// Check token exists in system
 			userAuth = new CheckUserAuthentication();
 			if (!userAuth.validToken(params.get(OAuth2Constants.PARAM_OAUTH_TOKEN))) {
-				badRequest();
+				error(401, "Unauthorized");
 			}
 		
 		// Resources that do not require an access token
-		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth").url) &&
-				(!request.path.equals(Router.reverse("Users.create").url)) && !request.method.equals(Router.reverse("Users.create").method)) {
-			badRequest();
+		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth").url) ||
+				!request.path.equals(Router.reverse("Users.create").url) || !request.method.equals(Router.reverse("Users.create").method)) {
+			error(401, "Unauthorized");
 		}
 	}
 	
