@@ -20,6 +20,9 @@ public class NoCookieFilter extends Controller {
 	/** An empty cookie map to replace any cookies in the response. */
 	private static final Map<String, Http.Cookie> cookies = new HashMap<String, Http.Cookie>(0);
 	
+	/**
+	 * 
+	 */
     @Finally
     public static void removeCookies() {
     	boolean cookiesEnabled = Boolean.parseBoolean(Play.configuration.getProperty("cookies.enabled"));

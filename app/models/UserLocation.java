@@ -1,10 +1,10 @@
 package models;
 
-import play.*;
-import play.db.jpa.*;
+import java.util.Date;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+
+import play.db.jpa.Model;
 
 @Entity
 public class UserLocation extends Model {

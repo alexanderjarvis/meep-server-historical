@@ -11,6 +11,9 @@ import DTO.UserDTO;
  */
 public class AccessTokenDestroy extends AccessTokenFilter {
 	
+	/**
+	 * 
+	 */
 	public static void destroy() {
 		User authorisedUser = userAuth.getAuthroisedUser();
 		if (authorisedUser != null) {

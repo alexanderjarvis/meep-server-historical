@@ -166,6 +166,10 @@ public class Users extends Application {
     	badRequest();
     }
     
+    /**
+     * 
+     * @param id
+     */
     public static void acceptUserRequest(String id) {
     	User authUser = userAuth.getAuthroisedUser();
     	User otherUser = getNonAuthorisedUser(id);
@@ -179,6 +183,10 @@ public class Users extends Application {
     	badRequest();
     }
     
+    /**
+     * 
+     * @param id
+     */
     public static void declineUserRequest(String id) {
     	User authUser = userAuth.getAuthroisedUser();
     	User otherUser = getNonAuthorisedUser(id);

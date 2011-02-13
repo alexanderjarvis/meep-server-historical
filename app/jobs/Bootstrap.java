@@ -5,6 +5,10 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 @OnApplicationStart
 public class Bootstrap extends Job {
     public void doJob() {

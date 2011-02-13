@@ -3,9 +3,6 @@ package controllers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import play.mvc.Http.Request;
-import play.mvc.Http.Response;
-
 import play.mvc.Controller;
 
 public class LongPoll extends Controller {

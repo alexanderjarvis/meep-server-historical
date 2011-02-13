@@ -15,6 +15,12 @@ import play.db.jpa.JPA;
  */
 public class UserConnectionHelper {
 	
+	/**
+	 * 
+	 * @param user1
+	 * @param user2
+	 * @return
+	 */
 	public static boolean createUserConnectionRequest(User user1, User user2) {
 		
 		// If the users are already connected, return false
@@ -38,6 +44,12 @@ public class UserConnectionHelper {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param user1
+	 * @param user2
+	 * @return
+	 */
 	public static boolean removeUserConnectionRequest(User user1, User user2) {
 		
 		if (user1.userConnectionRequestsTo.contains(user2) && user2.userConnectionRequestsFrom.contains(user1)) {
@@ -48,6 +60,11 @@ public class UserConnectionHelper {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param user1
+	 * @param user2
+	 */
 	public static void createUserConnection(User user1, User user2) {
 		UserConnection con1 = new UserConnection();
 		UserConnection con2 = new UserConnection();
@@ -63,6 +80,11 @@ public class UserConnectionHelper {
 		con2.save();
 	}
 	
+	/**
+	 * 
+	 * @param user1
+	 * @param user2
+	 */
 	public static void removeUserConnection(User user1, User user2) {
 		
 		// Get the UserConnection objects that represent user1 to user2
@@ -77,6 +99,11 @@ public class UserConnectionHelper {
 		con2.delete();
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static List<User> connectionsAsUsers(User user) {
 		List<User> connections = new ArrayList<User>();
 		for (UserConnection connection : user.connections) {
@@ -85,6 +112,12 @@ public class UserConnectionHelper {
 		return connections;
 	}
 	
+	/**
+	 * 
+	 * @param user1
+	 * @param user2
+	 * @return
+	 */
 	public static boolean isUsersConnected(User user1, User user2) {
 		for (UserConnection connection : user1.connections) {
 			if (connection.userConnection.user == user2) {

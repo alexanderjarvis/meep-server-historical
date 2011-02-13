@@ -21,6 +21,12 @@ import controllers.RequestTypeFilter;
 @With(RequestTypeFilter.class)
 public class AccessToken extends NoCookieFilter {
 	
+	/**
+	 * 
+	 * @param grant_type
+	 * @param client_id
+	 * @param client_secret
+	 */
     public static void auth(@Required String grant_type, 
     						@Required String client_id, 
     						@Required String client_secret) {

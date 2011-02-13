@@ -1,10 +1,11 @@
 package models;
 
-import play.*;
-import play.db.jpa.*;
+import java.util.Date;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.PreUpdate;
+
+import play.db.jpa.Model;
 
 /**
  * Enables auditing of model classes that extend this type by providing

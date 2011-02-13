@@ -13,6 +13,11 @@ import DTO.UserSummaryDTO;
  */
 public class UserSummaryAssembler {
 	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static List<UserSummaryDTO> writeDTOs(User user) {
 		
 		List<UserSummaryDTO> userSummaries = new ArrayList<UserSummaryDTO>();
@@ -25,6 +30,11 @@ public class UserSummaryAssembler {
 		return userSummaries;
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static UserSummaryDTO writeDTO(User user) {
 		
 		UserSummaryDTO userSummaryDTO = new UserSummaryDTO();

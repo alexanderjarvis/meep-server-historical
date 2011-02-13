@@ -15,11 +15,11 @@ import play.test.FunctionalTest;
 public class AccessTokenTest extends FunctionalTest {
 	
 	public Response response;
-	public String access_token;
+	public String accessToken;
 	
 	public void requestAccessToken() {
 		response = POST("/oauth2/?grant_type=password&client_id=bob@gmail.com&client_secret=password");
-		access_token = response.out.toString();
+		accessToken = response.out.toString();
 	}
 	
 	@Before
@@ -42,15 +42,15 @@ public class AccessTokenTest extends FunctionalTest {
 	@Test
 	public void testResponseKeyLength() {
 		requestAccessToken();
-		assertEquals(32, access_token.length());
+		assertEquals(32, accessToken.length());
 	}
 	
 	@Test
 	public void testKeyIsRandom() {
 		requestAccessToken();
-		String key1 = access_token;
+		String key1 = accessToken;
 		requestAccessToken();
-		String key2 = access_token;
+		String key2 = accessToken;
 		assertNotSame(key1, key2);
 	}
 	
@@ -75,18 +75,18 @@ public class AccessTokenTest extends FunctionalTest {
 	@Test
 	public void testAccessWithToken() {
 		requestAccessToken();
-		response = GET("/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		response = GET("/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
 		assertStatus(200, response);
 	}
 	
 	@Test
 	public void testDestroyToken() {
 		requestAccessToken();
-		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
 		assertStatus(200, response);
 		
 		// Second time will show a bad request
-		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+access_token);
+		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
 		assertStatus(400, response);
 	}
 	

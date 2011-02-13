@@ -16,7 +16,13 @@ public class CheckUserAuthentication   {
 	
 	public CheckUserAuthentication() {
 	}
-
+	
+	/**
+	 * 
+	 * @param client_id
+	 * @param client_secret
+	 * @return
+	 */
 	public boolean validCredentials(String client_id, String client_secret) {
 		User user = User.find("byEmail", client_id).first();
 		if (user != null) {
@@ -30,6 +36,11 @@ public class CheckUserAuthentication   {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param access_token
+	 * @return
+	 */
 	public boolean validToken(String access_token) {
 		// Get the UserDTO from Cache using the access_token
 	    UserDTO userDTO = Cache.get(OAuth2Constants.CACHE_PREFIX + access_token, UserDTO.class);
