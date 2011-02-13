@@ -47,8 +47,16 @@ public class User extends Item {
     @OneToMany(mappedBy="user", cascade={CascadeType.REMOVE}, orphanRemoval=true)
     public List<UserConnection> connections;
     
+    @OneToMany
+    public List<User> userConnectionRequestsTo;
+    
+    @OneToMany
+    public List<User> userConnectionRequestsFrom;
+    
     public User() {
     	connections = new ArrayList<UserConnection>();
+    	userConnectionRequestsTo = new ArrayList<User>();
+    	userConnectionRequestsFrom = new ArrayList<User>();
     }
     
     //TODO: revisit
@@ -58,7 +66,6 @@ public class User extends Item {
 		query.setParameter("user", this.id);
 		List<UserConnection> connections = query.getResultList();
 		for (UserConnection userConnection : connections) {
-			//TODO: add part where it updates the other users static list?
 			userConnection.delete();
 		}
 		

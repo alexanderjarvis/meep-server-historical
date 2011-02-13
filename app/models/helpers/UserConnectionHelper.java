@@ -15,6 +15,39 @@ import play.db.jpa.JPA;
  */
 public class UserConnectionHelper {
 	
+	public static boolean createUserConnectionRequest(User user1, User user2) {
+		
+		// If the users are already connected, return false
+		if (isUsersConnected(user1, user2)) {
+			return false;
+		}
+		
+		// If there is already an existing user connection request, return false
+		if (user1.userConnectionRequestsTo.contains(user2) && user2.userConnectionRequestsFrom.contains(user1)) {
+			return false;
+		}
+		
+		// If there is already an existing user connection request (in the other direction), return false
+		if (user2.userConnectionRequestsTo.contains(user1) && user1.userConnectionRequestsFrom.contains(user2)) {
+			return false;
+		}
+		
+		// Create the user connection request
+		user1.userConnectionRequestsTo.add(user2);
+		user2.userConnectionRequestsFrom.add(user1);
+		return true;
+	}
+	
+	public static boolean removeUserConnectionRequest(User user1, User user2) {
+		
+		if (user1.userConnectionRequestsTo.contains(user2) && user2.userConnectionRequestsFrom.contains(user1)) {
+			user1.userConnectionRequestsTo.remove(user2);
+			user2.userConnectionRequestsFrom.remove(user1);
+			return true;
+		}
+		return false;
+	}
+	
 	public static void createUserConnection(User user1, User user2) {
 		UserConnection con1 = new UserConnection();
 		UserConnection con2 = new UserConnection();
@@ -50,6 +83,15 @@ public class UserConnectionHelper {
 			connections.add(connection.userConnection.user);
 		}
 		return connections;
+	}
+	
+	public static boolean isUsersConnected(User user1, User user2) {
+		for (UserConnection connection : user1.connections) {
+			if (connection.userConnection.user == user2) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

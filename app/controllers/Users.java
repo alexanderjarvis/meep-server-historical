@@ -91,6 +91,7 @@ public class Users extends Application {
     		}
     		
     		// is the user connected?
+    		// TODO: user isUserConnected method instead
     		if (user != null) {
 		    	
 	    		if (emailID) {
@@ -147,12 +148,74 @@ public class Users extends Application {
     	}
     }
     
+    
+    
     /**
      * 
      * @param id
      */
-    public static void addUserConnection(String id) {
+    public static void addUserRequest(String id) {
+    	User authUser = userAuth.getAuthroisedUser();
+    	User otherUser = getNonAuthorisedUser(id);
+    	if (otherUser != null) {
+    		boolean success = UserConnectionHelper.createUserConnectionRequest(authUser, otherUser);
+    		if (success) {
+    			renderJSON("");
+    		}
+    	}
+    	badRequest();
+    }
+    
+    public static void acceptUserRequest(String id) {
+    	User authUser = userAuth.getAuthroisedUser();
+    	User otherUser = getNonAuthorisedUser(id);
+    	if (otherUser != null) {
+    		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
+    		if (success) {
+    			UserConnectionHelper.createUserConnection(authUser, otherUser);
+    			renderJSON("");
+    		}
+    	}
+    	badRequest();
+    }
+    
+    public static void declineUserRequest(String id) {
+    	User authUser = userAuth.getAuthroisedUser();
+    	User otherUser = getNonAuthorisedUser(id);
+    	if (otherUser != null) {
+    		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
+    		if (success) {
+    			renderJSON("");
+    		}
+    	}
+    	badRequest();
+    }
+    
+    /**
+     * For now, just search by firstname
+     * @param search
+     */
+    public static void searchUser(String search) {
+    	List<User> userResults = User.find("byFirstName", search).fetch();
     	
+    	if (userResults != null && userResults.size() > 0) {
+    		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();
+    		for (User user : userResults) {
+    			userSummaryList.add(UserSummaryAssembler.writeDTO(user));
+    		}
+    		renderJSON(userSummaryList);
+    	} else {
+    		error(404, "Not found");
+    	}
+    
+    }
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    private static User getNonAuthorisedUser(String id) {
     	User authUser = userAuth.getAuthroisedUser();
     	
     	// If the id is the authorised user (trying to add themselves)
@@ -175,33 +238,12 @@ public class Users extends Application {
     		} else {
     			otherUser = User.findById(new Long(id));
     		}
-    		
-    		// Create the UserConnection
     		if (otherUser != null) {
-    			UserConnectionHelper.createUserConnection(authUser, otherUser);
-    			renderJSON("");
+    			return otherUser;
     		}
-    		
     	}
-    }
-    
-    /**
-     * For now, just search by firstname
-     * @param search
-     */
-    public static void searchUser(String search) {
-    	List<User> userResults = User.find("byFirstName", search).fetch();
     	
-    	if (userResults != null && userResults.size() > 0) {
-    		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();
-    		for (User user : userResults) {
-    			userSummaryList.add(UserSummaryAssembler.writeDTO(user));
-    		}
-    		renderJSON(userSummaryList);
-    	} else {
-    		error(404, "Not found");
-    	}
-    
+    	return null;
     }
 
 }

@@ -24,7 +24,8 @@ public class UsersTest extends FunctionalTest {
 	private Http.Response response;
 
 	private static final String BASE_CONTROLLER_PATH = "/users";
-	private String baseQuery = "?oauth_token=";
+	private String user1BaseQuery = "?oauth_token=";
+	private String user2BaseQuery = "?oauth_token=";
 	
 	User user1;
 	User user2;
@@ -37,9 +38,10 @@ public class UsersTest extends FunctionalTest {
 		Fixtures.load("data.yml");
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
-		baseQuery += user1.accessToken + "&";
+		user1BaseQuery += user1.accessToken + "&";
 		
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
+		user2BaseQuery += user2.accessToken + "&";
 		UserConnectionHelper.createUserConnection(user1, user2);
 	}
 	
@@ -59,14 +61,14 @@ public class UsersTest extends FunctionalTest {
 
 	@Test
 	public void testIndexPage() {
-		response = GET(BASE_CONTROLLER_PATH + baseQuery);
+		response = GET(BASE_CONTROLLER_PATH + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 	}
 
 	@Test
 	public void testCreate() {
-		baseQuery = "";
+		user1BaseQuery = "";
 		
 		response = POST(BASE_CONTROLLER_PATH
 					+ "?user.email=axj7@aber.ac.uk"
@@ -97,7 +99,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowAuthUser() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user1.id + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -107,7 +109,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowUser() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user2.id + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -117,14 +119,14 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowNonUser() {
-		response = GET(request, BASE_CONTROLLER_PATH + "/" + "9999999999" + baseQuery);
+		response = GET(request, BASE_CONTROLLER_PATH + "/" + "9999999999" + user1BaseQuery);
 		assertIsNotFound(response);
 		assertContentType("application/json", response);
 	}
 	
 	@Test
 	public void testShowAuthUserWithEmail() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user1.email + baseQuery);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user1.email + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -134,7 +136,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowUserWithEmail() {
-		response = GET(BASE_CONTROLLER_PATH + "/" + user2.email + baseQuery);
+		response = GET(BASE_CONTROLLER_PATH + "/" + user2.email + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		
@@ -150,7 +152,7 @@ public class UsersTest extends FunctionalTest {
 						+ "&user.password=" + newPassword
 						+ "&user.firstName=alex";
 		
-		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/x-www-form-urlencoded", "");
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + user1BaseQuery + data, "application/x-www-form-urlencoded", "");
 
 		assertStatus(200, response);
 		assertTrue("FirstName has not been updated", response.out.toString().contains("\"firstName\":\"alex\""));
@@ -170,7 +172,7 @@ public class UsersTest extends FunctionalTest {
 						+ "&user.serviceName=alex"
 						+ "&user.telephone=123";
 		
-		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user2.id + baseQuery + data, "application/x-www-form-urlencoded", "");
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user2.id + user1BaseQuery + data, "application/x-www-form-urlencoded", "");
 		
 		assertStatus(400, response);
 	}
@@ -178,34 +180,79 @@ public class UsersTest extends FunctionalTest {
 	@Test
 	public void testUpdateClashes() {
 		String data = "user.email=" + user2.email;
-		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + baseQuery + data, "application/x-www-form-urlencoded", "");
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + user1.id + user1BaseQuery + data, "application/x-www-form-urlencoded", "");
 		
 		assertStatus(400, response);
 		assertContentEquals("Email already exists", response);
 	}
 	
 	@Test
-	public void testAddUserConnection() {
-		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + baseQuery);
+	public void testAddUserRequest() {
+		UserConnectionHelper.removeUserConnection(user1, user2);
+		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + user1BaseQuery);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 	}
 	
 	@Test
-	public void testAddUserConnectionWithAuthUser() {
-		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/add/" + baseQuery);
+	public void testAddUserRequestWithAuthUser() {
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/add/" + user1BaseQuery);
+		assertStatus(400, response);
+	}
+	
+	@Test
+	public void testAcceptUserRequest() {
+		// Remove the existing user connection and add the request
+		UserConnectionHelper.removeUserConnection(user1, user2);
+		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + user1BaseQuery);
+		assertIsOk(response);
+		
+		// Connect with 2nd user and accept the user connection request
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/accept/" + user2BaseQuery);
+		assertIsOk(response);
+		
+		// Try to accept the user connection request again
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/accept/" + user2BaseQuery);
+		assertStatus(400, response);
+	}
+	
+	@Test
+	public void testAcceptUserRequestNotExist() {
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/accept/" + user2BaseQuery);
+		assertStatus(400, response);
+	}
+	
+	@Test
+	public void testDeclineUserRequest() {
+		// Remove the existing user connection and add the request
+		UserConnectionHelper.removeUserConnection(user1, user2);
+		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + user1BaseQuery);
+		assertIsOk(response);
+		
+		// Connect with 2nd user and decline the user connection request
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/decline/" + user2BaseQuery);
+		assertIsOk(response);
+		
+		// Try to decline the user connection request again
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/decline/" + user2BaseQuery);
+		assertStatus(400, response);
+	}
+	
+	@Test
+	public void testDeclineUserRequestNotExist() {
+		response = POST(BASE_CONTROLLER_PATH + "/" + user1.email + "/decline/" + user2BaseQuery);
 		assertStatus(400, response);
 	}
 	
 	@Test
 	public void testSearchUser() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Bob" + baseQuery);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Bob" + user1BaseQuery);
 		assertIsOk(response);
 	}
 	
 	@Test
 	public void testSearchUserNotExist() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Alex" + baseQuery);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Alex" + user1BaseQuery);
 		assertStatus(404, response);
 	}
 }

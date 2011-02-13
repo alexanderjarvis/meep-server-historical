@@ -23,12 +23,14 @@ DELETE	/oauth2/?								oauth2.AccessTokenDestroy.destroy
 # Application specific routes
 #
 
+# Users
 GET		/users/?								Users.index
 POST	/users/?								Users.create
 GET		/users/{id}/? 							Users.show
 PUT 	/users/{id}/?							Users.update
-POST	/users/{id}/add/?						Users.addUserConnection
-
+POST	/users/{id}/add/?						Users.addUserRequest
+POST	/users/{id}/accept/?					Users.acceptUserRequest
+POST	/users/{id}/decline/?					Users.declineUserRequest
 GET		/search/users/{search}					Users.searchUser
 
 

@@ -78,5 +78,12 @@ public class UserConnectionTest extends UnitTest {
 		UserConnectionHelper.removeUserConnection(user1, user2);
 		con2.refresh();
 	}
+	
+	@Test
+	public void testIsUsersConnected() {
+		assertTrue(UserConnectionHelper.isUsersConnected(user1, user2));
+		User user = new User();
+		assertFalse(UserConnectionHelper.isUsersConnected(user1, user));
+	}
 
 }
