@@ -75,7 +75,7 @@ public class AccessTokenTest extends FunctionalTest {
 	@Test
 	public void testAccessWithToken() {
 		requestAccessToken();
-		response = GET("/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
+		response = GET("/users/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
 		assertStatus(200, response);
 	}
 	
