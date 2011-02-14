@@ -22,7 +22,7 @@ public class UserSummaryAssembler {
 		
 		List<UserSummaryDTO> userSummaries = new ArrayList<UserSummaryDTO>();
 		
-		List<User> connections = UserConnectionHelper.connectionsAsUsers(user);
+		List<User> connections = UserConnectionHelper.userConnectionsAsUsers(user);
 		for (User connection : connections) {
 			userSummaries.add(writeDTO(connection));
 		}

@@ -1,15 +1,12 @@
 package unit;
 
 import models.User;
-import models.UserConnection;
 import models.helpers.UserConnectionHelper;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.yaml.snakeyaml.JavaBeanDumper;
 
-import play.Logger;
 import play.test.Fixtures;
 import play.test.UnitTest;
 

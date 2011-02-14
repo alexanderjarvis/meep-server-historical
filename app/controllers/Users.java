@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.User;
-import models.UserConnection;
 import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
@@ -94,24 +93,13 @@ public class Users extends AccessTokenFilter {
     		}
     		
     		// is the user connected?
-    		// TODO: user isUserConnected method instead
     		if (user != null) {
 		    	
-	    		if (emailID) {
-	    			for (UserConnection connection : authUser.connections) {
-	    				if (id.equals(connection.userConnection.user.email)) {
-			    			renderJSON(UserAssembler.writeDTO(user, false));
-			    		}
-	    			}
+	    		if (UserConnectionHelper.isUsersConnected(authUser, user)) {
+	    			renderJSON(UserAssembler.writeDTO(user, false));
 	    		} else {
-	    			for (UserConnection connection : authUser.connections) {
-	    				if (id.equals(connection.userConnection.user.id.toString())) {
-			    			renderJSON(UserAssembler.writeDTO(user, false));
-			    		}
-	    			}
+	    			error(400, "User not connected");
 	    		}
-		    	
-		    	error(400, "User not connected");
     		} else {
     			error(404, "User does not exist");
     		}

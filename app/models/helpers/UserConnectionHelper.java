@@ -3,11 +3,7 @@ package models.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Query;
-
 import models.User;
-import models.UserConnection;
-import play.db.jpa.JPA;
 
 /**
  * 
@@ -66,18 +62,8 @@ public class UserConnectionHelper {
 	 * @param user2
 	 */
 	public static void createUserConnection(User user1, User user2) {
-		UserConnection con1 = new UserConnection();
-		UserConnection con2 = new UserConnection();
-		con1.user = user1;
-		con2.user = user2;
-		// It is necessary to save the UserConnection objects to obtain id's for
-		// referencing each other.
-		con1.save();
-		con2.save();
-		con1.userConnection = con2;
-		con2.userConnection = con1;
-		con1.save();
-		con2.save();
+		user1.userConnectionsTo.add(user2);
+		user1.save();
 	}
 	
 	/**
@@ -86,17 +72,8 @@ public class UserConnectionHelper {
 	 * @param user2
 	 */
 	public static void removeUserConnection(User user1, User user2) {
-		
-		// Get the UserConnection objects that represent user1 to user2
-		Query query = JPA.em().createQuery("SELECT uc FROM UserConnection uc WHERE user = :user1 AND userConnection.user = :user2 ");
-		query.setParameter("user1", user1);
-		query.setParameter("user2", user2);
-		UserConnection con1 = (UserConnection) query.getSingleResult();
-		UserConnection con2 = con1.userConnection;
-		
-		// Delete the UserConnection objects
-		con1.delete();
-		con2.delete();
+		user1.userConnectionsTo.remove(user2);
+		user1.save();
 	}
 	
 	/**
@@ -104,12 +81,11 @@ public class UserConnectionHelper {
 	 * @param user
 	 * @return
 	 */
-	public static List<User> connectionsAsUsers(User user) {
-		List<User> connections = new ArrayList<User>();
-		for (UserConnection connection : user.connections) {
-			connections.add(connection.userConnection.user);
-		}
-		return connections;
+	public static List<User> userConnectionsAsUsers(User user) {
+		List<User> connectedUsers = new ArrayList<User>();
+		connectedUsers.addAll(user.userConnectionsTo);
+		connectedUsers.addAll(user.userConnectionsFrom);
+		return connectedUsers;
 	}
 	
 	/**
@@ -119,12 +95,7 @@ public class UserConnectionHelper {
 	 * @return
 	 */
 	public static boolean isUsersConnected(User user1, User user2) {
-		for (UserConnection connection : user1.connections) {
-			if (connection.userConnection.user == user2) {
-				return true;
-			}
-		}
-		return false;
+		return userConnectionsAsUsers(user1).contains(user2);
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
@@ -15,6 +17,10 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 @Entity
 public class User extends Item {
 	
@@ -41,31 +47,43 @@ public class User extends Item {
     @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
     public List<Attendee> meetingsRelated;
     
-    @OneToMany(mappedBy="user", cascade={CascadeType.REMOVE}, orphanRemoval=true)
-    public List<UserConnection> connections;
+    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name="USER_CONNECTIONS",
+        joinColumns=@JoinColumn(name="USER_1"),
+        inverseJoinColumns=@JoinColumn(name="USER_2")
+    )
+    public List<User> userConnectionsTo;
     
-    @ManyToMany
+    @ManyToMany(mappedBy="userConnectionsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    public List<User> userConnectionsFrom;
+    
+    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name="USER_CONNECTION_REQUESTS",
+        joinColumns=@JoinColumn(name="USER_REQUEST_1"),
+        inverseJoinColumns=@JoinColumn(name="USER_REQUEST_2")
+    )
     public List<User> userConnectionRequestsTo;
     
-    @ManyToMany(mappedBy="userConnectionRequestsTo")
+    @ManyToMany(mappedBy = "userConnectionRequestsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<User> userConnectionRequestsFrom;
     
     public User() {
-    	connections = new ArrayList<UserConnection>();
+    	userConnectionsTo = new ArrayList<User>();
+    	userConnectionsFrom = new ArrayList<User>();
     	userConnectionRequestsTo = new ArrayList<User>();
     	userConnectionRequestsFrom = new ArrayList<User>();
     }
     
-    //TODO: revisit
     @Override
 	public GenericModel delete() {
-    	Query query = JPA.em().createQuery("SELECT uc FROM UserConnection uc WHERE user1.id = :user or user2.id = :user");
-		query.setParameter("user", this.id);
-		List<UserConnection> connections = query.getResultList();
-		for (UserConnection userConnection : connections) {
-			userConnection.delete();
-		}
 		
+		// Remove userConnectionsTo links to this user
+		for (User user : userConnectionsFrom) {
+			user.userConnectionsTo.remove(this);
+			user.save();
+		}
 		
 		// Remove userConnectionRequest links to this user
 		for (User user : userConnectionRequestsFrom) {
@@ -75,5 +93,4 @@ public class User extends Item {
 		
 		return super.delete();
 	}
-    
 }
