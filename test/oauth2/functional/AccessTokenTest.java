@@ -69,7 +69,7 @@ public class AccessTokenTest extends FunctionalTest {
 	@Test
     public void testBadRequest() {
         response = GET("/users/");
-        assertStatus(400, response);
+        assertStatus(401, response);
     }
 	
 	@Test
@@ -87,7 +87,7 @@ public class AccessTokenTest extends FunctionalTest {
 		
 		// Second time will show a bad request
 		response = DELETE("/oauth2/?"+OAuth2Constants.PARAM_OAUTH_TOKEN+"="+accessToken);
-		assertStatus(400, response);
+		assertStatus(401, response);
 	}
 	
 	@After

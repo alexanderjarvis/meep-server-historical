@@ -45,8 +45,8 @@ public class AccessTokenFilter extends NoCookieFilter {
 			}
 		
 		// Resources that do not require an access token
-		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth").url) ||
-				!request.path.equals(Router.reverse("Users.create").url) || !request.method.equals(Router.reverse("Users.create").method)) {
+		} else if (!request.path.equals(Router.reverse("oauth2.AccessToken.auth").url) &&
+				!request.path.equals(Router.reverse("Users.create").url)) {
 			error(401, "Unauthorized");
 		}
 	}
