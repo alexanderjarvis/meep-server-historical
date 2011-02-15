@@ -3,11 +3,14 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import models.User;
 import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
+import play.db.jpa.JPA;
 import play.mvc.With;
 import DTO.UserDTO;
 import DTO.UserSummaryDTO;
@@ -195,7 +198,20 @@ public class Users extends AccessTokenFilter {
      * @param search
      */
     public static void searchUser(String search) {
-    	List<User> userResults = User.find("byFirstName", search).fetch();
+    	
+    	String firstName = search;
+    	String lastName = search;
+    	
+    	String[] names = search.split("\\s");
+    	if (names.length >= 2) {
+    		firstName = names[0];
+    		lastName = names[1];
+    	}
+    	
+    	// TODO: move this query away from the controller
+    	List<User> userResults = User.find("select u from User u "
+    			+ "where LOWER(u.firstName) like LOWER(?) "
+    			+ "or LOWER(u.lastName) like LOWER(?)", firstName+"%", lastName+"%").fetch();
     	
     	if (userResults != null && userResults.size() > 0) {
     		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();
