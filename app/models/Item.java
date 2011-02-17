@@ -3,6 +3,8 @@ package models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import play.db.jpa.Model;
@@ -13,21 +15,19 @@ import play.db.jpa.Model;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@Entity
+@MappedSuperclass
 public class Item extends Model {
 	
 	public Date dateCreated;
 	public Date dateModified;
 	
-	public Item() {
-		final Date today = new Date();
-		this.dateCreated = today;
-		this.dateModified = today;
+	@PrePersist
+	protected void onCreate() {
+		this.dateCreated = new Date();
 	}
 	
-	@SuppressWarnings("unused")
 	@PreUpdate
-	private void updateDateModified() {
+	protected void onUpdate() {
 		this.dateModified = new Date();
 	}
     
