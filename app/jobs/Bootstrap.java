@@ -15,7 +15,7 @@ public class Bootstrap extends Job {
         // Check if the database is empty
         if(User.count() == 0) {
         	//TODO: create bootstrap data
-            //Fixtures.load("initial-data.yml");
+            Fixtures.load("initial-data.yml");
         }
     }
 }

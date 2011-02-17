@@ -39,6 +39,8 @@ public class UserAssembler {
 		if (authorisedUser) {
 			userDTO.accessToken = user.accessToken;
 			userDTO.connections = UserSummaryAssembler.writeDTOs(user);
+			userDTO.connectionRequestsTo = UserRequestSummaryAssembler.writeToDTOs(user);
+			userDTO.connectionRequestsFrom = UserRequestSummaryAssembler.writeFromDTOs(user);
 		}
 		
 		return userDTO;

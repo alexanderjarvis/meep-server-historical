@@ -28,6 +28,10 @@ public class UserDTO implements Serializable {
     
     public List<UserSummaryDTO> connections;
     
+    public List<UserRequestSummaryDTO> connectionRequestsTo;
+    
+    public List<UserRequestSummaryDTO> connectionRequestsFrom;
+    
     public UserDTO() {
     }
     

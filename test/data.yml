@@ -5,7 +5,6 @@ User(bob):
   email: bob@gmail.com
   firstName: Bob
   lastName: Smith
-  serviceName: bob
   telephone: 123
   passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
   accessToken: blxdlxyxVnNk8aGIMGbKiZHa9T9XWdiL
@@ -14,7 +13,6 @@ User(bob2):
   email: bob2@gmail.com
   firstName: Bob
   lastName: Smith
-  serviceName: bob2
   telephone: 123
   passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
   accessToken: asdfdlxyxVnNk8aGIMGbKiZHa9T9X1234

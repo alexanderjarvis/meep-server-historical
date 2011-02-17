@@ -1,0 +1,24 @@
+User(john):
+  email: john@smith.fake
+  firstName: John
+  lastName: Smith
+  telephone: 123
+  passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
+  accessToken:
+  
+User(will):
+  email: will@smith.fake
+  firstName: Will
+  lastName: Smith
+  telephone: 123
+  passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
+  accessToken:
+
+User(henry):
+  email: henry@williams.fake
+  firstName: Henry
+  lastName: Williams
+  telephone: 123
+  passwordHash: 7a37b85c8918eac19a9089c0fa5a2ab4dce3f90528dcdeec108b23ddf3607b99
+  accessToken: asdfdlxyxVnNk8aGIMGbKiZHa9T9X1234
+  
