@@ -48,9 +48,9 @@ public class UserConnectionHelper {
 	 */
 	public static boolean removeUserConnectionRequest(User user1, User user2) {
 		
-		if (user1.userConnectionRequestsTo.contains(user2) && user2.userConnectionRequestsFrom.contains(user1)) {
+		if (user1.userConnectionRequestsTo.contains(user2)) {
 			user1.userConnectionRequestsTo.remove(user2);
-			user2.userConnectionRequestsFrom.remove(user1);
+			user1.save();
 			return true;
 		}
 		return false;
