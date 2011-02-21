@@ -104,7 +104,7 @@ public class Users extends AccessTokenFilter {
 	    			error(400, "User not connected");
 	    		}
     		} else {
-    			error(404, "User does not exist");
+    			notFound();
     		}
     	}
     }

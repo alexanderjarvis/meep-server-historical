@@ -15,10 +15,13 @@ public class CoordinateAssembler {
 	 * @return
 	 */
 	public static CoordinateDTO writeDTO(Coordinate coordinate) {
-		CoordinateDTO coordinateDTO = new CoordinateDTO();
-		coordinateDTO.latitude = coordinate.latitude;
-		coordinateDTO.longitude = coordinate.longitude;
-		return coordinateDTO;
+		if (coordinate != null) {
+			CoordinateDTO coordinateDTO = new CoordinateDTO();
+			coordinateDTO.latitude = coordinate.latitude;
+			coordinateDTO.longitude = coordinate.longitude;
+			return coordinateDTO;
+		}
+		return null;
 	}
 	
 	public static Coordinate createCoordinate(CoordinateDTO coordinateDTO) {

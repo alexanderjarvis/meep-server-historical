@@ -50,11 +50,6 @@ public class UsersTest extends FunctionalTest {
 	}
 	
 	@After
-	public void tearDown() {
-		
-	}
-	
-	@After
 	public void log() {
 		if (response != null) {
 			Logger.debug("Response Status: " + response.status.toString());

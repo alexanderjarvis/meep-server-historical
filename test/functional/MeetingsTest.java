@@ -33,7 +33,7 @@ public class MeetingsTest extends FunctionalTest {
 		request.headers.put("accept", new Http.Header("Accept", "application/json"));
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
-		user1BaseQuery += user1.accessToken + "&";
+		user1BaseQuery += user1.accessToken;
 	}
 	
 	@After
@@ -53,15 +53,9 @@ public class MeetingsTest extends FunctionalTest {
 
 	@Test
 	public void testCreate() {
-		user1BaseQuery = "";
+		String body = "{\"title\":\"Meeting title\",\"description\":\"Meeting description\"}";
 		
-		response = POST(BASE_CONTROLLER_PATH
-					+ "?user.email=axj7@aber.ac.uk"
-					+ "&user.password=password"
-					+ "&user.firstName=alex"
-					+ "&user.lastName=hello"
-					+ "&user.serviceName=alex"
-					+ "&user.telephone=123");
+		response = POST(BASE_CONTROLLER_PATH + user1BaseQuery, "application/json; charset=UTF-8", body);
 		
 		assertStatus(201, response);
 	}

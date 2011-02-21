@@ -3,11 +3,13 @@ package DTO;
 import java.util.Date;
 import java.util.List;
 
+import play.db.jpa.Model;
+
 /**
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class MeetingDTO {
+public class MeetingDTO extends Model {
 	
 	public Long id;
 	
