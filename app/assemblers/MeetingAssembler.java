@@ -19,8 +19,8 @@ public class MeetingAssembler {
 		meetingDTO.id = meeting.id;
 		meetingDTO.time = meeting.time;
 		meetingDTO.place = CoordinateAssembler.writeDTO(meeting.place);
-		meetingDTO.attendees = AttendeeAssembler.writeDTOs(meeting.attendees);
-		meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
+		//meetingDTO.attendees = AttendeeAssembler.writeDTOs(meeting.attendees);
+		//meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
 		meetingDTO.title = meeting.title;
 		meetingDTO.description = meeting.description;
 		meetingDTO.type = meeting.type;
@@ -40,8 +40,12 @@ public class MeetingAssembler {
 		Meeting meeting = new Meeting();
 		
 		meeting.time = meetingDTO.time;
-		meeting.place = CoordinateAssembler.createCoordinate(meetingDTO.place);
-		meeting.owner = User.findById(meetingDTO.owner.id);
+		if (meetingDTO.place != null) {
+			meeting.place = CoordinateAssembler.createCoordinate(meetingDTO.place);
+		}
+		if (meetingDTO.owner != null) {
+			meeting.owner = User.findById(meetingDTO.owner.id);
+		}
 		meeting.title = meetingDTO.title;
 		meeting.description = meetingDTO.description;
 		meeting.type = meetingDTO.type;
@@ -49,7 +53,9 @@ public class MeetingAssembler {
 		// The Attendee is the owning side of the relationship, so the meeting must be
 		// saved first.
 		meeting.save();
-		AttendeeAssembler.createAttendees(meetingDTO.attendees, meeting);
+		if (meetingDTO.attendees != null) {
+			AttendeeAssembler.createAttendees(meetingDTO.attendees, meeting);
+		}
 		
 		return writeDTO(meeting);
 	}
