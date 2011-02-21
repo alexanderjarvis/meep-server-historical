@@ -47,5 +47,23 @@ public class UserSummaryAssembler {
 		
 		return userSummaryDTO;
 	}
+	
+	/**
+	 * Returns a UserSummaryDTO that only contains elements which are globally
+	 * viewable e.g. the users do not have to be connected.
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static UserSummaryDTO writeRestrictedDTO(User user) {
+		
+		UserSummaryDTO userSummaryDTO = new UserSummaryDTO();
+		
+		userSummaryDTO.id = user.id;
+		userSummaryDTO.firstName = user.firstName;
+		userSummaryDTO.lastName = user.lastName;
+		
+		return userSummaryDTO;
+	}
 
 }

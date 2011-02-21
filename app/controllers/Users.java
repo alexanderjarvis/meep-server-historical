@@ -30,7 +30,7 @@ public class Users extends AccessTokenFilter {
 	 * (not all users in the system).
 	 */
 	public static void index() {
-		User authUser = userAuth.getAuthroisedUser();
+		User authUser = userAuth.getAuthorisedUser();
 		renderJSON(UserSummaryAssembler.writeDTOs(authUser));
 	}
     
@@ -74,7 +74,7 @@ public class Users extends AccessTokenFilter {
      */
     public static void show(String id) {
     	
-    	User authUser = userAuth.getAuthroisedUser();
+    	User authUser = userAuth.getAuthorisedUser();
     	
 		if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
 			renderJSON(UserAssembler.writeDTO(authUser, true));
@@ -118,7 +118,7 @@ public class Users extends AccessTokenFilter {
     public static void update(Long id, @Valid UserDTO user) {
     	
     	// Only able to update the authorised user
-    	if (id.equals(userAuth.getAuthroisedUser().id)) {
+    	if (id.equals(userAuth.getAuthorisedUser().id)) {
     		
 	    	if (validation.hasErrors()) {
 	    		for (Error error : validation.errors()) {
@@ -149,7 +149,7 @@ public class Users extends AccessTokenFilter {
      * @param id
      */
     public static void addUserRequest(String id) {
-    	User authUser = userAuth.getAuthroisedUser();
+    	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		boolean success = UserConnectionHelper.createUserConnectionRequest(authUser, otherUser);
@@ -165,7 +165,7 @@ public class Users extends AccessTokenFilter {
      * @param id
      */
     public static void acceptUserRequest(String id) {
-    	User authUser = userAuth.getAuthroisedUser();
+    	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
@@ -182,7 +182,7 @@ public class Users extends AccessTokenFilter {
      * @param id
      */
     public static void declineUserRequest(String id) {
-    	User authUser = userAuth.getAuthroisedUser();
+    	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
@@ -216,7 +216,7 @@ public class Users extends AccessTokenFilter {
     	if (userResults != null && userResults.size() > 0) {
     		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();
     		for (User user : userResults) {
-    			userSummaryList.add(UserSummaryAssembler.writeDTO(user));
+    			userSummaryList.add(UserSummaryAssembler.writeRestrictedDTO(user));
     		}
     		renderJSON(userSummaryList);
     	} else {
@@ -231,7 +231,7 @@ public class Users extends AccessTokenFilter {
      * @return
      */
     private static User getNonAuthorisedUser(String id) {
-    	User authUser = userAuth.getAuthroisedUser();
+    	User authUser = userAuth.getAuthorisedUser();
     	
     	// If the id is the authorised user (trying to add themselves)
     	if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {

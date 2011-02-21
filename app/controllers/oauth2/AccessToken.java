@@ -40,7 +40,7 @@ public class AccessToken extends NoCookieFilter {
     			// if correct, generate access token
         		String accessToken = AccessTokenGenerator.generate();
         		
-        		User user = checkUserAuthentication.getAuthroisedUser();
+        		User user = checkUserAuthentication.getAuthorisedUser();
         		
         		user.accessToken = accessToken;
         		user.save();

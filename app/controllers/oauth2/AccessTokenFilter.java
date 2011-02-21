@@ -56,7 +56,7 @@ public class AccessTokenFilter extends NoCookieFilter {
 	 * @return
 	 */
 	public User getAuthorisedUser() {
-		return userAuth.getAuthroisedUser();
+		return userAuth.getAuthorisedUser();
 	}
 	
 }

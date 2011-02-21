@@ -18,6 +18,7 @@ public class TestCheckUserAuthentication extends UnitTest {
 	
 	@Before
 	public void loadFixtures() {
+		Fixtures.deleteAll();
 		Fixtures.load("data.yml");
 	}
 	
@@ -42,7 +43,7 @@ public class TestCheckUserAuthentication extends UnitTest {
 	@Test
 	public void testReturnsUser() {
 		testValidCredentials();
-		User user = checkUserAuthentication.getAuthroisedUser();
+		User user = checkUserAuthentication.getAuthorisedUser();
 		assertNotNull(user);
 		assertEquals(user.email, TEST_CLIENT_ID);
 	}

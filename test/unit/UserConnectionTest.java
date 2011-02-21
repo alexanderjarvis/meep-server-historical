@@ -21,15 +21,11 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
+		Fixtures.deleteAll();
 		Fixtures.load("data.yml");
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
 		UserConnectionHelper.createUserConnection(user1, user2);
-	}
-	
-	@After
-	public void tearDown() {
-		Fixtures.deleteAll();
 	}
 	
 	@Test

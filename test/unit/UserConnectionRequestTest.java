@@ -21,14 +21,10 @@ public class UserConnectionRequestTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
+		Fixtures.deleteAll();
 		Fixtures.load("data.yml");
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
-	}
-	
-	@After
-	public void tearDown() {
-		Fixtures.deleteAll();
 	}
 	
 	@Test

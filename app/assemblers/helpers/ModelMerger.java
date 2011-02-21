@@ -12,6 +12,8 @@ public class ModelMerger {
 	/**
 	 * Copies all fields from object1 to object2 (where the fields exist on object2).
 	 * 
+	 * Does not copy the "id" field.
+	 * 
 	 * @param object1
 	 * @param object2
 	 * @return

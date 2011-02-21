@@ -32,10 +32,14 @@ public class UsersTest extends FunctionalTest {
 	
 	@Before
 	public void setUp() {
+		Fixtures.deleteAll();
+		Fixtures.load("data.yml");
+		Cache.clear();
+		
 		request = new Http.Request();
 		request.headers.put("accept", new Http.Header("Accept", "application/json"));
 		
-		Fixtures.load("data.yml");
+		
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user1BaseQuery += user1.accessToken + "&";
@@ -47,8 +51,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@After
 	public void tearDown() {
-		Fixtures.deleteAll();
-		Cache.clear();
+		
 	}
 	
 	@After

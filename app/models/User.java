@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -41,11 +42,11 @@ public class User extends Item implements Comparable {
 	
 	public String mobileNumber;
     
-    @OneToMany(mappedBy="owner", cascade={CascadeType.ALL}, orphanRemoval=true)
-    public List<Meeting> meetingsCreated;
+    @OneToMany(mappedBy="owner", cascade={CascadeType.ALL})
+    public List<Meeting> meetingsCreated = new ArrayList<Meeting>();
     
-    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, orphanRemoval=true)
-    public List<Attendee> meetingsRelated;
+    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    public List<Attendee> meetingsRelated = new ArrayList<Attendee>();
     
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -53,10 +54,10 @@ public class User extends Item implements Comparable {
         joinColumns=@JoinColumn(name="USER_1"),
         inverseJoinColumns=@JoinColumn(name="USER_2")
     )
-    public List<User> userConnectionsTo;
+    public List<User> userConnectionsTo = new ArrayList<User>();
     
     @ManyToMany(mappedBy="userConnectionsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    public List<User> userConnectionsFrom;
+    public List<User> userConnectionsFrom = new ArrayList<User>();
     
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -64,17 +65,10 @@ public class User extends Item implements Comparable {
         joinColumns=@JoinColumn(name="USER_REQUEST_1"),
         inverseJoinColumns=@JoinColumn(name="USER_REQUEST_2")
     )
-    public List<User> userConnectionRequestsTo;
+    public List<User> userConnectionRequestsTo = new ArrayList<User>();
     
     @ManyToMany(mappedBy = "userConnectionRequestsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    public List<User> userConnectionRequestsFrom;
-    
-    public User() {
-    	userConnectionsTo = new ArrayList<User>();
-    	userConnectionsFrom = new ArrayList<User>();
-    	userConnectionRequestsTo = new ArrayList<User>();
-    	userConnectionRequestsFrom = new ArrayList<User>();
-    }
+    public List<User> userConnectionRequestsFrom = new ArrayList<User>();
     
     @Override
 	public GenericModel delete() {

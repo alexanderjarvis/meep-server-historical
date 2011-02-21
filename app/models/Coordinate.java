@@ -18,9 +18,9 @@ public class Coordinate extends Model {
 	@Required
 	public Double latitude;
 	
-	public Coordinate(Double longitude, Double latitude) {
-		this.longitude = longitude;
+	public Coordinate(Double latitude, Double longitude) {
 		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 }

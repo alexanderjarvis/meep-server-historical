@@ -24,13 +24,9 @@ public class AccessTokenTest extends FunctionalTest {
 	
 	@Before
 	public void loadFixtures() {
-		Fixtures.load("data.yml");
-	}
-	
-	@After
-	public void tearDown() {
 		Fixtures.deleteAll();
 		Cache.clear();
+		Fixtures.load("data.yml");
 	}
 	
 	@Test

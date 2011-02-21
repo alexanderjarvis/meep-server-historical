@@ -68,7 +68,7 @@ public class CheckUserAuthentication   {
 	 * 
 	 * @return
 	 */
-	public User getAuthroisedUser() {
+	public User getAuthorisedUser() {
 		if (authorisedUser == null && authorisedUserDTO != null) {
 			this.authorisedUser = User.findById(authorisedUserDTO.id);
 		}

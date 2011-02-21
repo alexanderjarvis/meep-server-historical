@@ -5,6 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
+import play.db.jpa.GenericModel;
 import play.db.jpa.Model;
 
 /**
@@ -16,10 +17,10 @@ import play.db.jpa.Model;
 public class Attendee extends Model {
 	
 	@ManyToOne
-	private User user;
+	public User user;
 	
 	@ManyToOne
-	private Meeting meeting;
+	public Meeting meeting;
 	
 	@Enumerated(EnumType.STRING)
 	public MeetingResponse rsvp;
@@ -28,17 +29,14 @@ public class Attendee extends Model {
 		YES, MAYBE, NO
 	}
 	
-	public Attendee(User user, Meeting meeting) {
-		this.user = user;
-		this.meeting = meeting;
-	}
-	
-	public User getUser() {
-		return this.user;
-	}
-	
-	public Meeting getMeeting() {
-		return this.meeting;
+	@Override
+	public GenericModel delete() {
+		
+		// Remove 
+		user.meetingsRelated.remove(this);
+		meeting.attendees.remove(this);
+		
+		return super.delete();
 	}
 
 }

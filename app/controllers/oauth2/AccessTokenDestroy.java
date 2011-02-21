@@ -15,7 +15,7 @@ public class AccessTokenDestroy extends AccessTokenFilter {
 	 * 
 	 */
 	public static void destroy() {
-		User authorisedUser = userAuth.getAuthroisedUser();
+		User authorisedUser = userAuth.getAuthorisedUser();
 		if (authorisedUser != null) {
 			Cache.delete(OAuth2Constants.CACHE_PREFIX + authorisedUser.accessToken);
 			authorisedUser.accessToken = "";
