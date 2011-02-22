@@ -1,7 +1,6 @@
 package functional;
 
 import models.User;
-import models.helpers.UserConnectionHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +54,10 @@ public class MeetingsTest extends FunctionalTest {
 	public void testCreate() {
 		String body = "{\"title\":\"Meeting title\",\"description\":\"Meeting description\"}";
 		
-		response = POST(BASE_CONTROLLER_PATH + user1BaseQuery, "application/json; charset=UTF-8", body);
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+		
+		response = POST(request, BASE_CONTROLLER_PATH + user1BaseQuery, "application/json; charset=UTF-8", body);
 		
 		assertStatus(201, response);
 	}

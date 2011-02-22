@@ -32,26 +32,10 @@ public class Meetings extends AccessTokenFilter {
     }
     
     public static void create(JsonObject body) {
-    	///////// Custom code until GsonBinder works with FunctionalTest
-    	StringBuilder sb = new StringBuilder();
-    	BufferedReader buf = new BufferedReader(new InputStreamReader(request.body));
-    	String line;
-    	try {
-			while((line = buf.readLine()) != null) {
-				sb.append(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	Logger.debug("body: " + sb.toString());
-    	Logger.debug("querystring: " + request.querystring);
     	
-    	JsonObject bodyObject =  (JsonObject) new JsonParser().parse(sb.toString());
-    	///////// Custom code until GsonBinder works with FunctionalTest
+    	if (body != null && body.isJsonObject()) {
     	
-    	if (bodyObject.isJsonObject()) {
-    	
-	    	MeetingDTO meetingDTO = new Gson().fromJson(bodyObject, MeetingDTO.class);
+	    	MeetingDTO meetingDTO = new Gson().fromJson(body, MeetingDTO.class);
 	    	if (meetingDTO != null) {
 		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO);
 		    	response.status = 201;
