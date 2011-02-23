@@ -33,7 +33,7 @@ GET		/search/users/{search}					Users.searchUser
 # Meetings
 GET		/meetings/?								Meetings.index
 POST	/meetings/?								Meetings.create
-GET		/meetings/{id}							Meetings.show
+GET		/meetings/{id}/?						Meetings.show
 
 
 

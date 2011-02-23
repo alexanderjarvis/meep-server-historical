@@ -6,6 +6,7 @@ import java.util.List;
 import models.Attendee;
 import models.Meeting;
 import models.User;
+import models.helpers.MeetingHelper;
 import DTO.AttendeeDTO;
 
 /**
@@ -60,13 +61,7 @@ public class AttendeeAssembler {
 	public static void createAttendee(AttendeeDTO attendeeDTO, Meeting meeting) {
 		User user = User.findById(attendeeDTO.id);
 		if (user != null) {
-			Attendee attendee = new Attendee();
-			attendee.meeting = meeting;
-			meeting.attendees.add(attendee);
-			meeting.save();
-			attendee.user = user;
-			attendee.user.meetingsRelated.add(attendee);
-			attendee.save();
+			MeetingHelper.createAttendee(meeting, user);
 		}
 	}
 

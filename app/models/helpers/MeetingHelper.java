@@ -10,14 +10,15 @@ import models.User;
  */
 public class MeetingHelper {
 	
-	public static boolean addAttendee(Meeting meeting, User user) {
+	public static void createAttendee(Meeting meeting, User user) {
 		
 		Attendee attendee = new Attendee();
 		attendee.meeting = meeting;
+		meeting.attendees.add(attendee);
+		meeting.save();
 		attendee.user = user;
-		
+		attendee.user.meetingsRelated.add(attendee);
 		attendee.save();
-		return true;
 	}
 	
 	public static boolean removeAttendee(Meeting meeting, User user) {
