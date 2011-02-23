@@ -15,7 +15,7 @@ import play.mvc.*;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class NoCookieFilter extends Controller {
+public class NoCookieFilter extends RenderJSONEnhancer {
 	
 	/** An empty cookie map to replace any cookies in the response. */
 	private static final Map<String, Http.Cookie> cookies = new HashMap<String, Http.Cookie>(0);

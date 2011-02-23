@@ -1,20 +1,16 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import models.Meeting;
 import models.User;
-import play.Logger;
 import play.mvc.With;
+import results.RenderCustomJson;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import controllers.oauth2.AccessTokenFilter;
 
@@ -34,10 +30,12 @@ public class Meetings extends AccessTokenFilter {
     public static void create(JsonObject body) {
     	
     	if (body != null && body.isJsonObject()) {
-    	
-	    	MeetingDTO meetingDTO = new Gson().fromJson(body, MeetingDTO.class);
+    		GsonBuilder gsonBuilder = new GsonBuilder();
+    		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+    		
+	    	MeetingDTO meetingDTO = gsonBuilder.create().fromJson(body, MeetingDTO.class);
 	    	if (meetingDTO != null) {
-		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO);
+		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO, userAuth.getAuthorisedUser());
 		    	response.status = 201;
 				renderJSON(newMeetingDTO);
 	    	}

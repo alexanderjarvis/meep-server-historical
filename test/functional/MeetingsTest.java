@@ -52,7 +52,12 @@ public class MeetingsTest extends FunctionalTest {
 
 	@Test
 	public void testCreate() {
-		String body = "{\"title\":\"Meeting title\",\"description\":\"Meeting description\"}";
+		String body = "{\"time\":\"2011-06-01T12:00:00Z\","
+			+ "\"place\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
+			+ "\"attendees\":[{\"id\":"+user1.id+"}],"
+			+ "\"title\":\"Meeting title\","
+			+"\"description\":\"Meeting description\","
+			+"\"type\":\"Meeting type\"}";
 		
 		Http.Request request = newRequest();
 		request.params.put("body", body);

@@ -19,8 +19,8 @@ public class MeetingAssembler {
 		meetingDTO.id = meeting.id;
 		meetingDTO.time = meeting.time;
 		meetingDTO.place = CoordinateAssembler.writeDTO(meeting.place);
-		//meetingDTO.attendees = AttendeeAssembler.writeDTOs(meeting.attendees);
-		//meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
+		meetingDTO.attendees = AttendeeAssembler.writeDTOs(meeting.attendees);
+		meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
 		meetingDTO.title = meeting.title;
 		meetingDTO.description = meeting.description;
 		meetingDTO.type = meeting.type;
@@ -36,16 +36,16 @@ public class MeetingAssembler {
 		return meetings;
 	}
 	
-	public static MeetingDTO createMeeting(MeetingDTO meetingDTO) {
+	public static MeetingDTO createMeeting(MeetingDTO meetingDTO, User user) {
 		Meeting meeting = new Meeting();
 		
 		meeting.time = meetingDTO.time;
 		if (meetingDTO.place != null) {
 			meeting.place = CoordinateAssembler.createCoordinate(meetingDTO.place);
 		}
-		if (meetingDTO.owner != null) {
-			meeting.owner = User.findById(meetingDTO.owner.id);
-		}
+		
+		meeting.owner = user;
+		
 		meeting.title = meetingDTO.title;
 		meeting.description = meetingDTO.description;
 		meeting.type = meetingDTO.type;

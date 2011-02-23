@@ -20,8 +20,13 @@ public class AttendeeAssembler {
 	 * @return
 	 */
 	public static AttendeeDTO writeDTO(Attendee attendee) {
-		AttendeeDTO attendeeDTO = (AttendeeDTO) UserSummaryAssembler.writeDTO(attendee.user);
-		attendeeDTO.rsvp = attendee.rsvp.toString();
+		AttendeeDTO attendeeDTO = new AttendeeDTO();
+		attendeeDTO.id = attendee.id;
+		attendeeDTO.firstName = attendee.user.firstName;
+		attendeeDTO.lastName = attendee.user.lastName;
+		if (attendee.rsvp != null) {
+			attendeeDTO.rsvp = attendee.rsvp.toString();
+		}
 		return attendeeDTO;
 	}
 	
@@ -49,7 +54,9 @@ public class AttendeeAssembler {
 	public static Attendee createAttendee(AttendeeDTO attendeeDTO, Meeting meeting) {
 		Attendee attendee = new Attendee();
 		attendee.meeting = meeting;
+		meeting.attendees.add(attendee);
 		attendee.user = User.findById(attendeeDTO.id);
+		attendee.user.meetingsRelated.add(attendee);
 		attendee.save();
 		return attendee;
 		
