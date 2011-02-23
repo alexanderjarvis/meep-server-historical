@@ -39,8 +39,6 @@ public class UsersTest extends FunctionalTest {
 		request = new Http.Request();
 		request.headers.put("accept", new Http.Header("Accept", "application/json"));
 		
-		
-		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user1BaseQuery += user1.accessToken + "&";
 		

@@ -50,8 +50,7 @@ public class MeetingAssembler {
 		meeting.description = meetingDTO.description;
 		meeting.type = meetingDTO.type;
 		
-		// The Attendee is the owning side of the relationship, so the meeting must be
-		// saved first.
+		// The Attendee is the owning side of the relationship, so the meeting must be saved first.
 		meeting.save();
 		if (meetingDTO.attendees != null) {
 			AttendeeAssembler.createAttendees(meetingDTO.attendees, meeting);

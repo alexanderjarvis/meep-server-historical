@@ -46,20 +46,28 @@ public class AttendeeAssembler {
 	
 	public static void createAttendees(List<AttendeeDTO> attendeeDTOs, Meeting meeting) {
 		
+		// Make the meeting owner the first attendee
+		AttendeeDTO ownerAttendeeDTO = new AttendeeDTO();
+		ownerAttendeeDTO.id = meeting.owner.id;
+		createAttendee(ownerAttendeeDTO, meeting);
+		
+		// Create the other attendees
 		for (AttendeeDTO attendeeDTO : attendeeDTOs) {
 			createAttendee(attendeeDTO, meeting);
 		}
 	}
 	
-	public static Attendee createAttendee(AttendeeDTO attendeeDTO, Meeting meeting) {
-		Attendee attendee = new Attendee();
-		attendee.meeting = meeting;
-		meeting.attendees.add(attendee);
-		attendee.user = User.findById(attendeeDTO.id);
-		attendee.user.meetingsRelated.add(attendee);
-		attendee.save();
-		return attendee;
-		
+	public static void createAttendee(AttendeeDTO attendeeDTO, Meeting meeting) {
+		User user = User.findById(attendeeDTO.id);
+		if (user != null) {
+			Attendee attendee = new Attendee();
+			attendee.meeting = meeting;
+			meeting.attendees.add(attendee);
+			meeting.save();
+			attendee.user = user;
+			attendee.user.meetingsRelated.add(attendee);
+			attendee.save();
+		}
 	}
 
 }

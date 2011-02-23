@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import models.Attendee;
 import models.Meeting;
 import models.User;
 import play.mvc.With;
@@ -44,13 +45,15 @@ public class Meetings extends AccessTokenFilter {
     }
     
     public static void show(Long id) {
-    	//TODO: auth rules - i.e. only users connected to the meeting can view it
-    	Meeting meeting = Meeting.findById(id);
-    	if (meeting != null) {
-    		renderJSON(MeetingAssembler.writeDTO(meeting));
-    	} else {
-    		notFound();
+    	
+    	User authUser = userAuth.getAuthorisedUser();
+    	for (Attendee attendee : authUser.meetingsRelated) {
+    		if (id.equals(attendee.meeting.id)) {
+    			renderJSON(MeetingAssembler.writeDTO(attendee.meeting));
+    		}
     	}
+    	
+    	notFound();
     }
 
 }
