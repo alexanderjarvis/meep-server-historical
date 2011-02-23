@@ -198,7 +198,7 @@ public class Users extends AccessTokenFilter {
      * @param search
      */
     public static void searchUser(String search) {
-    	
+    	search = search.trim();
     	String firstName = search;
     	String lastName = search;
     	
