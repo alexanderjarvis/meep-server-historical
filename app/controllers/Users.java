@@ -81,8 +81,9 @@ public class Users extends AccessTokenFilter {
     	} else {
     		// get the user, first by ID and then by email
     		boolean emailID = true;
+    		Long longID = null;
     		try {
-    			Long longID = new Long(id);
+    			longID = new Long(id);
     			emailID = false;
     		} catch (NumberFormatException e) {
     			Logger.debug("User id is not a number, maybe an email");
@@ -92,7 +93,7 @@ public class Users extends AccessTokenFilter {
     		if (emailID) {
     			user = User.find("byEmail", id).first();
     		} else {
-    			user = User.findById(new Long(id));
+    			user = User.findById(longID);
     		}
     		
     		// is the user connected?
@@ -240,8 +241,9 @@ public class Users extends AccessTokenFilter {
     		
     		// determine the ID type
     		boolean emailID = true;
+    		Long longID = null;
     		try {
-    			Long longID = new Long(id);
+    			longID = new Long(id);
     			emailID = false;
     		} catch (NumberFormatException e) {
     			Logger.debug("User id is not a number, maybe an email");
@@ -251,7 +253,7 @@ public class Users extends AccessTokenFilter {
     		if (emailID) {
     			otherUser = User.find("byEmail", id).first();
     		} else {
-    			otherUser = User.findById(new Long(id));
+    			otherUser = User.findById(longID);
     		}
     		if (otherUser != null) {
     			return otherUser;
