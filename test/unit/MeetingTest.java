@@ -61,7 +61,7 @@ public class MeetingTest extends UnitTest {
 	
 	@Test
 	public void testAddAttendee() {
-		assertTrue(MeetingHelper.addAttendee(meeting, user));
+		MeetingHelper.createAttendee(meeting, user);
 		JPA.em().clear();
 		
 		meeting = Meeting.all().first();
