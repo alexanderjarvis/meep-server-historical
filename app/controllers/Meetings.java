@@ -16,18 +16,26 @@ import com.google.gson.JsonObject;
 import controllers.oauth2.AccessTokenFilter;
 
 /**
+ * The Meetings controller is used to control all aspects of a meeting.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 @With(JSONRequestTypeFilter.class)
 public class Meetings extends AccessTokenFilter {
-
+	
+	/**
+	 * 
+	 */
     public static void index() {
     	User authUser = userAuth.getAuthorisedUser();
     	List<MeetingDTO> meetings = MeetingAssembler.writeDTOs(authUser);
         renderJSON(meetings);
     }
     
+    /**
+     * 
+     * @param body
+     */
     public static void create(JsonObject body) {
     	
     	if (body != null && body.isJsonObject()) {
@@ -44,6 +52,10 @@ public class Meetings extends AccessTokenFilter {
     	badRequest();
     }
     
+    /**
+     * 
+     * @param id
+     */
     public static void show(Long id) {
     	
     	User authUser = userAuth.getAuthorisedUser();

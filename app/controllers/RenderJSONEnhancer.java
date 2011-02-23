@@ -5,6 +5,17 @@ import com.google.gson.JsonSerializer;
 import play.mvc.Controller;
 import results.RenderCustomJson;
 
+/**
+ * This class overrides the renderJSON methods found in play.mvc.Controller
+ * substituting their call to play.mvc.results.RenderJson with RenderCustomJson.
+ * 
+ * This allows the Gson object to be configured before use.
+ * 
+ * This class is intended to be extended for all Play controllers that require the
+ * use of the RenderCustomJson class.
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class RenderJSONEnhancer extends Controller {
 	
 	/**

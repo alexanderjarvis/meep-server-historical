@@ -7,8 +7,7 @@ import play.Play;
 import play.mvc.*;
 
 /**
- * When the configuration property 'cookies.enabled' equals false,
- * this filter will replace the cookies in the response with an empty Map.
+ * Removes cookies from all responses.
  * 
  * This is because cookies are not required in stateless webservice and
  * we don't want to send any unnecessary information to the client.
@@ -21,7 +20,8 @@ public class NoCookieFilter extends RenderJSONEnhancer {
 	private static final Map<String, Http.Cookie> cookies = new HashMap<String, Http.Cookie>(0);
 	
 	/**
-	 * 
+	 * When the configuration property 'cookies.enabled' equals false,
+	 * this Finally filter will replace the cookies in the response with an empty Map.
 	 */
     @Finally
     public static void removeCookies() {

@@ -38,14 +38,11 @@ public class MeetingAssembler {
 	
 	public static MeetingDTO createMeeting(MeetingDTO meetingDTO, User user) {
 		Meeting meeting = new Meeting();
-		
 		meeting.time = meetingDTO.time;
 		if (meetingDTO.place != null) {
 			meeting.place = CoordinateAssembler.createCoordinate(meetingDTO.place);
 		}
-		
 		meeting.owner = user;
-		
 		meeting.title = meetingDTO.title;
 		meeting.description = meetingDTO.description;
 		meeting.type = meetingDTO.type;
