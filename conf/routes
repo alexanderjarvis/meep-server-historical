@@ -34,6 +34,10 @@ GET		/search/users/{search}					Users.searchUser
 GET		/meetings/?								Meetings.index
 POST	/meetings/?								Meetings.create
 GET		/meetings/{id}/?						Meetings.show
+PUT		/meetings/{id}/?						Meetings.update
+DELETE 	/meetings/{id}/?						Meetings.delete
+POST	/meetings/{id}/accept/?					Meetings.acceptMeetingRequest
+POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
 
 
 

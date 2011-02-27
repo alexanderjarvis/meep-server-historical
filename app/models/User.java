@@ -45,7 +45,7 @@ public class User extends Item implements Comparable {
     @OneToMany(mappedBy="owner", cascade={CascadeType.ALL})
     public List<Meeting> meetingsCreated = new ArrayList<Meeting>();
     
-    @OneToMany(mappedBy="user", cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="user", cascade={CascadeType.ALL})
     public List<Attendee> meetingsRelated = new ArrayList<Attendee>();
     
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})

@@ -62,7 +62,6 @@ public class MeetingTest extends UnitTest {
 	@Test
 	public void testAddAttendee() {
 		MeetingHelper.createAttendee(meeting, user);
-		JPA.em().clear();
 		
 		meeting = Meeting.all().first();
 		assertEquals(1, meeting.attendees.size());
@@ -85,6 +84,29 @@ public class MeetingTest extends UnitTest {
 		User user = meeting.attendees.get(0).user;
 		assertNotNull(user);
 		assertTrue(MeetingHelper.setAttendeeRSVP(meeting, user, MeetingResponse.YES));
+	}
+	
+	@Test
+	public void testDeleteMeeting() {
+		
+		MeetingHelper.createAttendee(meeting, user);
+		
+		Long meetingId = meeting.id;
+		Long ownerId = meeting.owner.id;
+		Long attendeeId = user.meetingsRelated.get(0).id;
+		
+		meeting = meeting.findById(meetingId);
+		meeting.delete();
+		
+		meeting = meeting.findById(meetingId);
+		assertNull(meeting);
+		user = user.findById(ownerId);
+		assertNotNull(user);
+		assertEquals(0, user.meetingsCreated.size());
+		assertEquals(0, user.meetingsRelated.size());
+		Attendee attendee = Attendee.findById(attendeeId);
+		assertNull(attendee);
+		
 	}
 
 }

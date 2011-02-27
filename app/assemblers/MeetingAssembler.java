@@ -6,7 +6,12 @@ import java.util.List;
 import models.Attendee;
 import models.Meeting;
 import models.User;
+import results.RenderCustomJson;
 import DTO.MeetingDTO;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.*;
 
 /**
  * 
@@ -54,6 +59,42 @@ public class MeetingAssembler {
 		}
 		
 		return writeDTO(meeting);
+	}
+	
+	public static MeetingDTO updateMeeting(MeetingDTO meetingDTO) {
+		Meeting meeting = Meeting.findById(meetingDTO.id);
+		if (meeting != null) {
+			meeting.time = meetingDTO.time;
+			//TODO: meeting.place
+			meeting.title = meetingDTO.title;
+			meeting.description = meetingDTO.description;
+			meeting.type = meetingDTO.type;
+			//TODO: meeting.attendees
+			
+			meeting.save();
+			return writeDTO(meeting);
+		}
+		return null;
+	}
+	
+	public static MeetingDTO updateMeetingWithJsonObject(JsonObject body) {
+		MeetingDTO meetingDTO = meetingDTOWithJsonObject(body);
+		meetingDTO = updateMeeting(meetingDTO);
+		return meetingDTO;
+	}
+	
+	public static MeetingDTO meetingDTOWithJsonObject(JsonObject body) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(body, MeetingDTO.class);
+		return meetingDTO;
+	}
+	
+	public static MeetingDTO meetingDTOWithJsonString(String body) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(body, MeetingDTO.class);
+		return meetingDTO;
 	}
 
 }

@@ -305,7 +305,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testSearchUserNotExist() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Alex" + user1BaseQuery);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "William" + user1BaseQuery);
 		assertStatus(404, response);
 	}
 }

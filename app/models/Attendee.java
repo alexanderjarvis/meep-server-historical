@@ -1,5 +1,6 @@
 package models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,12 +30,14 @@ public class Attendee extends Model {
 		YES, MAYBE, NO
 	}
 	
-	@Override
+	
 	public GenericModel delete() {
 		
 		// Remove 
 		user.meetingsRelated.remove(this);
+		user.save();
 		meeting.attendees.remove(this);
+		meeting.save();
 		
 		return super.delete();
 	}

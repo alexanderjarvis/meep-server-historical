@@ -47,10 +47,11 @@ public class AttendeeAssembler {
 	
 	public static void createAttendees(List<AttendeeDTO> attendeeDTOs, Meeting meeting) {
 		
-		// Make the meeting owner the first attendee
+		// Make the meeting owner the first attendee and set the rsvp to accept.
 		AttendeeDTO ownerAttendeeDTO = new AttendeeDTO();
 		ownerAttendeeDTO.id = meeting.owner.id;
 		createAttendee(ownerAttendeeDTO, meeting);
+		MeetingHelper.acceptMeetingRequest(meeting, meeting.owner);
 		
 		// Create the other attendees
 		for (AttendeeDTO attendeeDTO : attendeeDTOs) {

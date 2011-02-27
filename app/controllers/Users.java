@@ -153,8 +153,7 @@ public class Users extends AccessTokenFilter {
     	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
-    		boolean success = UserConnectionHelper.createUserConnectionRequest(authUser, otherUser);
-    		if (success) {
+    		if (UserConnectionHelper.createUserConnectionRequest(authUser, otherUser)) {
     			renderJSON("");
     		}
     	}
@@ -169,8 +168,7 @@ public class Users extends AccessTokenFilter {
     	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
-    		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
-    		if (success) {
+    		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
     			UserConnectionHelper.createUserConnection(authUser, otherUser);
     			renderJSON("");
     		}
@@ -186,8 +184,7 @@ public class Users extends AccessTokenFilter {
     	User authUser = userAuth.getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
-    		boolean success = UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser);
-    		if (success) {
+    		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
     			renderJSON("");
     		}
     	}

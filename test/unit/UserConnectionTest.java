@@ -29,11 +29,6 @@ public class UserConnectionTest extends UnitTest {
 	}
 	
 	@Test
-	public void testModelSizes() {
-		assertEquals(2, User.findAll().size());
-	}
-	
-	@Test
 	public void testUserConnectionsSize() {
 		assertEquals(1, user1.userConnectionsTo.size());
 	}
