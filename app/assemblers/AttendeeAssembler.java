@@ -6,6 +6,7 @@ import java.util.List;
 import models.Attendee;
 import models.Meeting;
 import models.User;
+import models.Attendee.MeetingResponse;
 import models.helpers.MeetingHelper;
 import DTO.AttendeeDTO;
 
@@ -22,7 +23,7 @@ public class AttendeeAssembler {
 	 */
 	public static AttendeeDTO writeDTO(Attendee attendee) {
 		AttendeeDTO attendeeDTO = new AttendeeDTO();
-		attendeeDTO.id = attendee.id;
+		attendeeDTO.id = attendee.user.id;
 		attendeeDTO.firstName = attendee.user.firstName;
 		attendeeDTO.lastName = attendee.user.lastName;
 		if (attendee.rsvp != null) {
@@ -44,7 +45,11 @@ public class AttendeeAssembler {
 		return attendeeDTOs;
 	}
 	
-	
+	/**
+	 * 
+	 * @param attendeeDTOs
+	 * @param meeting
+	 */
 	public static void createAttendees(List<AttendeeDTO> attendeeDTOs, Meeting meeting) {
 		
 		// Make the meeting owner the first attendee and set the rsvp to accept.
@@ -55,15 +60,73 @@ public class AttendeeAssembler {
 		
 		// Create the other attendees
 		for (AttendeeDTO attendeeDTO : attendeeDTOs) {
-			createAttendee(attendeeDTO, meeting);
+			if (!attendeeDTO.id.equals(ownerAttendeeDTO.id)) {
+				createAttendee(attendeeDTO, meeting);
+			}
 		}
 	}
 	
+	/**
+	 * 
+	 * @param attendeeDTO
+	 * @param meeting
+	 */
 	public static void createAttendee(AttendeeDTO attendeeDTO, Meeting meeting) {
 		User user = User.findById(attendeeDTO.id);
 		if (user != null) {
 			MeetingHelper.createAttendee(meeting, user);
 		}
+	}
+	
+	/**
+	 * Adds or removes attendees to/from a meeting.
+	 * 
+	 * Note: Does not update attendees rsvp status as this is done by the user themselves.
+	 * 
+	 * @param attendeeDTOs
+	 * @return
+	 */
+	public static void updateAttendees(Meeting meeting, List<AttendeeDTO> attendeeDTOs) {
+		
+		// If the Attendee is in the persisted list, but not the DTO list, then remove it.
+		List<Attendee> attendeesToDelete = new ArrayList<Attendee>();
+		for (Attendee attendee : meeting.attendees) {
+			if (!isAttendeeInDTOList(attendee, attendeeDTOs)) {
+				attendeesToDelete.add(attendee);
+			}
+		}
+		// Delete the attendees
+		// They cannot be deleted inside the previous loop as this operation modifies the collection.
+		for (Attendee attendee : attendeesToDelete) {
+			attendee.delete();
+		}
+		
+		// If the attendee in the DTO list is not in the persisted list, then add it.
+		for (AttendeeDTO attendeeDTO : attendeeDTOs) {
+			
+			if (!isAttendeeDTOInList(attendeeDTO, meeting.attendees)) {
+				createAttendee(attendeeDTO, meeting);
+			}
+		}
+		
+	}
+	
+	private static boolean isAttendeeInDTOList(Attendee attendee, List<AttendeeDTO> attendeeDTOList) {
+		for (AttendeeDTO attendeeDTO : attendeeDTOList) {
+			if (attendee.user.id.equals(attendeeDTO.id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean isAttendeeDTOInList(AttendeeDTO attendeeDTO, List<Attendee> attendeeList) {
+		for (Attendee attendee : attendeeList) {
+			if (attendee.user.id.equals(attendeeDTO.id)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -51,7 +51,7 @@ public class UsersTest extends FunctionalTest {
 	public void log() {
 		if (response != null) {
 			Logger.debug("Response Status: " + response.status.toString());
-			Logger.debug("Response: \n" + response.out.toString());
+			Logger.debug("Response: " + (response.out.toString().isEmpty() ? "" : "\n" + response.out.toString()) );
 		}
 	}
 

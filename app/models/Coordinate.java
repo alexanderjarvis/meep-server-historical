@@ -13,10 +13,10 @@ import play.db.jpa.Model;
 public class Coordinate extends Model {
 	
 	@Required
-	public Double longitude;
+	public Double latitude;
 	
 	@Required
-	public Double latitude;
+	public Double longitude;
 	
 	public Coordinate(Double latitude, Double longitude) {
 		this.latitude = latitude;

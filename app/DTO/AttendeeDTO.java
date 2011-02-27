@@ -6,6 +6,7 @@ package DTO;
  */
 public class AttendeeDTO {
 	
+	/** This is NOT the id of the Attendee, this is the id of the User */
 	public Long id;
 	
     public String firstName;

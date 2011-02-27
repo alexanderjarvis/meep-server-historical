@@ -65,35 +65,55 @@ public class MeetingAssembler {
 		Meeting meeting = Meeting.findById(meetingDTO.id);
 		if (meeting != null) {
 			meeting.time = meetingDTO.time;
-			//TODO: meeting.place
+			
+			// Set the id of the place to the DTO because we don't expect the client to send this
+			// information as the place belongs to the meeting anyway and the id is just used to lookup
+			// the Coordinate. An alternative would be to pass the meeting.place object into
+			// CoordinateAssembler.updateCoordinate() but this would break convention.
+			meetingDTO.place.id = meeting.place.id;
+			CoordinateAssembler.updateCoordinate(meetingDTO.place);
 			meeting.title = meetingDTO.title;
 			meeting.description = meetingDTO.description;
 			meeting.type = meetingDTO.type;
-			//TODO: meeting.attendees
+			AttendeeAssembler.updateAttendees(meeting, meetingDTO.attendees);
 			
-			meeting.save();
 			return writeDTO(meeting);
 		}
 		return null;
 	}
 	
-	public static MeetingDTO updateMeetingWithJsonObject(JsonObject body) {
-		MeetingDTO meetingDTO = meetingDTOWithJsonObject(body);
+	/**
+	 * Updates the meeting with a JsonObject
+	 * @param jsonObject
+	 * @return
+	 */
+	public static MeetingDTO updateMeetingWithJsonObject(JsonObject jsonObject) {
+		MeetingDTO meetingDTO = meetingDTOWithJsonObject(jsonObject);
 		meetingDTO = updateMeeting(meetingDTO);
 		return meetingDTO;
 	}
 	
-	public static MeetingDTO meetingDTOWithJsonObject(JsonObject body) {
+	/**
+	 * Returns a MeetingDTO object from a JsonObject, using Gson.
+	 * @param jsonObject
+	 * @return
+	 */
+	public static MeetingDTO meetingDTOWithJsonObject(JsonObject jsonObject) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
-		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(body, MeetingDTO.class);
+		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(jsonObject, MeetingDTO.class);
 		return meetingDTO;
 	}
 	
-	public static MeetingDTO meetingDTOWithJsonString(String body) {
+	/**
+	 * Returns a MeetingDTO object from a Json string, using Gson.
+	 * @param jsonString
+	 * @return
+	 */
+	public static MeetingDTO meetingDTOWithJsonString(String jsonString) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
-		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(body, MeetingDTO.class);
+		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(jsonString, MeetingDTO.class);
 		return meetingDTO;
 	}
 

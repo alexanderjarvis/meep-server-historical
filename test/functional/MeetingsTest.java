@@ -1,6 +1,8 @@
 package functional;
 
-import models.Attendee;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import models.User;
 import models.Attendee.MeetingResponse;
 
@@ -8,19 +10,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import DTO.AttendeeDTO;
-import DTO.MeetingDTO;
-
-import assemblers.MeetingAssembler;
-
-import com.google.gson.GsonBuilder;
-
 import play.Logger;
 import play.cache.Cache;
+import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 import results.RenderCustomJson;
+import DTO.AttendeeDTO;
+import DTO.MeetingDTO;
+import assemblers.MeetingAssembler;
 
 /**
  * 
@@ -64,7 +63,7 @@ public class MeetingsTest extends FunctionalTest {
 	public void log() {
 		if (response != null) {
 			Logger.debug("Response Status: " + response.status.toString());
-			Logger.debug("Response: \n" + response.out.toString());
+			Logger.debug("Response: " + (response.out.toString().isEmpty() ? "" : "\n" + response.out.toString()) );
 		}
 	}
 
@@ -79,7 +78,7 @@ public class MeetingsTest extends FunctionalTest {
 	public void testCreate() {
 		String body = "{\"time\":\"2011-06-01T12:00:00Z\","
 			+ "\"place\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
-			+ "\"attendees\":[{\"id\":" + user1.id + ",\"id\":"+user2.id+"}],"
+			+ "\"attendees\":[{\"id\":" + user1.id + "},{\"id\":" + user2.id + "}],"
 			+ "\"title\":\"Meeting title\","
 			+ "\"description\":\"Meeting description\","
 			+ "\"type\":\"Meeting type\"}";
@@ -113,16 +112,47 @@ public class MeetingsTest extends FunctionalTest {
 	}
 	
 	@Test
-	public void testUpdateMeeting() {
+	public void testUpdateMeeting() throws ParseException {
 		testCreate();
 		
     	MeetingDTO meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
 		
     	String body = "{\"id\":" + meetingDTO.id + "," 
-			+ "\"time\":\"2011-06-01T12:00:00Z\","
-			+ "\"place\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
-			+ "\"attendees\":[{\"id\":" + user1.id + ",\"id\":"+user2.id+"}],"
+			+ "\"time\":\"2011-08-01T14:00:00Z\","
+			+ "\"place\":{\"latitude\":51.416117,\"longitude\":-5.083803},"
+			+ "\"attendees\":[{\"id\":" + user1.id + "},{\"id\":" + user2.id + "}],"
 			+ "\"title\":\"Meeting title updated\","
+			+ "\"description\":\"Meeting description updated\","
+			+ "\"type\":\"Meeting type updated\"}";
+		
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+		
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + meetingDTO.id + user1Query, "application/json; charset=UTF-8", body);
+		meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
+		
+		assertIsOk(response);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		assertEquals(simpleDateFormat.parse("2011-08-01T14:00:00Z"), meetingDTO.time);
+		assertEquals(new Double(51.416117), meetingDTO.place.latitude);
+		assertEquals(new Double(-5.083803), meetingDTO.place.longitude);
+		assertEquals("Meeting title updated", meetingDTO.title);
+		assertEquals("Meeting description updated", meetingDTO.description);
+		assertEquals("Meeting type updated", meetingDTO.type);
+	}
+	
+	@Test
+	public void testUpdateMeetingAddAttendees() {
+		testCreate();
+		
+    	MeetingDTO meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
+		
+    	String body = "{\"id\":" + meetingDTO.id + ","
+    		+ "\"time\":\"2011-06-01T12:00:00Z\","
+			+ "\"place\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
+			+ "\"attendees\":[{\"id\":" + user1.id + "},{\"id\":" + user2.id + "},{\"id\":" + user3.id + "}],"
+			+ "\"title\":\"Meeting title\","
 			+ "\"description\":\"Meeting description\","
 			+ "\"type\":\"Meeting type\"}";
 		
@@ -133,8 +163,31 @@ public class MeetingsTest extends FunctionalTest {
 		meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
 		
 		assertIsOk(response);
-		assertEquals("Meeting title updated", meetingDTO.title);
-		//TODO: test updating all attributes on meeting (except owner)
+		assertEquals(3, meetingDTO.attendees.size());
+	}
+	
+	@Test
+	public void testUpdateMeetingRemoveAttendees() {
+		testCreate();
+		
+    	MeetingDTO meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
+		
+    	String body = "{\"id\":" + meetingDTO.id + ","
+			+ "\"time\":\"2011-06-01T12:00:00Z\","
+			+ "\"place\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
+			+ "\"attendees\":[{\"id\":" + user1.id + "}],"
+			+ "\"title\":\"Meeting title\","
+			+ "\"description\":\"Meeting description\","
+			+ "\"type\":\"Meeting type\"}";
+		
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+		
+		response = PUT(request, BASE_CONTROLLER_PATH + "/" + meetingDTO.id + user1Query, "application/json; charset=UTF-8", body);
+		meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
+		
+		assertIsOk(response);
+		assertEquals(1, meetingDTO.attendees.size());
 	}
 	
 	/**
@@ -201,7 +254,7 @@ public class MeetingsTest extends FunctionalTest {
 		meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
     	for (AttendeeDTO attendee : meetingDTO.attendees) {
     		if (attendee.id.equals(user2.id)) {
-    			assertEquals(MeetingResponse.YES, attendee.rsvp);
+    			assertEquals(MeetingResponse.YES.toString(), attendee.rsvp);
     		}
     	}
 	}
@@ -222,7 +275,7 @@ public class MeetingsTest extends FunctionalTest {
 		meetingDTO = MeetingAssembler.meetingDTOWithJsonString(response.out.toString());
     	for (AttendeeDTO attendee : meetingDTO.attendees) {
     		if (attendee.id.equals(user2.id)) {
-    			assertEquals(MeetingResponse.NO, attendee.rsvp);
+    			assertEquals(MeetingResponse.NO.toString(), attendee.rsvp);
     		}
     	}
 	}

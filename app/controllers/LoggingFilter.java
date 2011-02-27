@@ -32,7 +32,7 @@ public class LoggingFilter extends Controller {
 			}
 			String body = sb.toString();
 			if (body.length() > 0) {
-				Logger.debug("Request body: " + body);
+				Logger.debug("Request body: \n" + body);
 			}
 		}
 	}

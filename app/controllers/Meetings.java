@@ -78,7 +78,7 @@ public class Meetings extends AccessTokenFilter {
     		Meeting meeting = Meeting.findById(id);
     		
     		// Check meeting exists and that the id in the JSON matches the id in the URL
-    		if (meeting != null && new Long(body.get("id").getAsLong()).equals(id)) {
+    		if (meeting != null && body.get("id") != null && new Long(body.get("id").getAsLong()).equals(id)) {
     			
     			// Check the authorised user is the owner of the meeting
     			if (meeting.owner.equals(userAuth.getAuthorisedUser())) {
