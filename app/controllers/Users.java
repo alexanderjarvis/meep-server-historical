@@ -19,7 +19,7 @@ import controllers.oauth2.AccessTokenFilter;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({JSONRequestTypeFilter.class, NoCookieFilter.class})
+@With({LoggingFilter.class, JSONRequestTypeFilter.class, NoCookieFilter.class})
 public class Users extends AccessTokenFilter {
 	
 	/**
@@ -140,8 +140,6 @@ public class Users extends AccessTokenFilter {
     	}
     }
     
-    
-    
     /**
      * 
      * @param id
@@ -151,7 +149,7 @@ public class Users extends AccessTokenFilter {
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.createUserConnectionRequest(authUser, otherUser)) {
-    			renderJSON("");
+    			ok();
     		}
     	}
     	badRequest();
@@ -167,7 +165,7 @@ public class Users extends AccessTokenFilter {
     	if (otherUser != null) {
     		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
     			UserConnectionHelper.createUserConnection(authUser, otherUser);
-    			renderJSON("");
+    			ok();
     		}
     	}
     	badRequest();
@@ -182,7 +180,7 @@ public class Users extends AccessTokenFilter {
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
-    			renderJSON("");
+    			ok();
     		}
     	}
     	badRequest();

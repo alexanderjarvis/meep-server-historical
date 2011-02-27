@@ -187,7 +187,6 @@ public class UsersTest extends FunctionalTest {
 		UserConnectionHelper.removeUserConnection(user1, user2);
 		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + user1BaseQuery);
 		assertIsOk(response);
-		assertContentType("application/json", response);
 	}
 	
 	@Test

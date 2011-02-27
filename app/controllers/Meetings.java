@@ -19,7 +19,7 @@ import controllers.oauth2.AccessTokenFilter;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({JSONRequestTypeFilter.class, NoCookieFilter.class})
+@With({LoggingFilter.class, JSONRequestTypeFilter.class, NoCookieFilter.class})
 public class Meetings extends AccessTokenFilter {
 	
 	/**
@@ -107,7 +107,7 @@ public class Meetings extends AccessTokenFilter {
 			// Check meeting exists and that the Authorised user is the owner of the meeting.
 			if (meeting.owner.equals(userAuth.getAuthorisedUser())) {
 				meeting.delete();
-				renderJSON("");
+				ok();
 			} else {
 				badRequest();
 			}
@@ -125,7 +125,7 @@ public class Meetings extends AccessTokenFilter {
     	if (meeting != null) {
     		User authUser = userAuth.getAuthorisedUser();
     		if (MeetingHelper.acceptMeetingRequest(meeting, authUser)) {
-    			renderJSON("");
+    			ok();
     		} else {
     			badRequest();
     		}
@@ -142,7 +142,7 @@ public class Meetings extends AccessTokenFilter {
     	if (meeting != null) {
     		User authUser = userAuth.getAuthorisedUser();
     		if (MeetingHelper.declineMeetingRequest(meeting, authUser)) {
-    			renderJSON("");
+    			ok();
     		} else {
     			badRequest();
     		}
