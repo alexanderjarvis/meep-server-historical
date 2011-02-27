@@ -5,14 +5,11 @@ import java.util.List;
 import models.Attendee;
 import models.Meeting;
 import models.User;
-import models.Attendee.MeetingResponse;
 import models.helpers.MeetingHelper;
 import play.mvc.With;
-import results.RenderCustomJson;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import controllers.oauth2.AccessTokenFilter;
@@ -22,7 +19,7 @@ import controllers.oauth2.AccessTokenFilter;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With(JSONRequestTypeFilter.class)
+@With({JSONRequestTypeFilter.class, NoCookieFilter.class})
 public class Meetings extends AccessTokenFilter {
 	
 	/**

@@ -3,14 +3,11 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Query;
-
 import models.User;
 import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
 import play.data.validation.Valid;
-import play.db.jpa.JPA;
 import play.mvc.With;
 import DTO.UserDTO;
 import DTO.UserSummaryDTO;
@@ -22,7 +19,7 @@ import controllers.oauth2.AccessTokenFilter;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With(JSONRequestTypeFilter.class)
+@With({JSONRequestTypeFilter.class, NoCookieFilter.class})
 public class Users extends AccessTokenFilter {
 	
 	/**

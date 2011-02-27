@@ -17,7 +17,7 @@ public class JSONRequestTypeFilter extends Controller {
 	 * regardless of what it actually is.
 	 */
 	@Before
-	public static void format() {
+	protected static void format() {
 		request.format = "json";
 	}
 

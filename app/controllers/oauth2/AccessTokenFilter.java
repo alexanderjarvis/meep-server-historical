@@ -6,13 +6,13 @@ import oauth2.OAuth2Constants;
 import play.Play;
 import play.mvc.Before;
 import play.mvc.Router;
-import controllers.NoCookieFilter;
+import controllers.RenderJSONEnhancer;
 
 /**
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class AccessTokenFilter extends NoCookieFilter {
+public class AccessTokenFilter extends RenderJSONEnhancer {
 	
 	protected static CheckUserAuthentication userAuth;
 	
@@ -20,7 +20,7 @@ public class AccessTokenFilter extends NoCookieFilter {
 	 * Checks that the request is secure and therefore encrypted.
 	 */
 	@Before
-	static void checkSSL() {
+	protected static void checkSSL() {
 		
 		// Check that HTTPS is being used.
 		final boolean sslRequired = Boolean.parseBoolean(Play.configuration.getProperty(OAuth2Constants.SSL_REQUIRED, Boolean.TRUE.toString()));
@@ -33,7 +33,7 @@ public class AccessTokenFilter extends NoCookieFilter {
 	 * Checks that the request contains a valid access token.
 	 */
 	@Before
-	static void checkAccessToken() {
+	protected static void checkAccessToken() {
 		
 		// Check oauth_token present in request, if not, error
 		if (params._contains(OAuth2Constants.PARAM_OAUTH_TOKEN)) {
