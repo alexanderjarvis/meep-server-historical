@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import models.User;
 import models.helpers.UserConnectionHelper;
 import play.Logger;
@@ -34,30 +36,40 @@ public class Users extends AccessTokenFilter {
 	/**
 	 * Creates a new user in the system.
 	 * 
-	 * @param userDTO
+	 * @param body
 	 */
-    public static void create(@Valid UserDTO user) {
-    	if (validation.hasErrors()) {
-    		for (Error error : validation.errors()) {
-    			Logger.debug(error.getKey() + " : " + error.message());
-    		}
-			error(400, "Validation Errors");
-		}
+	public static void create(JsonObject body) {
     	
-    	if (user != null) {
-	    	// Check for existing users
-	    	User checkUser = User.find("byEmail", user.email).first();
-			if (checkUser != null) {
-				error(400, "Email already exists");
-			}
-	    	
-	    	// Create user
-			UserDTO newUserDTO = UserAssembler.createUser(user);
-			response.status = 201;
-			renderJSON(newUserDTO);
+    	if (body != null && body.isJsonObject()) {
+    		
+    		UserDTO userDTO = UserAssembler.userDTOWithJsonObject(body);
+    		
+    		validation.valid(userDTO);
+    		if (validation.hasErrors()) {
+        		for (Error error : validation.errors()) {
+        			Logger.debug(error.getKey() + " : " + error.message());
+        		}
+        		//TODO: output to an errors object for client parsing
+    			error(400, "Validation Errors");
+    		}
+    		
+    		if (userDTO != null) {
+    			// Check for existing users
+    	    	User checkUser = User.find("byEmail", userDTO.email).first();
+    			if (checkUser != null) {
+    				error(400, "Email already exists");
+    			}
+    	    	
+    	    	// Create user
+    			UserDTO newUserDTO = UserAssembler.createUser(userDTO);
+    			response.status = 201;
+    			renderJSON(newUserDTO);
+    		}
     	} else {
-    		error(500, "User is null");
+    		badRequest();
     	}
+    	
+    	
     }
     
     /**

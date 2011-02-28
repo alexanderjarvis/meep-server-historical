@@ -3,8 +3,13 @@ package assemblers;
 import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
+import results.RenderCustomJson;
+import DTO.MeetingDTO;
 import DTO.UserDTO;
 import assemblers.helpers.ModelMerger;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 /**
  * 
@@ -86,6 +91,18 @@ public class UserAssembler {
 		user.save();
 		
 		return writeDTO(user, true);
+	}
+	
+	/**
+	 * 
+	 * @param jsonObject
+	 * @return
+	 */
+	public static UserDTO userDTOWithJsonObject(JsonObject jsonObject) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		UserDTO userDTO = gsonBuilder.create().fromJson(jsonObject, UserDTO.class);
+		return userDTO;
 	}
 
 }

@@ -63,16 +63,17 @@ public class UsersTest extends FunctionalTest {
 	}
 
 	@Test
-	public void testCreate() {
-		user1BaseQuery = "";
+	public void testCreate() {	
+		String body = "{\"email\":\"axj7@aber.ac.uk\","
+			+ "\"firstName\":\"Alex\","
+			+ "\"lastName\":\"Jarvis\","
+			+ "\"password\":\"password\","
+			+ "\"mobileNumber\":\"123\"}";
 		
-		response = POST(BASE_CONTROLLER_PATH
-					+ "?user.email=axj7@aber.ac.uk"
-					+ "&user.password=password"
-					+ "&user.firstName=alex"
-					+ "&user.lastName=hello"
-					+ "&user.serviceName=alex"
-					+ "&user.telephone=123");
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+
+		response = POST(request, BASE_CONTROLLER_PATH, "application/json; charset=UTF-8", body);
 		
 		assertStatus(201, response);
 	}
@@ -81,16 +82,38 @@ public class UsersTest extends FunctionalTest {
 	public void testCreateErrorExistingEmail() {
 		testCreate();
 		
-		response = POST(BASE_CONTROLLER_PATH
-				+ "?user.email=axj7@aber.ac.uk"
-				+ "&user.password=password"
-				+ "&user.firstName=alex"
-				+ "&user.lastName=hello"
-				+ "&user.serviceName=alex"
-				+ "&user.telephone=123");
+		String body = "{\"email\":\"axj7@aber.ac.uk\","
+			+ "\"firstName\":\"Alex\","
+			+ "\"lastName\":\"Jarvis\","
+			+ "\"password\":\"password\","
+			+ "\"mobileNumber\":\"123\"}";
+		
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+
+		response = POST(request, BASE_CONTROLLER_PATH, "application/json; charset=UTF-8", body);
 		
 		assertStatus(400, response);
 		assertContentEquals("Email already exists", response);
+	}
+	
+	@Test
+	public void testCreateWithEmailValidationError() {
+		testCreate();
+		
+		String body = "{\"email\":\"axj7\","
+			+ "\"firstName\":\"Alex\","
+			+ "\"lastName\":\"Jarvis\","
+			+ "\"password\":\"password\","
+			+ "\"mobileNumber\":\"123\"}";
+		
+		Http.Request request = newRequest();
+		request.params.put("body", body);
+
+		response = POST(request, BASE_CONTROLLER_PATH, "application/json; charset=UTF-8", body);
+		
+		assertStatus(400, response);
+		//assertContentEquals("Email already exists", response);
 	}
 	
 	@Test

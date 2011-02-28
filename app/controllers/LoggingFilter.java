@@ -1,7 +1,9 @@
 package controllers;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import play.Logger;
@@ -27,6 +29,8 @@ public class LoggingFilter extends Controller {
 				while((line = buf.readLine()) != null) {
 					sb.append(line);
 				}
+				// Important to reset the InputStream otherwise the body cannot be bound later on.
+				request.body.reset();
 			} catch (IOException e) {
 				Logger.error(e.getLocalizedMessage());
 			}
