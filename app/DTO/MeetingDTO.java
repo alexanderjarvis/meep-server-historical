@@ -24,7 +24,5 @@ public class MeetingDTO extends Model {
 	public String title;
 	
 	public String description;
-	
-	public String type;
 
 }

@@ -35,7 +35,5 @@ public class Meeting extends Item {
 	public String title;
 	
 	public String description;
-	
-	public String type;
 
 }

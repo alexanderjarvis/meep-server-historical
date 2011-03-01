@@ -139,7 +139,6 @@ public class MeetingsTest extends FunctionalTest {
 		assertEquals(new Double(-5.083803), meetingDTO.place.longitude);
 		assertEquals("Meeting title updated", meetingDTO.title);
 		assertEquals("Meeting description updated", meetingDTO.description);
-		assertEquals("Meeting type updated", meetingDTO.type);
 	}
 	
 	@Test

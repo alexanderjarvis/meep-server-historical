@@ -28,7 +28,6 @@ public class MeetingAssembler {
 		meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
 		meetingDTO.title = meeting.title;
 		meetingDTO.description = meeting.description;
-		meetingDTO.type = meeting.type;
 		
 		return meetingDTO;
 	}
@@ -50,7 +49,6 @@ public class MeetingAssembler {
 		meeting.owner = user;
 		meeting.title = meetingDTO.title;
 		meeting.description = meetingDTO.description;
-		meeting.type = meetingDTO.type;
 		
 		// The Attendee is the owning side of the relationship, so the meeting must be saved first.
 		meeting.save();
@@ -74,7 +72,6 @@ public class MeetingAssembler {
 			CoordinateAssembler.updateCoordinate(meetingDTO.place);
 			meeting.title = meetingDTO.title;
 			meeting.description = meetingDTO.description;
-			meeting.type = meetingDTO.type;
 			AttendeeAssembler.updateAttendees(meeting, meetingDTO.attendees);
 			
 			return writeDTO(meeting);
