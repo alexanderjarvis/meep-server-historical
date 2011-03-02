@@ -32,6 +32,8 @@ public class UserDTO implements Serializable {
     
     public List<UserRequestSummaryDTO> connectionRequestsFrom;
     
+    public List<MeetingDTO> meetingsRelated;
+    
     public UserDTO() {
     }
     
