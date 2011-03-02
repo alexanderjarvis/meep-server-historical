@@ -88,26 +88,11 @@ public class Users extends AccessTokenFilter {
 		if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
 			renderJSON(UserAssembler.writeDTO(authUser, true));
     	} else {
-    		// get the user, first by ID and then by email
-    		boolean emailID = true;
-    		Long longID = null;
-    		try {
-    			longID = new Long(id);
-    			emailID = false;
-    		} catch (NumberFormatException e) {
-    			Logger.debug("User id is not a number, maybe an email");
-    		}
     		
-    		User user = null;
-    		if (emailID) {
-    			user = User.find("byEmail", id).first();
-    		} else {
-    			user = User.findById(longID);
-    		}
+    		User user = getUserFromIdOrEmail(id);
     		
     		// is the user connected?
     		if (user != null) {
-		    	
 	    		if (UserConnectionHelper.isUsersConnected(authUser, user)) {
 	    			renderJSON(UserAssembler.writeDTO(user, false));
 	    		} else {
@@ -121,35 +106,61 @@ public class Users extends AccessTokenFilter {
     
     /**
      * Update
-     * TODO: revisit to enable updating via email id.
      * 
      * @param user
      */
-    public static void update(Long id, @Valid UserDTO user) {
+    public static void update(String id, JsonObject body) {
     	
     	// Only able to update the authorised user
-    	if (id.equals(userAuth.getAuthorisedUser().id)) {
+    	User authUser = userAuth.getAuthorisedUser();
+    	User user = getUserFromIdOrEmail(id);
+    	if (user != null && user.equals(authUser)) {
     		
-	    	if (validation.hasErrors()) {
-	    		for (Error error : validation.errors()) {
-	    			Logger.debug(error.getKey() + " : " + error.message());
-	    		}
-				error(400, "Validation Errors");
-			}
-	    	
-	    	// Check for existing emails
-	    	User checkUser = User.find("byEmail", user.email).first();
-			if (checkUser != null && !id.equals(checkUser.id)) {
-				error(400, "Email already exists");
-			}
-	    	
-	    	// Update user
-	    	user.id = id;
-	    	renderJSON(UserAssembler.updateUser(user));
-	    	
-    	} else {
-    		badRequest();
+    		if (body != null && body.isJsonObject()) {
+        		
+        		UserDTO userDTO = UserAssembler.userDTOWithJsonObject(body);
+        		if (userDTO != null) {
+        			
+        			// Validation
+            		validation.valid(userDTO);
+            		if (validation.hasErrors()) {
+                		for (Error error : validation.errors()) {
+                			Logger.debug(error.getKey() + " : " + error.message());
+                		}
+                		//TODO: output to an errors object for client parsing
+            			error(400, "Validation Errors");
+            		}
+            		
+        			// Check for existing users
+        	    	User checkUser = User.find("byEmail", userDTO.email).first();
+        	    	if (checkUser != null && !id.equals(checkUser.id)) {
+        				error(400, "Email already exists");
+        			}
+        	    	
+        	    	// Update user
+        	    	userDTO.id = user.id;
+        	    	renderJSON(UserAssembler.updateUser(userDTO));
+        		}
+    		}
     	}
+    	badRequest();
+    }
+    
+    /**
+     * Deletes the connection between the authorised User and the User specified.
+     * @param id
+     */
+    public static void delete(String id) {
+    	User authUser = userAuth.getAuthorisedUser();
+    	User otherUser = getNonAuthorisedUser(id);
+    	if (otherUser != null) {
+    		if (UserConnectionHelper.removeUserConnection(authUser, otherUser)) {
+    			ok();
+    		} else {
+    			badRequest();
+    		}
+    	}
+    	notFound();
     }
     
     /**
@@ -231,6 +242,9 @@ public class Users extends AccessTokenFilter {
     }
     
     /**
+     * Returns the User where the User cannot be the authorised User.
+     * 
+     * When the id matches the authorised User, this method returns null.
      * 
      * @param id
      * @return
@@ -238,33 +252,44 @@ public class Users extends AccessTokenFilter {
     private static User getNonAuthorisedUser(String id) {
     	User authUser = userAuth.getAuthorisedUser();
     	
-    	// If the id is the authorised user (trying to add themselves)
-    	if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
-    		badRequest();
-    	} else {
-    		
-    		// determine the ID type
-    		boolean emailID = true;
-    		Long longID = null;
-    		try {
-    			longID = new Long(id);
-    			emailID = false;
-    		} catch (NumberFormatException e) {
-    			Logger.debug("User id is not a number, maybe an email");
-    		}
-    		// get the User
-    		User otherUser = null;
-    		if (emailID) {
-    			otherUser = User.find("byEmail", id).first();
-    		} else {
-    			otherUser = User.findById(longID);
-    		}
-    		if (otherUser != null) {
-    			return otherUser;
-    		}
+    	// If the id is the authorised user
+    	if (!id.equals(authUser.id.toString()) && !id.equals(authUser.email)) {
+    		return getUserFromIdOrEmail(id);
     	}
     	
     	return null;
+    }
+    
+    /**
+     * Returns the User from the id parameter in the URL. This could either be the
+     * id of type Long held against the User - or it could be their email.
+     * 
+     * @param id
+     * @return
+     */
+    private static User getUserFromIdOrEmail(String id) {
+    	// determine the ID type
+		boolean emailID = true;
+		Long longID = null;
+		try {
+			longID = new Long(id);
+			emailID = false;
+		} catch (NumberFormatException e) {
+			Logger.debug("User id is not a number, maybe an email");
+		}
+		
+		// get the User
+		User user = null;
+		if (emailID) {
+			user = User.find("byEmail", id).first();
+		} else {
+			user = User.findById(longID);
+		}
+		
+		if (user != null) {
+			return user;
+		}
+		return null;
     }
 
 }

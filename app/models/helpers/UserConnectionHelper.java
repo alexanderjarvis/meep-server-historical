@@ -63,19 +63,29 @@ public class UserConnectionHelper {
 	 * @param user1
 	 * @param user2
 	 */
-	public static void createUserConnection(User user1, User user2) {
+	public static boolean createUserConnection(User user1, User user2) {
+		if (user1.userConnectionsTo.contains(user2) && user2.userConnectionsFrom.contains(user1)) {
+			return false;
+		}
 		user1.userConnectionsTo.add(user2);
 		user1.save();
+		return true;
 	}
 	
 	/**
 	 * 
 	 * @param user1
 	 * @param user2
+	 * @return TODO
 	 */
-	public static void removeUserConnection(User user1, User user2) {
-		user1.userConnectionsTo.remove(user2);
-		user1.save();
+	public static boolean removeUserConnection(User user1, User user2) {
+		
+		if (user1.userConnectionsTo.contains(user2) && user2.userConnectionsFrom.contains(user1)) {
+			user1.userConnectionsTo.remove(user2);
+			user1.save();
+			return true;
+		}
+		return false;
 	}
 	
 	/**
