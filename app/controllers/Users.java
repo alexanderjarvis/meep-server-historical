@@ -213,12 +213,12 @@ public class Users extends AccessTokenFilter {
      * For now, just search by firstname
      * @param search
      */
-    public static void searchUser(String search) {
-    	search = search.trim();
-    	String firstName = search;
-    	String lastName = search;
+    public static void searchUser(String query) {
+    	query = query.trim();
+    	String firstName = query;
+    	String lastName = query;
     	
-    	String[] names = search.split("\\s");
+    	String[] names = query.split("\\s");
     	if (names.length >= 2) {
     		firstName = names[0];
     		lastName = names[1];

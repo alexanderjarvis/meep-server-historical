@@ -29,7 +29,7 @@ DELETE	/users/{id}/?							Users.delete
 POST	/users/{id}/add/?						Users.addUserRequest
 POST	/users/{id}/accept/?					Users.acceptUserRequest
 POST	/users/{id}/decline/?					Users.declineUserRequest
-GET		/search/users/{search}					Users.searchUser
+GET		/search/users/?							Users.searchUser
 
 # Meetings
 GET		/meetings/?								Meetings.index
