@@ -30,7 +30,7 @@ public class Attendee extends Model {
 		YES, MAYBE, NO
 	}
 	
-	
+	@Override
 	public GenericModel delete() {
 		
 		// Remove 

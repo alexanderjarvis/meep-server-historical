@@ -35,5 +35,13 @@ public class Meeting extends Item {
 	public String title;
 	
 	public String description;
+	
+	@Override
+	public GenericModel delete() {
+		for (Attendee attendee : attendees) {
+			attendee.delete();
+		}
+		return super.delete();
+	}
 
 }
