@@ -211,9 +211,9 @@ public class Users extends AccessTokenFilter {
     
     /**
      * For now, just search by firstname
-     * @param search
+     * @param query
      */
-    public static void searchUser(String query) {
+    public static void searchUsers(String query) {
     	query = query.trim();
     	String firstName = query;
     	String lastName = query;

@@ -302,70 +302,70 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testSearchUserByFirstName() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Bob" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "Bob");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByFirstNameLowerCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "bob" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "Bob");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByFirstNameUpperCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "BOB" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "BOB");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByLastName() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Smith" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "Smith");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByLastNameLowerCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "smith" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "smith");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByLastNameUpperCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "SMITH" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "SMITH");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByActualName() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "Bob Smith" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "Bob Smith");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByActualNameLowerCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "bob smith" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "bob smith");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserByActualNameUpperCase() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "BOB SMITH" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "BOB SMITH");
 		assertIsOk(response);
 		assertContentMatch("(.)*firstName\":\"Bob\",\"lastName\":\"Smith\"(.)*", response);
 	}
 	
 	@Test
 	public void testSearchUserNotExist() {
-		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + "William" + user1Query);
+		response = GET("/search" + BASE_CONTROLLER_PATH + "/" + user1Query + "&query=" + "William");
 		assertStatus(404, response);
 	}
 }
