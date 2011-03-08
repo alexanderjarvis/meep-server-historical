@@ -1,6 +1,5 @@
 package DTO;
 
-
 public class CoordinateDTO {
 	
 	public Long id;

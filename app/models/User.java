@@ -23,7 +23,7 @@ import play.db.jpa.JPA;
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 @Entity
-public class User extends Item implements Comparable {
+public class User extends Item {
 	
 	@Email
 	@Required
@@ -70,6 +70,9 @@ public class User extends Item implements Comparable {
     @ManyToMany(mappedBy = "userConnectionRequestsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<User> userConnectionRequestsFrom = new ArrayList<User>();
     
+    @OneToMany(mappedBy="user")
+    public List<UserLocation> locationHistory = new ArrayList<UserLocation>();
+    
     @Override
 	public GenericModel delete() {
 		
@@ -88,10 +91,4 @@ public class User extends Item implements Comparable {
 		return super.delete();
 	}
     
-    //TODO: implement this so that users can be alphabetically sorted
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

@@ -25,7 +25,7 @@ import com.google.gson.JsonParser;
  */
 
 @Global
-public class GsonBinder implements TypeBinder<JsonObject> {
+public class GsonObjectBinder implements TypeBinder<JsonObject> {
 
     public Object bind(String name, Annotation[] antns, String value, Class type) throws Exception {
         return new JsonParser().parse(value);

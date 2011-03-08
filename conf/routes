@@ -11,14 +11,14 @@ GET     /public/                                staticDir:public
 # Catch all
 #*       /{controller}/{action}                  {controller}.{action}
 
-#
-GET		/oauth2/?								oauth2.AccessToken.auth
-POST	/oauth2/?								oauth2.AccessToken.auth
-DELETE	/oauth2/?								oauth2.AccessTokenDestroy.destroy
-
 # 
 # Application specific routes
 #
+
+# Authentication
+GET		/oauth2/?								oauth2.AccessToken.auth
+POST	/oauth2/?								oauth2.AccessToken.auth
+DELETE	/oauth2/?								oauth2.AccessTokenDestroy.destroy
 
 # Users
 GET		/users/?								Users.index
@@ -29,7 +29,7 @@ DELETE	/users/{id}/?							Users.delete
 POST	/users/{id}/add/?						Users.addUserRequest
 POST	/users/{id}/accept/?					Users.acceptUserRequest
 POST	/users/{id}/decline/?					Users.declineUserRequest
-GET		/search/users/?							Users.searchUser
+GET		/search/users/?							Users.searchUsers
 
 # Meetings
 GET		/meetings/?								Meetings.index
@@ -40,7 +40,6 @@ DELETE 	/meetings/{id}/?						Meetings.delete
 POST	/meetings/{id}/accept/?					Meetings.acceptMeetingRequest
 POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
 
-
-
-# test
-GET		/long/									LongPoll.index
+# Locations
+GET		/locations/?							Locations.index
+POST	/locations/?							Locations.update
