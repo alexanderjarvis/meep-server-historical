@@ -21,7 +21,7 @@ import controllers.oauth2.AccessTokenFilter;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({LoggingFilter.class, JSONRequestTypeFilter.class, NoCookieFilter.class})
+@With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
 public class Users extends AccessTokenFilter {
 	
 	/**

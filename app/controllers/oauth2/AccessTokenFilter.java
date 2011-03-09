@@ -17,19 +17,6 @@ public class AccessTokenFilter extends RenderJSONEnhancer {
 	protected static CheckUserAuthentication userAuth;
 	
 	/**
-	 * Checks that the request is secure and therefore encrypted.
-	 */
-	@Before
-	protected static void checkSSL() {
-		
-		// Check that HTTPS is being used.
-		final boolean sslRequired = Boolean.parseBoolean(Play.configuration.getProperty(OAuth2Constants.SSL_REQUIRED, Boolean.TRUE.toString()));
-		if (sslRequired && !request.secure) {
-			error(400, "HTTPS required");
-		}
-	}
-	
-	/**
 	 * Checks that the request contains a valid access token.
 	 */
 	@Before
