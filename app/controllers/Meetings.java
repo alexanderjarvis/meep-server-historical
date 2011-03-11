@@ -56,12 +56,15 @@ public class Meetings extends AccessTokenFilter {
      */
     public static void show(Long id) {
     	
-    	// Check the authorised user is able to view the meeting
-    	User authUser = userAuth.getAuthorisedUser();
-    	for (Attendee attendee : authUser.meetingsRelated) {
-    		if (id.equals(attendee.meeting.id)) {
-    			renderJSON(MeetingAssembler.writeDTO(attendee.meeting));
-    		}
+    	Meeting meeting = Meeting.findById(id);
+    	if (meeting != null) {
+	    	// Check the authorised user is able to view the meeting
+	    	User authUser = userAuth.getAuthorisedUser();
+	    	for (Attendee attendee : meeting.attendees) {
+	    		if (attendee.user.id.equals(authUser.id)) {
+	    			renderJSON(MeetingAssembler.writeDTO(meeting));
+	    		}
+	    	}
     	}
     	
     	notFound();
