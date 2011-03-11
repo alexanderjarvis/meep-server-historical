@@ -227,7 +227,7 @@ public class Users extends AccessTokenFilter {
     	// TODO: move this query away from the controller
     	List<User> userResults = User.find("select u from User u "
     			+ "where LOWER(u.firstName) like LOWER(?) "
-    			+ "or LOWER(u.lastName) like LOWER(?)", firstName+"%", lastName+"%").fetch();
+    			+ "or LOWER(u.lastName) like LOWER(?)", firstName+"%", lastName+"%").fetch(50);
     	
     	if (userResults != null && userResults.size() > 0) {
     		List<UserSummaryDTO> userSummaryList = new ArrayList<UserSummaryDTO>();

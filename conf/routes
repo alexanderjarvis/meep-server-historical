@@ -41,5 +41,8 @@ POST	/meetings/{id}/accept/?					Meetings.acceptMeetingRequest
 POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
 
 # Locations
-GET		/locations/?							Locations.index
+GET		/locations/?							Locations.recent
 POST	/locations/?							Locations.update
+
+
+GET     /push/?                                 PushController.push

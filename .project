@@ -20,16 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.playframework.playclipse.playNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>public/crud</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/crud/public</location>
-		</link>
-		<link>
-			<name>public/secure</name>
-			<type>2</type>
-			<location>/Users/alex/bin/play-1.0.3.2/modules/secure/public</location>
-		</link>
-	</linkedResources>
 </projectDescription>

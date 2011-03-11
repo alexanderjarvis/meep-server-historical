@@ -7,6 +7,10 @@ import play.data.validation.Required;
 import models.Coordinate;
 import models.User;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class UserLocationDTO {
 	
 	@Required

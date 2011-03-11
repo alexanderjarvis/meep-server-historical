@@ -1,13 +1,19 @@
 package controllers;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import models.User;
 import play.Logger;
 import play.data.validation.Error;
 import play.mvc.With;
+import DTO.RecentUserLocationsDTO;
 import DTO.UserLocationDTO;
-import assemblers.LocationsAssembler;
+import assemblers.UserLocationAssembler;
 
 import com.google.gson.JsonArray;
 
@@ -23,9 +29,10 @@ public class Locations extends AccessTokenFilter {
 	/**
 	 * 
 	 */
-    public static void index() {
+    public static void recent() {
     	User authUser = userAuth.getAuthorisedUser();
-        ok();
+    	List<RecentUserLocationsDTO> recentUserLocations = UserLocationAssembler.recentUserLocations(authUser);
+    	renderJSON(recentUserLocations);
     }
     
     /**
@@ -35,7 +42,7 @@ public class Locations extends AccessTokenFilter {
         	
     	if (body != null && body.isJsonArray()) {
     		
-    		List<UserLocationDTO> userLocationDTOs = LocationsAssembler.userLocationDTOsWithJsonArray(body);
+    		List<UserLocationDTO> userLocationDTOs = UserLocationAssembler.userLocationDTOsWithJsonArray(body);
     		
     		validation.valid(userLocationDTOs);
     		if (validation.hasErrors()) {
@@ -48,7 +55,7 @@ public class Locations extends AccessTokenFilter {
     		// Update
     		if (userLocationDTOs != null) {
     			User authUser = userAuth.getAuthorisedUser();
-    			List<UserLocationDTO> createdUserLocations = LocationsAssembler.createUserLocations(userLocationDTOs, authUser);
+    			List<UserLocationDTO> createdUserLocations = UserLocationAssembler.createUserLocations(userLocationDTOs, authUser);
     			//TODO: notify observers of this users location
     			
     			renderJSON(createdUserLocations);
