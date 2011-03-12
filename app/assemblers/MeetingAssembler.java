@@ -7,10 +7,9 @@ import models.Attendee;
 import models.Meeting;
 import models.User;
 import results.RenderCustomJson;
+import utils.GsonFactory;
 import DTO.MeetingDTO;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.*;
 
 /**
@@ -96,8 +95,7 @@ public class MeetingAssembler {
 	 * @return
 	 */
 	public static MeetingDTO meetingDTOWithJsonObject(JsonObject jsonObject) {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		GsonBuilder gsonBuilder = GsonFactory.gsonBuilder();
 		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(jsonObject, MeetingDTO.class);
 		return meetingDTO;
 	}
@@ -108,8 +106,7 @@ public class MeetingAssembler {
 	 * @return
 	 */
 	public static MeetingDTO meetingDTOWithJsonString(String jsonString) {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		GsonBuilder gsonBuilder = GsonFactory.gsonBuilder();
 		MeetingDTO meetingDTO = gsonBuilder.create().fromJson(jsonString, MeetingDTO.class);
 		return meetingDTO;
 	}

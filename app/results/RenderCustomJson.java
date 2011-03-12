@@ -12,6 +12,7 @@ import play.mvc.Http.Request;
 import play.mvc.Http.Response;
 import play.mvc.results.RenderJson;
 import play.mvc.results.Result;
+import utils.GsonFactory;
 
 /**
  * A modified version of play.mvc.results.RenderJson which sets the date format
@@ -21,20 +22,16 @@ import play.mvc.results.Result;
  */
 public class RenderCustomJson extends Result {	
 	
-	public static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	String json;
 
 	public RenderCustomJson(Object o) {
-		GsonBuilder gson = new GsonBuilder();
-		gson.setDateFormat(ISO8601_DATE_FORMAT);
-		json = gson.create().toJson(o);
+		json = GsonFactory.gsonBuilder().create().toJson(o);
 	}
     
     public RenderCustomJson(Object o, JsonSerializer<?>... adapters) {
-        GsonBuilder gson = new GsonBuilder();
-        gson.setDateFormat(ISO8601_DATE_FORMAT);
+        GsonBuilder gson = GsonFactory.gsonBuilder();
         for(Object adapter : adapters) {
-            Type t = getMethod(adapter.getClass(), "serialize").getParameterTypes()[0];;
+            Type t = getMethod(adapter.getClass(), "serialize").getParameterTypes()[0];
             gson.registerTypeAdapter(t, adapter);
         }
         json = gson.create().toJson(o);
@@ -52,9 +49,7 @@ public class RenderCustomJson extends Result {
             throw new UnexpectedException(e);
         }
     }
-    
-    //
-    
+       
     static Method getMethod(Class<?> clazz, String name) {
         for(Method m : clazz.getDeclaredMethods()) {
             if(m.getName().equals(name)) {

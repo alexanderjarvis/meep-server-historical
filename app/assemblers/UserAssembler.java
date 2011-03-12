@@ -4,6 +4,7 @@ import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
 import results.RenderCustomJson;
+import utils.GsonFactory;
 import DTO.MeetingDTO;
 import DTO.UserDTO;
 import assemblers.helpers.ModelMerger;
@@ -100,8 +101,7 @@ public class UserAssembler {
 	 * @return
 	 */
 	public static UserDTO userDTOWithJsonObject(JsonObject jsonObject) {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		GsonBuilder gsonBuilder = GsonFactory.gsonBuilder();
 		UserDTO userDTO = gsonBuilder.create().fromJson(jsonObject, UserDTO.class);
 		return userDTO;
 	}

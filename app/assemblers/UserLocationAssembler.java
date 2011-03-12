@@ -12,6 +12,7 @@ import models.Meeting;
 import models.User;
 import models.UserLocation;
 import results.RenderCustomJson;
+import utils.GsonFactory;
 import DTO.RecentUserLocationsDTO;
 import DTO.UserLocationDTO;
 
@@ -95,8 +96,7 @@ public class UserLocationAssembler {
 	 * @return
 	 */
 	public static List<UserLocationDTO> userLocationDTOsWithJsonArray(JsonArray jsonArray) {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		GsonBuilder gsonBuilder = GsonFactory.gsonBuilder();
 		Type collectionType = new TypeToken<List<UserLocationDTO>>(){}.getType();
 		List<UserLocationDTO> userLocationDTOs = gsonBuilder.create().fromJson(jsonArray, collectionType);
 		return userLocationDTOs;
