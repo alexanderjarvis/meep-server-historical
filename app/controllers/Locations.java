@@ -1,11 +1,6 @@
 package controllers;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import models.User;
 import play.Logger;
@@ -64,5 +59,5 @@ public class Locations extends AccessTokenFilter {
     	
     	badRequest();
     }
-
+    
 }
