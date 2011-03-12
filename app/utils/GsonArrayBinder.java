@@ -1,6 +1,7 @@
 package utils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 import play.data.binding.Global;
 import play.data.binding.TypeBinder;
@@ -17,7 +18,8 @@ import com.google.gson.JsonParser;
 @Global
 public class GsonArrayBinder implements TypeBinder<JsonArray> {
 
-    public Object bind(String name, Annotation[] antns, String value, Class type) throws Exception {
-        return new JsonParser().parse(value);
-    }
+	@Override
+	public Object bind(String arg0, Annotation[] arg1, String arg2, Class arg3, Type arg4) throws Exception {
+		return new JsonParser().parse(arg2);
+	}
 }
