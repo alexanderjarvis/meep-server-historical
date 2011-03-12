@@ -69,7 +69,7 @@ public class UserAssembler {
 		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
 		user.accessToken = AccessTokenGenerator.generate();
 		
-		user.save();
+		user.create();
 		
 		return writeDTO(user, true);
 	}
