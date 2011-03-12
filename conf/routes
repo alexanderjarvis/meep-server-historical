@@ -44,5 +44,4 @@ POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
 GET		/locations/?							Locations.recent
 POST	/locations/?							Locations.update
 
-
-GET     /push/?                                 PushController.push
+WS      /websocket/locations/socket             websockets.LocationsSocket.connect
