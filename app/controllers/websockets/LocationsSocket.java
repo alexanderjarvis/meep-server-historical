@@ -83,7 +83,7 @@ public class LocationsSocket extends WebSocketController {
             for (HeartbeatEvent event : ClassOf(HeartbeatEvent.Pulse.class).match(e._2)) {
             	Logger.info("HeartbeatEvent Pulse from timer");
             	heartbeatMonitor.setResponse(false);
-            	outbound.send(MessageWrapper.unwrap("~h~PING"));
+            	outbound.send(MessageWrapper.wrap("~h~PING"));
             	Logger.info("Heartbeat sent");
             }
             
