@@ -19,7 +19,6 @@ import play.mvc.WebSocketController;
 import play.mvc.Http.WebSocketClose;
 import play.mvc.Http.WebSocketEvent;
 import utils.GsonFactory;
-
 import DTO.UserLocationDTO;
 import assemblers.UserLocationAssembler;
 
