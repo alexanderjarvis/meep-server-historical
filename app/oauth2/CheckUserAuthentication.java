@@ -38,24 +38,24 @@ public class CheckUserAuthentication   {
 	
 	/**
 	 * 
-	 * @param access_token
+	 * @param accessToken
 	 * @return
 	 */
-	public boolean validToken(String access_token) {
+	public boolean validToken(String accessToken) {
 		// Get the UserDTO from Cache using the access_token
-	    UserDTO userDTO = Cache.get(OAuth2Constants.CACHE_PREFIX + access_token, UserDTO.class);
+	    UserDTO userDTO = Cache.get(OAuth2Constants.CACHE_PREFIX + accessToken, UserDTO.class);
 	    if (userDTO != null) {
 	    	// If the UserDTO exists in then the token is valid set the instance variable, return true
 	    	this.authorisedUserDTO = userDTO;
 	    	return true;
 	    } else {
 	    	// If the UserDTO does not exist in the Cache, then find it in the database.
-	    	User user = User.find("byAccessToken", access_token).first();
+	    	User user = User.find("byAccessToken", accessToken).first();
 	    	if (user != null) {
 	    		// If in the database, then set the instance variable, Cache the DTO, return true
 	    		this.authorisedUser = user;
 	    		userDTO = getAuthorisedUserDTO();
-	    		Cache.set(OAuth2Constants.CACHE_PREFIX + access_token, userDTO, OAuth2Constants.CACHE_TIME);
+	    		Cache.set(OAuth2Constants.CACHE_PREFIX + accessToken, userDTO, OAuth2Constants.CACHE_TIME);
 	    		return true;
 	    	}	
 	    }

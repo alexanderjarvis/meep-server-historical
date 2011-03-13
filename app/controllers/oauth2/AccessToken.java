@@ -3,6 +3,8 @@ package controllers.oauth2;
 import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.CheckUserAuthentication;
+import oauth2.OAuth2Constants;
+import play.cache.Cache;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -37,18 +39,23 @@ public class AccessToken extends Controller {
     	}
     		
     	if (grant_type.equals("password")) {
+    		
     		// check user name and password
     		CheckUserAuthentication checkUserAuthentication = new CheckUserAuthentication();
     		if (checkUserAuthentication.validCredentials(client_id, client_secret)) {
-    			// if correct, generate access token
-        		String accessToken = AccessTokenGenerator.generate();
-        		
+    			
+    			// Invalidate old token
         		User user = checkUserAuthentication.getAuthorisedUser();
+        		Cache.safeDelete(OAuth2Constants.CACHE_PREFIX + user.accessToken);
         		
-        		user.accessToken = accessToken;
+        		// Generate, persist and set new token to cache
+        		user.accessToken = AccessTokenGenerator.generate();
         		user.save();
         		
-        		renderJSON(accessToken);
+        		Cache.set(OAuth2Constants.CACHE_PREFIX + user.accessToken, checkUserAuthentication.getAuthorisedUserDTO(), OAuth2Constants.CACHE_TIME);
+        		
+        		renderJSON(user.accessToken);
+        		
     		} else {
     			error(400, "invalid credentials");
     		}
