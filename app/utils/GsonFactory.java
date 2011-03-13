@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
  */
 public class GsonFactory {
 	
-	private static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	public static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	
 	public static GsonBuilder gsonBuilder() {
 		GsonBuilder gson = new GsonBuilder();

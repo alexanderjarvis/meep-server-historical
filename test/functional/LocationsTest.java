@@ -12,15 +12,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import DTO.MeetingDTO;
-import assemblers.MeetingAssembler;
-
 import play.Logger;
 import play.cache.Cache;
 import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
-import results.RenderCustomJson;
+import utils.GsonFactory;
+import DTO.MeetingDTO;
+import assemblers.MeetingAssembler;
 
 public class LocationsTest extends FunctionalTest {
 	
@@ -72,7 +71,7 @@ public class LocationsTest extends FunctionalTest {
 		Calendar fifteenMinsFromNow = new GregorianCalendar();
 		fifteenMinsFromNow.setTime(now);
 		fifteenMinsFromNow.add(Calendar.MINUTE, 15);
-		DateFormat dateFormat = new SimpleDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
 		String fifteenMinsFromNowString = dateFormat.format(fifteenMinsFromNow.getTime());
 		
 		String body = "{\"time\":\"" + fifteenMinsFromNowString + "\","
@@ -104,7 +103,7 @@ public class LocationsTest extends FunctionalTest {
 
 	@Test
 	public void testUpdate() {
-		DateFormat dateFormat = new SimpleDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
 		String dateNow = dateFormat.format(new Date());
 		String body = "[{\"time\":\"" + dateNow + "\","
 			+ "\"coordinate\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
@@ -124,7 +123,7 @@ public class LocationsTest extends FunctionalTest {
 	
 	@Test
 	public void testUpdateUser2() {
-		DateFormat dateFormat = new SimpleDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
 		String dateNow = dateFormat.format(new Date());
 		String body = "[{\"time\":\"" + dateNow + "\","
 			+ "\"coordinate\":{\"latitude\":52.416117,\"longitude\":-4.083803},"

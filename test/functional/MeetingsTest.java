@@ -12,11 +12,10 @@ import org.junit.Test;
 
 import play.Logger;
 import play.cache.Cache;
-import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
-import results.RenderCustomJson;
+import utils.GsonFactory;
 import DTO.AttendeeDTO;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
@@ -133,7 +132,7 @@ public class MeetingsTest extends FunctionalTest {
 		
 		assertIsOk(response);
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RenderCustomJson.ISO8601_DATE_FORMAT);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
 		assertEquals(simpleDateFormat.parse("2011-08-01T14:00:00Z"), meetingDTO.time);
 		assertEquals(new Double(51.416117), meetingDTO.place.latitude);
 		assertEquals(new Double(-5.083803), meetingDTO.place.longitude);
