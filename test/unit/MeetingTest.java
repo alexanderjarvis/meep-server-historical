@@ -26,19 +26,19 @@ public class MeetingTest extends UnitTest {
 		Fixtures.deleteAll();
 		
 		User owner = new User();
-		owner.save();
+		owner.create();
 		Date today = new Date();
 		Coordinate place = new Coordinate(new Double(2), new Double(2));
-		place.save();
+		place.create();
 		
 		meeting = new Meeting();
 		meeting.time = today;
 		meeting.place = place;
 		meeting.owner = owner;
-		meeting.save();
+		meeting.create();
 		
 		user = new User();
-		user.save();
+		user.create();
 	}
 	
 	/**

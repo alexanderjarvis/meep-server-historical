@@ -1,5 +1,4 @@
 package unit;
-import static org.junit.Assert.assertNotNull;
 import models.User;
 
 import org.junit.Before;
@@ -16,7 +15,7 @@ public class UserTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAllModels();
+		Fixtures.deleteAll();
 	}
 	
 	@Test

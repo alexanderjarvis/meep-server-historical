@@ -15,7 +15,7 @@ public class MeetingHelper {
 		Attendee attendee = new Attendee();
 		attendee.meeting = meeting;
 		attendee.user = user;
-		attendee.save();
+		attendee.create();
 		meeting.attendees.add(attendee);
 		meeting.save();
 		user.meetingsRelated.add(attendee);

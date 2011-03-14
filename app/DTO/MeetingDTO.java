@@ -9,7 +9,7 @@ import play.db.jpa.Model;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-public class MeetingDTO extends Model {
+public class MeetingDTO {
 	
 	public Long id;
 	
