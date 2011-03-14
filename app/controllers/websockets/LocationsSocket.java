@@ -117,7 +117,7 @@ public class LocationsSocket extends WebSocketController {
             	
             	String jsonString = objectToJsonString(otherUserUpdated.locations);
             	Logger.info("Locations socket sending:\n" + jsonString);
-            	outbound.send(MessageWrapper.wrap(jsonString));
+            	outbound.send(MessageWrapper.wrap("~j~" + jsonString));
             }
             
             for(LocationEvent.Connect connect : ClassOf(LocationEvent.Connect.class).match(e._3)) {
