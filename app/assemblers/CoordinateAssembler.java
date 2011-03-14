@@ -27,7 +27,7 @@ public class CoordinateAssembler {
 	
 	public static Coordinate createCoordinate(CoordinateDTO coordinateDTO) {
 		Coordinate coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
-		coordinate.save();
+		coordinate.create();
 		return coordinate;
 	}
 	

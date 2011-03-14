@@ -2,7 +2,6 @@ package controllers.websockets;
 
 import static play.libs.F.Matcher.ClassOf;
 import static play.libs.F.Matcher.Equals;
-import static play.libs.F.Matcher.StartsWith;
 import static play.mvc.Http.WebSocketEvent.SocketClosed;
 import static play.mvc.Http.WebSocketEvent.TextFrame;
 
@@ -19,6 +18,7 @@ import play.mvc.WebSocketController;
 import play.mvc.Http.WebSocketClose;
 import play.mvc.Http.WebSocketEvent;
 import utils.GsonFactory;
+import DTO.UserDTO;
 import DTO.UserLocationDTO;
 import assemblers.UserLocationAssembler;
 
@@ -39,17 +39,19 @@ public class LocationsSocket extends WebSocketController {
 		
 		// If not a valid token then disconnect the stream
 		CheckUserAuthentication userAuth = new CheckUserAuthentication();
+		UserDTO currentUserDTO = null;
 		if (!userAuth.validToken(params.get(OAuth2Constants.PARAM_OAUTH_TOKEN))) {
 			disconnect();
+		} else {
+			currentUserDTO = userAuth.getAuthorisedUserDTO();
 		}
+        
+        // Socket connected, get the location stream and events for this user.
+		LocationStreamManager locationStreamManager = LocationStreamManager.getInstance();
+		EventStream<LocationEvent> locationStream = locationStreamManager.getLocationStreamForUserWithId(currentUserDTO.id);
 		
-		// TODO: make multiple streams for different meetings / or users
-		LocationStream locationStream = LocationStream.getInstance();
         
-        // Socket connected, join the chat room
-        EventStream<LocationStream.Event> locationMessagesStream = locationStream.join("user");
-        
-        //
+        // Create a new heartbeat stream for this socket
         EventStream<HeartbeatEvent> heartbeatStream = new EventStream<HeartbeatEvent>();
         
         HeartbeatTask heartbeatMonitor = new HeartbeatTask(heartbeatStream);
@@ -59,16 +61,15 @@ public class LocationsSocket extends WebSocketController {
 		// Loop while the socket is open
         while(inbound.isOpen()) {      	
         	
-        	Either3<WebSocketEvent, HeartbeatEvent, LocationStream.Event> e = await(Promise.waitEither(
+        	Either3<WebSocketEvent, HeartbeatEvent, LocationEvent> e = await(Promise.waitEither(
         		inbound.nextEvent(),
         		heartbeatStream.nextEvent(),
-        		locationMessagesStream.nextEvent()
+        		locationStream.nextEvent()
         	));
         	
         	// Case: The socket has been closed
             for(WebSocketClose closed : SocketClosed.match(e._1)) {
             	Logger.info("web socket closed");
-            	locationStream.leave("user");
                 disconnect();
             }
             
@@ -92,36 +93,48 @@ public class LocationsSocket extends WebSocketController {
             	disconnect();
             }
             
-            // Case: update location message sent from client (only 1 type of message can be sent - location update).
+            // Case: Update location message sent from client (only 1 type of message can be sent - location update).
             // This message is sent as a Json Array and so we can specify that it will always start with '['.
-            for(String text: TextFrame.and(StartsWith("[")).match(e._1)) {
-            	String message = MessageWrapper.unwrap(text);
-            	JsonArray jsonArray = stringToJsonArray(message);
-            	if (jsonArray != null && jsonArray.isJsonArray()) {
-            		// Obtain DTOs from the JsonArray
-            		List<UserLocationDTO> userLocationDTOs = UserLocationAssembler.userLocationDTOsWithJsonArray(jsonArray);
-            		// Persist locations with the DTOs
-            		List<UserLocationDTO> createdUserLocationDTOs = UserLocationAssembler.createUserLocations(userLocationDTOs, userAuth.getAuthorisedUser());
-            		Logger.info("Created User Locations size: " +  createdUserLocationDTOs.size());
+            for(String message: TextFrame.match(e._1)) {
+            	String unwrappedMessage = MessageWrapper.unwrap(message);
+            	if (isJson(unwrappedMessage)) {
+            		String jsonString = removeJsonHeader(unwrappedMessage);
+	            	Logger.info("message received:" + jsonString);
+	            	JsonArray jsonArray = stringToJsonArray(jsonString);
+	            	if (jsonArray != null && jsonArray.isJsonArray()) {
+	            		// Obtain DTOs from the JsonArray
+	            		List<UserLocationDTO> userLocationDTOs = UserLocationAssembler.userLocationDTOsWithJsonArray(jsonArray);
+	            		// Persist locations with the DTOs
+	            		List<UserLocationDTO> createdUserLocationDTOs = UserLocationAssembler.createUserLocations(userLocationDTOs, currentUserDTO);
+	            		Logger.info("Created User Locations size: " +  createdUserLocationDTOs.size());
+	            		LocationStreamHelper.publishNewUserLocations(createdUserLocationDTOs, currentUserDTO);
+	            	}
             	}
             }
-            
-            // Case: Someone joined the room
-            for(LocationStream.Join joined: ClassOf(LocationStream.Join.class).match(e._2)) {
-                outbound.send(MessageWrapper.wrap("join:" + joined.user));
+                        
+            // Case: Another user has updated their locations and it is on this users stream.
+            for(LocationEvent.OtherUserUpdated otherUserUpdated : ClassOf(LocationEvent.OtherUserUpdated.class).match(e._3)) {
+            	
+            	String jsonString = objectToJsonString(otherUserUpdated.locations);
+            	Logger.info("Locations socket sending:\n" + jsonString);
+            	outbound.send(MessageWrapper.wrap(jsonString));
             }
             
-            // Case: New message on the chat room
-            for(LocationStream.Message message: ClassOf(LocationStream.Message.class).match(e._2)) {
-                outbound.send("message:%s:%s", message.user, message.text);
+            for(LocationEvent.Connect connect : ClassOf(LocationEvent.Connect.class).match(e._3)) {
+            	Logger.info("CONNECT");
             }
             
-            // Case: Someone left the room
-            for(LocationStream.Leave left: ClassOf(LocationStream.Leave.class).match(e._2)) {
-                outbound.send("leave:%s", left.user);
-            }
+            
         } // end while socket open
         
+	}
+	
+	private static boolean isJson(String message) {
+		return MessageWrapper.unwrap(message).startsWith("~j~");
+	}
+	
+	private static String removeJsonHeader(String message) {
+		return message.substring(3);
 	}
 	
 	/**

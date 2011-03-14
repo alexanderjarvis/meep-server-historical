@@ -11,9 +11,9 @@ import models.Attendee;
 import models.Meeting;
 import models.User;
 import models.UserLocation;
-import results.RenderCustomJson;
 import utils.GsonFactory;
 import DTO.RecentUserLocationsDTO;
+import DTO.UserDTO;
 import DTO.UserLocationDTO;
 
 import com.google.gson.GsonBuilder;
@@ -57,11 +57,13 @@ public class UserLocationAssembler {
 	}
 	
 	/**
+	 * This method is private because it does not notify other users location streams and is
+	 * always intended to be called internally by createUserLocations()
 	 * 
 	 * @param userLocationDTO
 	 * @param user
 	 */
-	public static UserLocationDTO createUserLocation(UserLocationDTO userLocationDTO, User user) {
+	private static UserLocation createUserLocation(UserLocationDTO userLocationDTO, User user) {
 		UserLocation userLocation = new UserLocation();
 		userLocation.user = user;
 		userLocation.time = userLocationDTO.time;
@@ -71,22 +73,27 @@ public class UserLocationAssembler {
 		userLocation.trueHeading = userLocationDTO.trueHeading;
 		userLocation.horizontalAccuracy = userLocationDTO.horizontalAccuracy;
 		userLocation.verticalAccuracy = userLocationDTO.verticalAccuracy;
-		userLocation.save();
-		user.locationHistory.add(userLocation);
-		user.save();
-		return writeDTO(userLocation);
+		userLocation.create();
+		return userLocation;
 	}
 	
 	/**
 	 * 
 	 * @param userLocationDTOs
 	 */
-	public static List<UserLocationDTO> createUserLocations(List<UserLocationDTO> userLocationDTOs, User user) {
+	public static List<UserLocationDTO> createUserLocations(List<UserLocationDTO> userLocationDTOs, UserDTO userDTO) {
+		
+		User user = User.findById(userDTO.id);
 		
 		List<UserLocationDTO> createdUserLocationDTOs = new ArrayList<UserLocationDTO>();
-		for (UserLocationDTO userLocationDTO : userLocationDTOs) {
-			createdUserLocationDTOs.add(createUserLocation(userLocationDTO, user));
+		
+		if (user != null) {
+			for (UserLocationDTO userLocationDTO : userLocationDTOs) {
+				UserLocation userLocation = createUserLocation(userLocationDTO, user);
+				createdUserLocationDTOs.add(writeDTO(userLocation));
+			}
 		}
+		
 		return createdUserLocationDTOs;
 	}
 	
@@ -128,14 +135,24 @@ public class UserLocationAssembler {
 			for (Attendee attendee : meeting.attendees) {
 				// If not the current user
 				if (!attendee.user.equals(user)) {
+					// If attending
 					if (attendee.rsvp == Attendee.MeetingResponse.YES) {
 						User otherUser = attendee.user;
-						// check that the user has not already been added to the list from another meeting
+						
+						// Check that the user has not already been added to the list from another meeting
 						// otherwise there will be duplicate user data in the response
 						boolean userExists = false;
 						for (RecentUserLocationsDTO recentUserLocationsDTO : recentUserLocationsList) {
 							if (otherUser.id.equals(recentUserLocationsDTO.id)) {
 								userExists = true;
+								
+								// Merge this meetings data with the data already collected
+								RecentUserLocationsDTO thisMeetingsUserLocations = recentUserLocation(otherUser, timeBeforeMeeting.getTime(), timeAfterMeeting.getTime());
+								if (thisMeetingsUserLocations != null) {
+									//TODO: merge
+									//recentUserLocationsDTO.locationHistory.
+								}
+								
 								break;
 							}
 						}
@@ -151,6 +168,7 @@ public class UserLocationAssembler {
 		}
 		return recentUserLocationsList;
 	}
+	
 	
 	/**
 	 * 
@@ -174,5 +192,7 @@ public class UserLocationAssembler {
 		}
 		return recentUserLocation;
 	}
+	
+	
 
 }

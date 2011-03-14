@@ -7,12 +7,14 @@ import play.Logger;
 import play.data.validation.Error;
 import play.mvc.With;
 import DTO.RecentUserLocationsDTO;
+import DTO.UserDTO;
 import DTO.UserLocationDTO;
 import assemblers.UserLocationAssembler;
 
 import com.google.gson.JsonArray;
 
 import controllers.oauth2.AccessTokenFilter;
+import controllers.websockets.LocationStreamHelper;
 
 /**
  * 
@@ -49,9 +51,11 @@ public class Locations extends AccessTokenFilter {
     		
     		// Update
     		if (userLocationDTOs != null) {
-    			User authUser = userAuth.getAuthorisedUser();
-    			List<UserLocationDTO> createdUserLocations = UserLocationAssembler.createUserLocations(userLocationDTOs, authUser);
-    			//TODO: notify observers of this users location
+    			UserDTO currentUserDTO = userAuth.getAuthorisedUserDTO();
+    			List<UserLocationDTO> createdUserLocations = UserLocationAssembler.createUserLocations(userLocationDTOs, currentUserDTO);
+    			
+    			// Publish location to other users
+    			LocationStreamHelper.publishNewUserLocations(createdUserLocations, currentUserDTO);
     			
     			renderJSON(createdUserLocations);
     		}
