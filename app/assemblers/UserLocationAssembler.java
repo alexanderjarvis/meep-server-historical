@@ -11,6 +11,9 @@ import models.Attendee;
 import models.Meeting;
 import models.User;
 import models.UserLocation;
+
+import org.joda.time.DateTime;
+
 import utils.GsonFactory;
 import DTO.RecentUserLocationsDTO;
 import DTO.UserDTO;
@@ -33,7 +36,7 @@ public class UserLocationAssembler {
 	 */
 	public static UserLocationDTO writeDTO(UserLocation userLocation) {
 		UserLocationDTO userLocationDTO = new UserLocationDTO();
-		userLocationDTO.time = userLocation.time;
+		userLocationDTO.time = new DateTime(userLocation.time);
 		userLocationDTO.coordinate = CoordinateAssembler.writeDTO(userLocation.coordinate);
 		userLocationDTO.speed = userLocation.speed;
 		userLocationDTO.altitude = userLocation.altitude;
@@ -66,7 +69,7 @@ public class UserLocationAssembler {
 	private static UserLocation createUserLocation(UserLocationDTO userLocationDTO, User user) {
 		UserLocation userLocation = new UserLocation();
 		userLocation.user = user;
-		userLocation.time = userLocationDTO.time;
+		userLocation.time = userLocationDTO.time.toDate();
 		userLocation.coordinate = CoordinateAssembler.createCoordinate(userLocationDTO.coordinate);
 		userLocation.speed = userLocationDTO.speed;
 		userLocation.altitude = userLocationDTO.altitude;
