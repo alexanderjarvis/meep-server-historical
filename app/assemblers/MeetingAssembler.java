@@ -3,6 +3,8 @@ package assemblers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import models.Attendee;
 import models.Meeting;
 import models.User;
@@ -21,7 +23,7 @@ public class MeetingAssembler {
 	public static MeetingDTO writeDTO(Meeting meeting) {
 		MeetingDTO meetingDTO = new MeetingDTO();
 		meetingDTO.id = meeting.id;
-		meetingDTO.time = meeting.time;
+		meetingDTO.time = new DateTime(meeting.time);
 		meetingDTO.place = CoordinateAssembler.writeDTO(meeting.place);
 		meetingDTO.attendees = AttendeeAssembler.writeDTOs(meeting.attendees);
 		meetingDTO.owner = UserSummaryAssembler.writeDTO(meeting.owner);
@@ -41,7 +43,7 @@ public class MeetingAssembler {
 	
 	public static MeetingDTO createMeeting(MeetingDTO meetingDTO, User user) {
 		Meeting meeting = new Meeting();
-		meeting.time = meetingDTO.time;
+		meeting.time = meetingDTO.time.toDate();
 		if (meetingDTO.place != null) {
 			meeting.place = CoordinateAssembler.createCoordinate(meetingDTO.place);
 		}
@@ -50,7 +52,7 @@ public class MeetingAssembler {
 		meeting.description = meetingDTO.description;
 		
 		// The Attendee is the owning side of the relationship, so the meeting must be saved first.
-		meeting.save();
+		meeting.create();
 		if (meetingDTO.attendees != null) {
 			AttendeeAssembler.createAttendees(meetingDTO.attendees, meeting);
 		}
@@ -61,7 +63,7 @@ public class MeetingAssembler {
 	public static MeetingDTO updateMeeting(MeetingDTO meetingDTO) {
 		Meeting meeting = Meeting.findById(meetingDTO.id);
 		if (meeting != null) {
-			meeting.time = meetingDTO.time;
+			meeting.time = meetingDTO.time.toDate();
 			
 			// Set the id of the place to the DTO because we don't expect the client to send this
 			// information as the place belongs to the meeting anyway and the id is just used to lookup

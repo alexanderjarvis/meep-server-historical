@@ -2,6 +2,8 @@ package DTO;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import play.data.validation.Required;
 
 import models.Coordinate;
@@ -14,7 +16,7 @@ import models.User;
 public class UserLocationDTO {
 	
 	@Required
-	public Date time;
+	public DateTime time;
 	
 	@Required
 	public CoordinateDTO coordinate;

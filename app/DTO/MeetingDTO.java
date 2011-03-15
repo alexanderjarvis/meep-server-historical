@@ -3,6 +3,8 @@ package DTO;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import play.db.jpa.Model;
 
 /**
@@ -13,7 +15,7 @@ public class MeetingDTO {
 	
 	public Long id;
 	
-	public Date time;
+	public DateTime time;
 	
 	public CoordinateDTO place;
 	
