@@ -97,9 +97,11 @@ public class MeetingHelper {
 	public static boolean updateAttendeesMinutesBefore(Integer minutesBefore, Meeting meeting, User user) {
 		if (user != null) {
 			for (Attendee attendee : meeting.attendees) {
-				attendee.minutesBefore = minutesBefore;
-				attendee.save();
-				return true;
+				if (attendee.user.equals(user)) {
+					attendee.minutesBefore = minutesBefore;
+					attendee.save();
+					return true;
+				}
 			}
 		}
 		return false;
