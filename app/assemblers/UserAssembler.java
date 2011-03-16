@@ -19,7 +19,11 @@ import com.google.gson.JsonObject;
 public class UserAssembler {
 	
 	/**
+	 * Writes a UserDTO using a User object.
 	 * 
+	 * Note - returns the UserDTO as if it is the unauthorised user.
+	 * To return the UserDTO of the authorised user you have to use the
+	 * accompanying method.
 	 * @param user
 	 * @return
 	 */
@@ -28,7 +32,15 @@ public class UserAssembler {
 	}
 	
 	/**
-	 * 
+	 * Writes a UserDTO for the specified User and if the authorisedUser
+	 * flag is set then additional attributes are set: 
+	 * <ul>
+	 * <li>accessToken,</li>
+	 * <li>connections,</li>
+	 * <li>connectionRequestsTo,</li>
+	 * <li>connectionRequestsFrom,</li>
+	 * <li>meetingsRelated</li>
+	 * </ul>
 	 * @param user
 	 * @param authorisedUser
 	 * @return
@@ -36,7 +48,6 @@ public class UserAssembler {
 	public static UserDTO writeDTO(User user, boolean authorisedUser) {
 		
 		UserDTO userDTO = new UserDTO();
-		
 		userDTO.id = user.id;
 		userDTO.email = user.email;
 		userDTO.firstName = user.firstName;
@@ -61,15 +72,12 @@ public class UserAssembler {
 	public static UserDTO createUser(UserDTO userDTO) {
 		
 		User user = new User();
-		
 		user.email = userDTO.email;
 		user.firstName = userDTO.firstName;
 		user.lastName = userDTO.lastName;
 		user.mobileNumber = userDTO.mobileNumber;
-		
 		user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
 		user.accessToken = AccessTokenGenerator.generate();
-		
 		user.create();
 		
 		return writeDTO(user, true);

@@ -11,13 +11,16 @@ import models.helpers.MeetingHelper;
 import DTO.AttendeeDTO;
 
 /**
+ * Assembler for the AttendeeDTO and Attendee classes.
  * 
+ * @see AttendeeDTO
+ * @see Attendee
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class AttendeeAssembler {
 	
 	/**
-	 * 
+	 * Writes an AttendeeDTO from an Attendee object.
 	 * @param attendee
 	 * @return
 	 */
@@ -33,7 +36,7 @@ public class AttendeeAssembler {
 	}
 	
 	/**
-	 * 
+	 * Writes a List of AttendeeDTOs from a List of Attendees
 	 * @param attendees
 	 * @return
 	 */
@@ -46,6 +49,9 @@ public class AttendeeAssembler {
 	}
 	
 	/**
+	 * Creates the Attendees for a Meeting using a List of AttendeDTOs
+	 * 
+	 * Also makes the owner of the meeting an attendee and sets their rsvp status.
 	 * 
 	 * @param attendeeDTOs
 	 * @param meeting
@@ -67,7 +73,7 @@ public class AttendeeAssembler {
 	}
 	
 	/**
-	 * 
+	 * Creates an Attendee for a meeting with an AttendeeDTO
 	 * @param attendeeDTO
 	 * @param meeting
 	 */
@@ -81,7 +87,7 @@ public class AttendeeAssembler {
 	/**
 	 * Adds or removes attendees to/from a meeting.
 	 * 
-	 * Note: Does not update attendees rsvp status as this is done by the user themselves.
+	 * Note: Does not update attendees RSVP status as this is done by the user themselves.
 	 * 
 	 * @param attendeeDTOs
 	 * @return
@@ -111,6 +117,12 @@ public class AttendeeAssembler {
 		
 	}
 	
+	/**
+	 * Returns true if the Attendee is in the AttendeeDTO List and false otherwise.
+	 * @param attendee
+	 * @param attendeeDTOList
+	 * @return
+	 */
 	private static boolean isAttendeeInDTOList(Attendee attendee, List<AttendeeDTO> attendeeDTOList) {
 		for (AttendeeDTO attendeeDTO : attendeeDTOList) {
 			if (attendee.user.id.equals(attendeeDTO.id)) {
@@ -120,6 +132,12 @@ public class AttendeeAssembler {
 		return false;
 	}
 	
+	/**
+	 * Returns true if the AttendeeDTO is in the Attendee List and false otherwise.
+	 * @param attendeeDTO
+	 * @param attendeeList
+	 * @return
+	 */
 	private static boolean isAttendeeDTOInList(AttendeeDTO attendeeDTO, List<Attendee> attendeeList) {
 		for (Attendee attendee : attendeeList) {
 			if (attendee.user.id.equals(attendeeDTO.id)) {

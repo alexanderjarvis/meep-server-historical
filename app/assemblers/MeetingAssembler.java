@@ -15,11 +15,19 @@ import DTO.MeetingDTO;
 import com.google.gson.*;
 
 /**
+ * Assembler for the MeetingDTO and Meeting classes.
  * 
+ * @see MeetingDTO
+ * @see Meeting
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class MeetingAssembler {
 	
+	/**
+	 * Writes a MeetingDTO from a Meeting object.
+	 * @param meeting
+	 * @return
+	 */
 	public static MeetingDTO writeDTO(Meeting meeting) {
 		MeetingDTO meetingDTO = new MeetingDTO();
 		meetingDTO.id = meeting.id;
@@ -33,6 +41,12 @@ public class MeetingAssembler {
 		return meetingDTO;
 	}
 	
+	/**
+	 * Writes a List of MeetingDTOs from the meetings that a User is related to 
+	 * (where they have an Attendee object).
+	 * @param user
+	 * @return
+	 */
 	public static List<MeetingDTO> writeDTOs(User user) {
 		ArrayList<MeetingDTO> meetings = new ArrayList<MeetingDTO>();
 		for (Attendee attendee : user.meetingsRelated) {
@@ -41,6 +55,16 @@ public class MeetingAssembler {
 		return meetings;
 	}
 	
+	/**
+	 * Creates a Meeting for the specified User and returns a MeetingDTO that
+	 * represents this newly created Meeting.
+	 * 
+	 * Also creates the attendees for the meeting based on the data inside the
+	 * MeetingDTO.
+	 * @param meetingDTO
+	 * @param user
+	 * @return
+	 */
 	public static MeetingDTO createMeeting(MeetingDTO meetingDTO, User user) {
 		Meeting meeting = new Meeting();
 		meeting.time = meetingDTO.time.toDate();
@@ -60,6 +84,11 @@ public class MeetingAssembler {
 		return writeDTO(meeting);
 	}
 	
+	/**
+	 * Updates a Meeting, using the data from a MeetingDTO
+	 * @param meetingDTO
+	 * @return
+	 */
 	public static MeetingDTO updateMeeting(MeetingDTO meetingDTO) {
 		Meeting meeting = Meeting.findById(meetingDTO.id);
 		if (meeting != null) {
@@ -92,7 +121,7 @@ public class MeetingAssembler {
 	}
 	
 	/**
-	 * Returns a MeetingDTO object from a JsonObject, using Gson.
+	 * Returns a MeetingDTO object from a JsonObject
 	 * @param jsonObject
 	 * @return
 	 */
@@ -103,7 +132,7 @@ public class MeetingAssembler {
 	}
 	
 	/**
-	 * Returns a MeetingDTO object from a Json string, using Gson.
+	 * Returns a MeetingDTO object from a Json string
 	 * @param jsonString
 	 * @return
 	 */

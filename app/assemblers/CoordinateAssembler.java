@@ -4,13 +4,16 @@ import models.Coordinate;
 import DTO.CoordinateDTO;
 
 /**
+ * Assembler for the CoordinateDTO and Coordinate classes.
  * 
+ * @see CoordinateDTO
+ * @see Coordinate
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class CoordinateAssembler {
 	
 	/**
-	 * 
+	 * Writes a CoordinateDTO from a Coordinate object.
 	 * @param coordinate
 	 * @return
 	 */
@@ -25,12 +28,22 @@ public class CoordinateAssembler {
 		return null;
 	}
 	
+	/**
+	 * Creates a Coordinate from a CoordinateDTO
+	 * @param coordinateDTO
+	 * @return
+	 */
 	public static Coordinate createCoordinate(CoordinateDTO coordinateDTO) {
 		Coordinate coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
 		coordinate.create();
 		return coordinate;
 	}
 	
+	/**
+	 * Updates a Coordinate using a CoordinateDTO
+	 * @param coordinateDTO
+	 * @return
+	 */
 	public static Coordinate updateCoordinate(CoordinateDTO coordinateDTO) {
 		Coordinate coordinate = Coordinate.findById(coordinateDTO.id);
 		if (coordinate != null) {
