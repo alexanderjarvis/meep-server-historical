@@ -26,6 +26,8 @@ public class Attendee extends Model {
 	@Enumerated(EnumType.STRING)
 	public MeetingResponse rsvp;
 	
+	public Integer minutesBefore;
+	
 	public enum MeetingResponse {
 		YES, MAYBE, NO
 	}

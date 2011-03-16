@@ -3,26 +3,22 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonObject;
-
 import models.User;
 import models.helpers.UserConnectionHelper;
 import play.Logger;
 import play.data.validation.Error;
-import play.data.validation.Valid;
-import play.mvc.With;
 import DTO.UserDTO;
 import DTO.UserSummaryDTO;
 import assemblers.UserAssembler;
 import assemblers.UserSummaryAssembler;
-import controllers.oauth2.AccessTokenFilter;
+
+import com.google.gson.JsonObject;
 
 /**
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
-public class Users extends AccessTokenFilter {
+public class Users extends ServiceApplicationController {
 	
 	/**
 	 * Returns all users that the current authorised user is connected to

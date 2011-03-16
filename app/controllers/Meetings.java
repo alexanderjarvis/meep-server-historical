@@ -6,21 +6,19 @@ import models.Attendee;
 import models.Meeting;
 import models.User;
 import models.helpers.MeetingHelper;
-import play.mvc.With;
+import play.Logger;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
 import com.google.gson.JsonObject;
-
-import controllers.oauth2.AccessTokenFilter;
 
 /**
  * The Meetings controller is used to control all aspects of a meeting.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
-public class Meetings extends AccessTokenFilter {
+
+public class Meetings extends ServiceApplicationController {
 	
 	/**
 	 * 
@@ -149,6 +147,37 @@ public class Meetings extends AccessTokenFilter {
     		} else {
     			badRequest();
     		}
+    	}
+    	notFound();
+    }
+    
+    /**
+     * 
+     * @param id
+     * @param minutes
+     */
+    public static void updateMinutesBefore(Long id, String body) {
+    	Integer minutes = null;
+    	try {
+    		minutes = Integer.parseInt(body);
+    		if (minutes < 0) {
+    			error("Minutes before must be a positive value");
+    		}
+    	} catch (NumberFormatException e) {
+    		Logger.error("NumberFormatException", e);
+    		error();
+    	}
+    	
+    	if (minutes != null) {
+	    	Meeting meeting = Meeting.findById(id);
+	    	if (meeting != null) {
+	    		User authUser = userAuth.getAuthorisedUser();
+	    		if (MeetingHelper.updateAttendeesMinutesBefore(minutes, meeting, authUser)) {
+	    			ok();
+	    		} else {
+	    			badRequest();
+	    		}
+	    	}
     	}
     	notFound();
     }

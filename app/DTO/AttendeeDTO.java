@@ -14,5 +14,7 @@ public class AttendeeDTO {
     public String lastName;
 	
 	public String rsvp;
+	
+	public Integer minutesBefore;
 
 }

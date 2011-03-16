@@ -39,6 +39,7 @@ PUT		/meetings/{id}/?						Meetings.update
 DELETE 	/meetings/{id}/?						Meetings.delete
 POST	/meetings/{id}/accept/?					Meetings.acceptMeetingRequest
 POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
+PUT     /meetings/{id}/minutes-before/          Meetings.updateMinutesBefore
 
 # Locations
 GET		/locations/?							Locations.recent

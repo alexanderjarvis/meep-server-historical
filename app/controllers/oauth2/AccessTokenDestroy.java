@@ -1,21 +1,15 @@
 package controllers.oauth2;
 
-import controllers.JSONRequestTypeFilter;
-import controllers.LoggingFilter;
-import controllers.NoCookieFilter;
-import controllers.SSLCheckFilter;
 import models.User;
 import oauth2.OAuth2Constants;
 import play.cache.Cache;
-import play.mvc.With;
-import DTO.UserDTO;
+import controllers.ServiceApplicationController;
 
 /**
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-@With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
-public class AccessTokenDestroy extends AccessTokenFilter {
+public class AccessTokenDestroy extends ServiceApplicationController {
 	
 	/**
 	 * 

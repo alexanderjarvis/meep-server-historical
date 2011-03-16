@@ -32,6 +32,9 @@ public class AttendeeAssembler {
 		if (attendee.rsvp != null) {
 			attendeeDTO.rsvp = attendee.rsvp.toString();
 		}
+		if (attendee.minutesBefore != null) {
+			attendeeDTO.minutesBefore = attendee.minutesBefore;
+		}
 		return attendeeDTO;
 	}
 	
