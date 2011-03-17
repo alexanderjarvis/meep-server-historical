@@ -8,14 +8,6 @@ import DTO.RecentUserLocationsDTO;
  */
 public abstract class LocationEvent {
 	
-	public static class Connect extends LocationEvent {
-		
-	}
-
-	public static class Disconnect extends LocationEvent {
-	    
-	}
-	
 	public static class OtherUserUpdated extends LocationEvent {
 		
 		RecentUserLocationsDTO locations = null;

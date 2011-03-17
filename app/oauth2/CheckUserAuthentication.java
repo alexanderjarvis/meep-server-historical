@@ -84,6 +84,8 @@ public class CheckUserAuthentication   {
 	public UserDTO getAuthorisedUserDTO() {
 		if (authorisedUserDTO == null && authorisedUser != null) {
 			this.authorisedUserDTO = UserAssembler.writeDTO(authorisedUser, true);
+		} else {
+			this.authorisedUserDTO = UserAssembler.writeDTO(getAuthorisedUser(), true);
 		}
 		return this.authorisedUserDTO;
 	}

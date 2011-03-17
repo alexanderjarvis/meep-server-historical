@@ -37,6 +37,8 @@ public class LocationsSocket extends WebSocketController {
 	 */
 	public static void connect() {
 		
+		Logger.info("WebSocket opened");
+		
 		// If not a valid token then disconnect the stream
 		CheckUserAuthentication userAuth = new CheckUserAuthentication();
 		UserDTO currentUserDTO = null;
@@ -69,27 +71,27 @@ public class LocationsSocket extends WebSocketController {
         	
         	// Case: The socket has been closed
             for(WebSocketClose closed : SocketClosed.match(e._1)) {
-            	Logger.info("web socket closed");
+            	Logger.info("WebSocket closed");
                 disconnect();
             }
             
             // Case: HeartbeatEvent received (from client)
             for(String text: TextFrame.and(Equals(MessageWrapper.wrap("~h~PONG"))).match(e._1)) {
-            	Logger.info("HeartbeatEvent received from client");
+            	Logger.debug("Heartbeat received");
             	heartbeatMonitor.setResponse(true);
             }
             
             // Case: HeartbeatEvent.Pulse received (from heartbeatMonitor)
             for (HeartbeatEvent event : ClassOf(HeartbeatEvent.Pulse.class).match(e._2)) {
-            	Logger.info("HeartbeatEvent Pulse from timer");
+            	Logger.debug("HeartbeatEvent Pulse from timer");
             	heartbeatMonitor.setResponse(false);
             	outbound.send(MessageWrapper.wrap("~h~PING"));
-            	Logger.info("Heartbeat sent");
+            	Logger.debug("Heartbeat sent");
             }
             
             // Case: HeartbeatEvent.Dead received (from heartbeatMonitor)
             for (HeartbeatEvent event : ClassOf(HeartbeatEvent.Dead.class).match(e._2)) {
-            	Logger.info("HeartbeatEvent Dead from timer");
+            	Logger.debug("HeartbeatEvent Dead from timer");
             	disconnect();
             }
             
@@ -99,14 +101,13 @@ public class LocationsSocket extends WebSocketController {
             	String unwrappedMessage = MessageWrapper.unwrap(message);
             	if (isJson(unwrappedMessage)) {
             		String jsonString = removeJsonHeader(unwrappedMessage);
-	            	Logger.info("message received:" + jsonString);
+	            	Logger.debug("WebSocket message received:" + jsonString);
 	            	JsonArray jsonArray = stringToJsonArray(jsonString);
 	            	if (jsonArray != null && jsonArray.isJsonArray()) {
 	            		// Obtain DTOs from the JsonArray
 	            		List<UserLocationDTO> userLocationDTOs = UserLocationAssembler.userLocationDTOsWithJsonArray(jsonArray);
 	            		// Persist locations with the DTOs
 	            		List<UserLocationDTO> createdUserLocationDTOs = UserLocationAssembler.createUserLocations(userLocationDTOs, currentUserDTO);
-	            		Logger.info("Created User Locations size: " +  createdUserLocationDTOs.size());
 	            		LocationStreamHelper.publishNewUserLocations(createdUserLocationDTOs, currentUserDTO);
 	            	}
             	}
@@ -116,12 +117,8 @@ public class LocationsSocket extends WebSocketController {
             for(LocationEvent.OtherUserUpdated otherUserUpdated : ClassOf(LocationEvent.OtherUserUpdated.class).match(e._3)) {
             	
             	String jsonString = objectToJsonString(otherUserUpdated.locations);
-            	Logger.info("Locations socket sending:\n" + jsonString);
+            	Logger.debug("WebSocket sending:\n" + jsonString);
             	outbound.send(MessageWrapper.wrap("~j~" + jsonString));
-            }
-            
-            for(LocationEvent.Connect connect : ClassOf(LocationEvent.Connect.class).match(e._3)) {
-            	Logger.info("CONNECT");
             }
             
             
