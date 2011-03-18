@@ -66,7 +66,6 @@ public class AttendeeAssembler {
 		ownerAttendeeDTO.id = meeting.owner.id;
 		createAttendee(ownerAttendeeDTO, meeting);
 		MeetingHelper.acceptMeetingRequest(meeting, meeting.owner);
-		MeetingHelper.updateAttendeesMinutesBefore(15, meeting, meeting.owner);
 		
 		// Create the other attendees
 		for (AttendeeDTO attendeeDTO : attendeeDTOs) {

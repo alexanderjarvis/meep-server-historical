@@ -56,6 +56,10 @@ public class MeetingHelper {
 			for (Attendee attendee : meeting.attendees) {
 				if (attendee.user.equals(user)) {
 					attendee.rsvp = rsvp;
+					// By default set the minutes before to 15 when accepting meeting request
+					if (attendee.rsvp == MeetingResponse.YES && attendee.minutesBefore == null) {
+						attendee.minutesBefore = 15;
+					}
 					attendee.save();
 					return true;
 				}
