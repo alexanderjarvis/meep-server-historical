@@ -66,13 +66,13 @@ public class LocationStreamHelper {
 				//TODO: time before could be configurable for each attendee
 				Calendar timeBeforeMeeting = new GregorianCalendar();
 				timeBeforeMeeting.setTime(meeting.time);
-				timeBeforeMeeting.add(java.util.Calendar.MINUTE, -15);
+				timeBeforeMeeting.add(java.util.Calendar.MINUTE, -30);
 				
 				Calendar timeAfterMeeting = new GregorianCalendar();
 				timeAfterMeeting.setTime(meeting.time);
-				timeAfterMeeting.add(java.util.Calendar.MINUTE, 15);
+				timeAfterMeeting.add(java.util.Calendar.MINUTE, 30);
 				
-				// Time now between (or equal to) the valid meeting time range (15 minutes either side).
+				// Time now between (or equal to) the valid meeting time range (30 minutes either side).
 				//if (timeNow.compareTo(timeBeforeMeeting) >= 0 && timeNow.compareTo(timeAfterMeeting) <= 0) {
 					
 					// Get the Users who are attending
@@ -81,9 +81,7 @@ public class LocationStreamHelper {
 						if (!attendee.user.equals(user)) {
 							// If attending
 							if (attendee.rsvp == Attendee.MeetingResponse.YES) {
-								
-								User otherUser = attendee.user;
-								usersToPublishTo.add(otherUser);
+								usersToPublishTo.add(attendee.user);
 							}
 						}
 					}

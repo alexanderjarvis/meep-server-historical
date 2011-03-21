@@ -1,10 +1,10 @@
 package controllers.websockets;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import play.libs.F.ArchivedEventStream;
+import models.User;
+import play.Logger;
 import play.libs.F.EventStream;
 
 /**
@@ -15,8 +15,10 @@ public class LocationStreamManager {
 	
 	private static LocationStreamManager INSTANCE = null;
 	
-	private Map<Long, ArchivedEventStream<LocationEvent>> archivedLocationStreams = new HashMap<Long, ArchivedEventStream<LocationEvent>>();
-	private Map<Long, EventStream<LocationEvent>> currentLocationStreams = new HashMap<Long, EventStream<LocationEvent>>();
+	// TODO: persist archived streams?
+	private Map<Long, LocationEventStream<LocationEvent>> archivedStreams = new HashMap<Long, LocationEventStream<LocationEvent>>();
+	
+	private Map<Long, EventStream<LocationEvent>> connectedStreams = new HashMap<Long, EventStream<LocationEvent>>();
 	
 	/**
 	 * Singleton
@@ -38,15 +40,21 @@ public class LocationStreamManager {
 	public EventStream<LocationEvent> getLocationStreamForUserWithId(Long id) {
 		EventStream<LocationEvent> locationStream = null;
 		
-		// If location stream is
-		if (currentLocationStreams.containsKey(id)) {
-			locationStream = currentLocationStreams.get(id);
+		if (connectedStreams.containsKey(id)) {
+			connectedStreams.remove(id);
+		} 
+		
+		if (archivedStreams.containsKey(id)) {
+			locationStream = archivedStreams.get(id).eventStream();
+			
 		} else {
-			locationStream = new EventStream<LocationEvent>(100);
-			currentLocationStreams.put(id, locationStream);
+			LocationEventStream<LocationEvent> archivedStream = new LocationEventStream<LocationEvent>(100);
+			archivedStreams.put(id, archivedStream);
+			locationStream = archivedStream.eventStream();
 		}
 		
 		if (locationStream != null) {
+			connectedStreams.put(id, locationStream);
 			return locationStream;
 		}
 		return null;
@@ -55,12 +63,34 @@ public class LocationStreamManager {
 	/**
 	 * Publishes a location event to a specific users location stream.
 	 * 
-	 * @param id
+	 * @param user
 	 * @param locationEvent
 	 */
 	public void publishLocationEventToUserWithId(Long id, LocationEvent locationEvent) {
-		EventStream<LocationEvent> locationStream = getLocationStreamForUserWithId(id);
-		locationStream.publish(locationEvent);
+		
+		
+		LocationEventStream<LocationEvent> archiveStreamForUser = null;
+		if (!archivedStreams.containsKey(id)) {
+			archiveStreamForUser = new LocationEventStream<LocationEvent>(100);
+			archivedStreams.put(id, archiveStreamForUser);
+				
+		}
+		
+		archiveStreamForUser = archivedStreams.get(id);
+		archiveStreamForUser.publish(locationEvent);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	public void closeStreamForUserWithId(Long id) {
+		if (connectedStreams.containsKey(id)) {
+			Logger.info("Removing connected stream with user id: " + id);
+			EventStream<LocationEvent> connectedStream = connectedStreams.get(id);
+			connectedStreams.remove(id);
+			archivedStreams.get(id).removePipedStream(connectedStream);
+		}
 	}
 
 }

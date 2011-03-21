@@ -72,6 +72,7 @@ public class LocationsSocket extends WebSocketController {
         	// Case: The socket has been closed
             for(WebSocketClose closed : SocketClosed.match(e._1)) {
             	Logger.info("WebSocket closed");
+            	locationStreamManager.closeStreamForUserWithId(currentUserDTO.id);
                 disconnect();
             }
             
