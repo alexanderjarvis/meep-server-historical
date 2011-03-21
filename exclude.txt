@@ -1,0 +1,11 @@
+.svn
+.DS_Store
+.classpath
+.project
+.settings
+eclipse
+logs
+test-result
+tmp
+war
+exclude.txt
