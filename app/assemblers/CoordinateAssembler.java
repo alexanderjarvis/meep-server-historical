@@ -34,8 +34,13 @@ public class CoordinateAssembler {
 	 * @return
 	 */
 	public static Coordinate createCoordinate(CoordinateDTO coordinateDTO) {
-		Coordinate coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
-		coordinate.create();
+		Coordinate coordinate = Coordinate.find("byLatitudeAndLongitude", coordinateDTO.latitude, coordinateDTO.longitude).first();
+		if (coordinate == null) {
+			coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
+			coordinate.create();
+		}
+		//Coordinate coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
+		
 		return coordinate;
 	}
 	
@@ -45,11 +50,10 @@ public class CoordinateAssembler {
 	 * @return
 	 */
 	public static Coordinate updateCoordinate(CoordinateDTO coordinateDTO) {
-		Coordinate coordinate = Coordinate.findById(coordinateDTO.id);
-		if (coordinate != null) {
-			coordinate.latitude = coordinateDTO.latitude;
-			coordinate.longitude = coordinateDTO.longitude;
-			coordinate.save();
+		Coordinate coordinate = Coordinate.find("byLatitudeAndLongitude", coordinateDTO.latitude, coordinateDTO.longitude).first();
+		if (coordinate == null) {
+			coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
+			coordinate.create();
 		}
 		return coordinate;
 	}

@@ -94,11 +94,7 @@ public class MeetingAssembler {
 		if (meeting != null) {
 			meeting.time = meetingDTO.time.toDate();
 			
-			// Set the id of the place to the DTO because we don't expect the client to send this
-			// information as the place belongs to the meeting anyway and the id is just used to lookup
-			// the Coordinate. An alternative would be to pass the meeting.place object into
-			// CoordinateAssembler.updateCoordinate() but this would break convention.
-			meetingDTO.place.id = meeting.place.id;
+			
 			CoordinateAssembler.updateCoordinate(meetingDTO.place);
 			meeting.title = meetingDTO.title;
 			meeting.description = meetingDTO.description;

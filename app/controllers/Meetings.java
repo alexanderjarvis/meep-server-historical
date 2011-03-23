@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import notifiers.Mails;
+
 import models.Attendee;
 import models.Meeting;
 import models.User;
@@ -41,6 +43,10 @@ public class Meetings extends ServiceApplicationController {
 	    	
 	    	if (meetingDTO != null) {
 		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO, userAuth.getAuthorisedUser());
+		    	
+		    	// Send email to each attendee
+		    	Mails.newMeeting(newMeetingDTO);
+		    	
 		    	response.status = 201;
 				renderJSON(newMeetingDTO);
 	    	}

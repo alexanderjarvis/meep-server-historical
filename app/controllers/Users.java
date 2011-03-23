@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.User;
 import models.helpers.UserConnectionHelper;
+import notifiers.Mails;
 import play.Logger;
 import play.data.validation.Error;
 import DTO.UserDTO;
@@ -58,6 +59,10 @@ public class Users extends ServiceApplicationController {
     	    	
     	    	// Create user
     			UserDTO newUserDTO = UserAssembler.createUser(userDTO);
+    			
+    			// Send email
+    			Mails.welcome(newUserDTO);
+    			
     			response.status = 201;
     			renderJSON(newUserDTO);
     		}
@@ -168,6 +173,8 @@ public class Users extends ServiceApplicationController {
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.createUserConnectionRequest(authUser, otherUser)) {
+    			// Send email
+    			Mails.newFriendRequest(UserAssembler.writeDTO(otherUser), UserAssembler.writeDTO(authUser));
     			ok();
     		}
     	}

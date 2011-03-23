@@ -1,5 +1,6 @@
 package assemblers;
 
+import notifiers.Mails;
 import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
