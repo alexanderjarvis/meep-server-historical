@@ -52,9 +52,15 @@ public class Users extends ServiceApplicationController {
     		
     		if (userDTO != null) {
     			// Check for existing users
-    	    	User checkUser = User.find("byEmail", userDTO.email).first();
-    			if (checkUser != null) {
+    	    	User checkEmail = User.find("byEmail", userDTO.email).first();
+    			if (checkEmail != null) {
     				error(400, "Email already exists");
+    			}
+    			
+    			// Check for existing phone number
+    			User checkNumber = User.find("byMobileNumber", userDTO.mobileNumber).first();
+    			if (checkNumber != null) {
+    				error(400, "Mobile number already exists");
     			}
     	    	
     	    	// Create user
