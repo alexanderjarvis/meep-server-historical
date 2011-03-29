@@ -44,7 +44,12 @@ public class GsonFactory {
 	private static class DateTimeDeserializer implements JsonDeserializer<DateTime> {
 		public DateTime deserialize(JsonElement json, Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
-			return new DateTime(json.getAsJsonPrimitive().getAsString());
+			// TODO: remove this quickfix
+			String dateTimeString = json.getAsJsonPrimitive().getAsString();
+			if (dateTimeString.endsWith("+100")) {
+				dateTimeString.replace("+100", "+0100");
+			}
+			return new DateTime(dateTimeString);
 		}
 	}
 }

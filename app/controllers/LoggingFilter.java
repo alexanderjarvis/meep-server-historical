@@ -16,7 +16,7 @@ public class LoggingFilter extends Controller {
 		if (Play.mode == Play.Mode.DEV) {
 			Logger.debug("Request: " + request.toString());
 			
-			if (body.length() > 0) {
+			if (body != null && body.length() > 0) {
 				Logger.debug("Request body: \n" + body);
 			}
 		}
