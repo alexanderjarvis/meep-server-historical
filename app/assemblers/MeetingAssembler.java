@@ -95,7 +95,7 @@ public class MeetingAssembler {
 			meeting.time = meetingDTO.time.toDate();
 			
 			
-			CoordinateAssembler.updateCoordinate(meetingDTO.place);
+			meeting.place = CoordinateAssembler.updateCoordinate(meetingDTO.place);
 			meeting.title = meetingDTO.title;
 			meeting.description = meetingDTO.description;
 			AttendeeAssembler.updateAttendees(meeting, meetingDTO.attendees);
