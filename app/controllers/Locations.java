@@ -26,7 +26,7 @@ public class Locations extends ServiceApplicationController {
 	 * 
 	 */
     public static void recent() {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	List<RecentUserLocationsDTO> recentUserLocations = UserLocationAssembler.recentUserLocations(authUser);
     	renderJSON(recentUserLocations);
     }
@@ -50,7 +50,7 @@ public class Locations extends ServiceApplicationController {
     		
     		// Update
     		if (userLocationDTOs != null) {
-    			UserDTO currentUserDTO = userAuth.getAuthorisedUserDTO();
+    			UserDTO currentUserDTO = getAuthorisedUserDTO();
     			List<UserLocationDTO> createdUserLocations = UserLocationAssembler.createUserLocations(userLocationDTOs, currentUserDTO);
     			
     			// Publish location to other users

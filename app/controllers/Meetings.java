@@ -26,7 +26,7 @@ public class Meetings extends ServiceApplicationController {
 	 * 
 	 */
     public static void index() {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	List<MeetingDTO> meetings = MeetingAssembler.writeDTOs(authUser);
         renderJSON(meetings);
     }
@@ -42,7 +42,7 @@ public class Meetings extends ServiceApplicationController {
 	    	MeetingDTO meetingDTO = MeetingAssembler.meetingDTOWithJsonObject(body);
 	    	
 	    	if (meetingDTO != null) {
-		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO, userAuth.getAuthorisedUser());
+		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO, getAuthorisedUser());
 		    	
 		    	// Send email to each attendee
 		    	Mails.newMeeting(newMeetingDTO);
@@ -63,7 +63,7 @@ public class Meetings extends ServiceApplicationController {
     	Meeting meeting = Meeting.findById(id);
     	if (meeting != null) {
 	    	// Check the authorised user is able to view the meeting
-	    	User authUser = userAuth.getAuthorisedUser();
+	    	User authUser = getAuthorisedUser();
 	    	for (Attendee attendee : meeting.attendees) {
 	    		if (attendee.user.id.equals(authUser.id)) {
 	    			renderJSON(MeetingAssembler.writeDTO(meeting));
@@ -88,7 +88,7 @@ public class Meetings extends ServiceApplicationController {
     		if (meeting != null && body.get("id") != null && new Long(body.get("id").getAsLong()).equals(id)) {
     			
     			// Check the authorised user is the owner of the meeting
-    			if (meeting.owner.equals(userAuth.getAuthorisedUser())) {
+    			if (meeting.owner.equals(getAuthorisedUser())) {
     				MeetingDTO newMeetingDTO = MeetingAssembler.updateMeetingWithJsonObject(body);
     	    		renderJSON(newMeetingDTO);
     			} else {
@@ -112,7 +112,7 @@ public class Meetings extends ServiceApplicationController {
 		
 		if (meeting != null) {
 			// Check meeting exists and that the Authorised user is the owner of the meeting.
-			if (meeting.owner.equals(userAuth.getAuthorisedUser())) {
+			if (meeting.owner.equals(getAuthorisedUser())) {
 				meeting.delete();
 				ok();
 			} else {
@@ -130,7 +130,7 @@ public class Meetings extends ServiceApplicationController {
     public static void acceptMeetingRequest(Long id) {
     	Meeting meeting = Meeting.findById(id);
     	if (meeting != null) {
-    		User authUser = userAuth.getAuthorisedUser();
+    		User authUser = getAuthorisedUser();
     		if (MeetingHelper.acceptMeetingRequest(meeting, authUser)) {
     			ok();
     		} else {
@@ -147,7 +147,7 @@ public class Meetings extends ServiceApplicationController {
     public static void declineMeetingRequest(Long id) {
     	Meeting meeting = Meeting.findById(id);
     	if (meeting != null) {
-    		User authUser = userAuth.getAuthorisedUser();
+    		User authUser = getAuthorisedUser();
     		if (MeetingHelper.declineMeetingRequest(meeting, authUser)) {
     			ok();
     		} else {
@@ -177,7 +177,7 @@ public class Meetings extends ServiceApplicationController {
     	if (minutes != null) {
 	    	Meeting meeting = Meeting.findById(id);
 	    	if (meeting != null) {
-	    		User authUser = userAuth.getAuthorisedUser();
+	    		User authUser = getAuthorisedUser();
 	    		if (MeetingHelper.updateAttendeesMinutesBefore(minutes, meeting, authUser)) {
 	    			ok();
 	    		} else {

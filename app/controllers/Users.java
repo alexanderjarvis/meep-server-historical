@@ -26,7 +26,7 @@ public class Users extends ServiceApplicationController {
 	 * (not all users in the system).
 	 */
 	public static void index() {
-		User authUser = userAuth.getAuthorisedUser();
+		User authUser = getAuthorisedUser();
 		renderJSON(UserSummaryAssembler.writeDTOs(authUser));
 	}
     
@@ -90,7 +90,7 @@ public class Users extends ServiceApplicationController {
      */
     public static void show(String id) {
     	
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	
 		if (id.equals(authUser.id.toString()) || id.equals(authUser.email)) {
 			renderJSON(UserAssembler.writeDTO(authUser, true));
@@ -119,7 +119,7 @@ public class Users extends ServiceApplicationController {
     public static void update(String id, JsonObject body) {
     	
     	// Only able to update the authorised user
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	User user = getUserFromIdOrEmail(id);
     	if (user != null && user.equals(authUser)) {
     		
@@ -158,7 +158,7 @@ public class Users extends ServiceApplicationController {
      * @param id
      */
     public static void delete(String id) {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.removeUserConnection(authUser, otherUser)) {
@@ -175,7 +175,7 @@ public class Users extends ServiceApplicationController {
      * @param id
      */
     public static void addUserRequest(String id) {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.createUserConnectionRequest(authUser, otherUser)) {
@@ -192,7 +192,7 @@ public class Users extends ServiceApplicationController {
      * @param id
      */
     public static void acceptUserRequest(String id) {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
@@ -208,7 +208,7 @@ public class Users extends ServiceApplicationController {
      * @param id
      */
     public static void declineUserRequest(String id) {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	User otherUser = getNonAuthorisedUser(id);
     	if (otherUser != null) {
     		if (UserConnectionHelper.removeUserConnectionRequest(otherUser, authUser)) {
@@ -259,7 +259,7 @@ public class Users extends ServiceApplicationController {
      * @return
      */
     private static User getNonAuthorisedUser(String id) {
-    	User authUser = userAuth.getAuthorisedUser();
+    	User authUser = getAuthorisedUser();
     	
     	// If the id is the authorised user
     	if (!id.equals(authUser.id.toString()) && !id.equals(authUser.email)) {

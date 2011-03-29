@@ -15,7 +15,7 @@ public class AccessTokenDestroy extends ServiceApplicationController {
 	 * 
 	 */
 	public static void destroy() {
-		User authorisedUser = userAuth.getAuthorisedUser();
+		User authorisedUser = getAuthorisedUser();
 		if (authorisedUser != null) {
 			Cache.delete(OAuth2Constants.CACHE_PREFIX + authorisedUser.accessToken);
 			authorisedUser.accessToken = "";

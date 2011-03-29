@@ -3,9 +3,10 @@ package controllers.oauth2;
 import models.User;
 import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
-import play.Play;
 import play.mvc.Before;
 import play.mvc.Router;
+import play.mvc.Http.Inbound;
+import DTO.UserDTO;
 import controllers.RenderJSONEnhancer;
 
 /**
@@ -42,8 +43,12 @@ public class AccessTokenFilter extends RenderJSONEnhancer {
 	 * 
 	 * @return
 	 */
-	public User getAuthorisedUser() {
+	public static User getAuthorisedUser() {
 		return userAuth.getAuthorisedUser();
+	}
+	
+	public static UserDTO getAuthorisedUserDTO() {
+		return userAuth.getAuthorisedUserDTO();
 	}
 	
 }
