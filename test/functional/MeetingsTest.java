@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import models.User;
 import models.Attendee.MeetingResponse;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +42,8 @@ public class MeetingsTest extends FunctionalTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("data.yml");
 		Cache.clear();
 		
 		request = new Http.Request();
@@ -132,8 +133,7 @@ public class MeetingsTest extends FunctionalTest {
 		
 		assertIsOk(response);
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
-		assertEquals(simpleDateFormat.parse("2011-08-01T14:00:00Z"), meetingDTO.time);
+		assertEquals(new DateTime("2011-08-01T14:00:00Z"), meetingDTO.time);
 		assertEquals(new Double(51.416117), meetingDTO.place.latitude);
 		assertEquals(new Double(-5.083803), meetingDTO.place.longitude);
 		assertEquals("Meeting title updated", meetingDTO.title);

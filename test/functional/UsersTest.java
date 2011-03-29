@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import play.Logger;
 import play.cache.Cache;
+import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -35,8 +36,8 @@ public class UsersTest extends FunctionalTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("data.yml");
 		Cache.clear();
 		
 		request = new Http.Request();
@@ -59,6 +60,7 @@ public class UsersTest extends FunctionalTest {
 			Logger.debug("Response Status: " + response.status.toString());
 			Logger.debug("Response: " + (response.out.toString().isEmpty() ? "" : "\n" + response.out.toString()) );
 		}
+		
 	}
 
 	@Test

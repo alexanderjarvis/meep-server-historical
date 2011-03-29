@@ -39,8 +39,8 @@ public class LocationsTest extends FunctionalTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("data.yml");
 		Cache.clear();
 		
 		request = new Http.Request();
