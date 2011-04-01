@@ -1,4 +1,4 @@
-package controllers;
+package controllers.filters;
 
 import play.mvc.Before;
 import play.mvc.Controller;

@@ -8,15 +8,14 @@ import play.cache.Cache;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import play.mvc.With;
-import controllers.JSONRequestTypeFilter;
-import controllers.LoggingFilter;
-import controllers.NoCookieFilter;
-import controllers.SSLCheckFilter;
+import controllers.filters.JSONRequestTypeFilter;
+import controllers.filters.LoggingFilter;
+import controllers.filters.NoCookieFilter;
+import controllers.filters.SSLCheckFilter;
 
 /**
  * 
- * TODO: add filter that rejects too many requests from same IP over small period of time
- * and blocks the IP temporarily.
+ * 
  *
  * @author Alex Jarvis axj7@aber.ac.uk
  */

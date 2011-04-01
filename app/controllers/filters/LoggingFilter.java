@@ -1,4 +1,4 @@
-package controllers;
+package controllers.filters;
 
 import play.Logger;
 import play.Play;

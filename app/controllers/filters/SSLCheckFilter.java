@@ -1,4 +1,4 @@
-package controllers;
+package controllers.filters;
 
 import oauth2.OAuth2Constants;
 import play.Play;

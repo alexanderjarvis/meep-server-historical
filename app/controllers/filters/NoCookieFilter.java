@@ -1,4 +1,4 @@
-package controllers;
+package controllers.filters;
 
 import java.util.HashMap;
 import java.util.Map;
