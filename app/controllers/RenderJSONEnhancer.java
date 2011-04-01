@@ -14,6 +14,7 @@ import results.RenderCustomJson;
  * This class is intended to be extended for all Play controllers that require the
  * use of the RenderCustomJson class.
  * 
+ * @see Controller
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class RenderJSONEnhancer extends Controller {

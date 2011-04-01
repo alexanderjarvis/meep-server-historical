@@ -11,7 +11,13 @@ import play.test.Fixtures;
 import play.test.UnitTest;
 
 /**
+ * Tests creating and removing connection requests between Users using the UserConnectionHelper.
  * 
+ * Connection requests are modelled as a many-to-many relationship with User
+ * but are unidirectional and so this is constraint is tested for.
+ * 
+ * @see User
+ * @see UserConnectionHelper
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserConnectionRequestTest extends UnitTest {
@@ -21,71 +27,57 @@ public class UserConnectionRequestTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("test-data.yml");
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
 	}
 	
 	@Test
 	public void testCreateUserConnectionRequest() {
-		boolean result = false;
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
-		assertTrue(result);
+		assertTrue(UserConnectionHelper.createUserConnectionRequest(user1, user2));
 		assertEquals(user2, user1.userConnectionRequestsTo.get(0));
 		assertEquals(user1, user2.userConnectionRequestsFrom.get(0));
 	}
 	
 	@Test
 	public void testCreateUserConnectionRequestTwice() {
-		boolean result = false;
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
-		assertTrue(result);
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
-		assertFalse(result);
+		assertTrue(UserConnectionHelper.createUserConnectionRequest(user1, user2));
+		assertFalse(UserConnectionHelper.createUserConnectionRequest(user1, user2));
 	}
 	
 	@Test
 	public void testRemoveUserConnectionRequest() {
-		boolean result = false;
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
-		assertTrue(result);
+		assertTrue(UserConnectionHelper.createUserConnectionRequest(user1, user2));
 		assertEquals(1, user1.userConnectionRequestsTo.size());
 		assertEquals(1, user2.userConnectionRequestsFrom.size());
-		result = UserConnectionHelper.removeUserConnectionRequest(user1, user2);
-		assertTrue(result);
+		assertTrue(UserConnectionHelper.removeUserConnectionRequest(user1, user2));
 		assertEquals(0, user1.userConnectionRequestsTo.size());
 		assertEquals(0, user2.userConnectionRequestsFrom.size());
 	}
 	
 	@Test
 	public void testRemoveUserConnectionRequestTwice() {
-		boolean result = false;
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
+		assertTrue(UserConnectionHelper.createUserConnectionRequest(user1, user2));
 		assertEquals(1, user1.userConnectionRequestsTo.size());
 		assertEquals(1, user2.userConnectionRequestsFrom.size());
-		result = UserConnectionHelper.removeUserConnectionRequest(user1, user2);
-		assertTrue(result);
+		assertTrue(UserConnectionHelper.removeUserConnectionRequest(user1, user2));
 		assertEquals(0, user1.userConnectionRequestsTo.size());
 		assertEquals(0, user2.userConnectionRequestsFrom.size());
-		result = UserConnectionHelper.removeUserConnectionRequest(user1, user2);
-		assertFalse(result);
+		assertFalse(UserConnectionHelper.removeUserConnectionRequest(user1, user2));
 		assertEquals(0, user1.userConnectionRequestsTo.size());
 		assertEquals(0, user2.userConnectionRequestsFrom.size());
 	}
 	
 	@Test
 	public void testCreateBiDirectionalUserConnectionRequest() {
-		boolean result = false;
-		result = UserConnectionHelper.createUserConnectionRequest(user1, user2);
-		assertTrue(result);
-		result = UserConnectionHelper.createUserConnectionRequest(user2, user1);
-		assertFalse(result);
+		assertTrue(UserConnectionHelper.createUserConnectionRequest(user1, user2));
+		assertFalse(UserConnectionHelper.createUserConnectionRequest(user2, user1));
 	}
 	
 	@Test
 	public void testCreateUserConnectionRequestForConnectedUsers() {
-		UserConnectionHelper.createUserConnection(user1, user2);
+		assertTrue(UserConnectionHelper.createUserConnection(user1, user2));
 		assertFalse(UserConnectionHelper.createUserConnectionRequest(user1, user2));
 	}
 

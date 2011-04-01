@@ -2,7 +2,6 @@ package functional;
 
 import models.User;
 import models.helpers.UserConnectionHelper;
-import oauth2.functional.AccessTokenTest;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import org.junit.Test;
 
 import play.Logger;
 import play.cache.Cache;
-import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -21,7 +19,6 @@ import play.test.FunctionalTest;
  */
 public class UsersTest extends FunctionalTest {
 	
-	private Http.Request request;
 	private Http.Response response;
 
 	private static final String BASE_CONTROLLER_PATH = "/users";
@@ -37,11 +34,8 @@ public class UsersTest extends FunctionalTest {
 	@Before
 	public void setUp() {
 		Fixtures.deleteDatabase();
-		Fixtures.loadModels("data.yml");
 		Cache.clear();
-		
-		request = new Http.Request();
-		request.headers.put("accept", new Http.Header("Accept", "application/json"));
+		Fixtures.loadModels("test-data.yml");
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user1Query += userBaseQuery + user1.accessToken;
@@ -60,7 +54,6 @@ public class UsersTest extends FunctionalTest {
 			Logger.debug("Response Status: " + response.status.toString());
 			Logger.debug("Response: " + (response.out.toString().isEmpty() ? "" : "\n" + response.out.toString()) );
 		}
-		
 	}
 
 	@Test
@@ -146,7 +139,7 @@ public class UsersTest extends FunctionalTest {
 	
 	@Test
 	public void testShowNonUser() {
-		response = GET(request, BASE_CONTROLLER_PATH + "/" + "9999999999" + user1Query);
+		response = GET(BASE_CONTROLLER_PATH + "/" + "9999999999" + user1Query);
 		assertIsNotFound(response);
 		assertContentType("application/json", response);
 	}

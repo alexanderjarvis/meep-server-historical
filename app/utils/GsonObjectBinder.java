@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * This custom Gson Binder is an example taken from:
+ * This custom Gson Binder is an example from:
  * 
  * http://www.playframework.org/community/snippets/6
  * 
@@ -21,8 +21,11 @@ import com.google.gson.JsonParser;
  *       User u = new Gson().fromJson(body, User.class);
  *       renderText(u);
  *   }
+ *   
+ * Since the snippet however the signature of the bind method has been updated in Play 1.2
  * 
  * @author Guilliame Bort
+ * @author Alex Jarvis axj7@aber.ac.uk
  */
 
 @Global

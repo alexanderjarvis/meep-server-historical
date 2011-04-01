@@ -21,8 +21,8 @@ public class CoordinateAssembler {
 		if (coordinate != null) {
 			CoordinateDTO coordinateDTO = new CoordinateDTO();
 			coordinateDTO.id = coordinate.id;
-			coordinateDTO.latitude = coordinate.latitude;
-			coordinateDTO.longitude = coordinate.longitude;
+			coordinateDTO.latitude = coordinate.getLatitude();
+			coordinateDTO.longitude = coordinate.getLongitude();
 			return coordinateDTO;
 		}
 		return null;

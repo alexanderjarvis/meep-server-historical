@@ -93,7 +93,7 @@ public class MeetingHelper {
 	}
 	
 	/**
-	 * 
+	 * Updates the minutes before a Meeting that the specified User wants to be notified.
 	 * @param meeting
 	 * @param user
 	 * @return

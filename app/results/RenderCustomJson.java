@@ -15,9 +15,10 @@ import play.mvc.results.Result;
 import utils.GsonFactory;
 
 /**
- * A modified version of play.mvc.results.RenderJson which sets the date format
- * to the ISO 8601 standard (as used by XML).
+ * A modified version of Play's RenderJson class which obtains the GsonBuilder from the
+ * GsonFactory instead so that other attributes can be set e.g. pretty printing.
  * 
+ * @see play.mvc.results.RenderJson
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class RenderCustomJson extends Result {	

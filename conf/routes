@@ -3,46 +3,46 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+GET     /                                  Application.index
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
+GET     /public/                           staticDir:public
 
 # Catch all
-#*       /{controller}/{action}                  {controller}.{action}
+#*      /{controller}/{action}             {controller}.{action}
 
 # 
 # Application specific routes
 #
 
 # Authentication
-GET		/oauth2/?								oauth2.AccessToken.auth
-POST	/oauth2/?								oauth2.AccessToken.auth
-DELETE	/oauth2/?								oauth2.AccessTokenDestroy.destroy
+GET     /oauth2/?                          oauth2.AccessToken.auth
+POST    /oauth2/?                          oauth2.AccessToken.auth
+DELETE	/oauth2/?                          oauth2.AccessTokenDestroy.destroy
 
 # Users
-GET		/users/?								Users.index
-POST	/users/?								Users.create
-GET		/users/{id}/? 							Users.show
-PUT 	/users/{id}/?							Users.update
-DELETE	/users/{id}/?							Users.delete
-POST	/users/{id}/add/?						Users.addUserRequest
-POST	/users/{id}/accept/?					Users.acceptUserRequest
-POST	/users/{id}/decline/?					Users.declineUserRequest
-GET		/search/users/?							Users.searchUsers
+GET     /users/?                           Users.index
+POST    /users/?                           Users.create
+GET     /users/{id}/?                      Users.show
+PUT 	/users/{id}/?                      Users.update
+DELETE	/users/{id}/?                      Users.delete
+POST	/users/{id}/add/?                  Users.addUserRequest
+POST	/users/{id}/accept/?               Users.acceptUserRequest
+POST	/users/{id}/decline/?              Users.declineUserRequest
+GET     /search/users/?                    Users.searchUsers
 
 # Meetings
-GET		/meetings/?								Meetings.index
-POST	/meetings/?								Meetings.create
-GET		/meetings/{id}/?						Meetings.show
-PUT		/meetings/{id}/?						Meetings.update
-DELETE 	/meetings/{id}/?						Meetings.delete
-POST	/meetings/{id}/accept/?					Meetings.acceptMeetingRequest
-POST	/meetings/{id}/decline/?				Meetings.declineMeetingRequest
-PUT     /meetings/{id}/minutes-before/?         Meetings.updateMinutesBefore
+GET     /meetings/?                        Meetings.index
+POST	/meetings/?                        Meetings.create
+GET     /meetings/{id}/?                   Meetings.show
+PUT     /meetings/{id}/?                   Meetings.update
+DELETE 	/meetings/{id}/?                   Meetings.delete
+POST	/meetings/{id}/accept/?            Meetings.acceptMeetingRequest
+POST	/meetings/{id}/decline/?           Meetings.declineMeetingRequest
+PUT     /meetings/{id}/minutes-before/?    Meetings.updateMinutesBefore
 
 # Locations
-GET		/locations/?							Locations.recent
-POST	/locations/?							Locations.update
+GET     /locations/?                       Locations.recent
+POST    /locations/?                       Locations.update
 
-WS      /websocket/locations/socket/?           websockets.LocationsSocket.connect
+WS      /websocket/locations/socket/?      websockets.LocationsSocket.connect

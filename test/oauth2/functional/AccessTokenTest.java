@@ -8,13 +8,17 @@ import org.junit.Test;
 
 import play.Logger;
 import play.cache.Cache;
-import play.mvc.Http.Response;
+import play.mvc.Http;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class AccessTokenTest extends FunctionalTest {
 	
-	public Response response;
+	public Http.Response response;
 	public String accessToken;
 	
 	public void requestAccessToken() {
@@ -26,7 +30,7 @@ public class AccessTokenTest extends FunctionalTest {
 	public void loadFixtures() {
 		Fixtures.deleteDatabase();
 		Cache.clear();
-		Fixtures.loadModels("data.yml");
+		Fixtures.loadModels("test-data.yml");
 	}
 	
 	@Test

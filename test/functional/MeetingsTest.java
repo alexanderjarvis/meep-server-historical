@@ -27,7 +27,6 @@ import assemblers.MeetingAssembler;
  */
 public class MeetingsTest extends FunctionalTest {
 	
-	private Http.Request request;
 	private Http.Response response;
 
 	private static final String BASE_CONTROLLER_PATH = "/meetings";
@@ -43,11 +42,8 @@ public class MeetingsTest extends FunctionalTest {
 	@Before
 	public void setUp() {
 		Fixtures.deleteDatabase();
-		Fixtures.loadModels("data.yml");
 		Cache.clear();
-		
-		request = new Http.Request();
-		request.headers.put("accept", new Http.Header("Accept", "application/json"));
+		Fixtures.loadModels("test-data.yml");
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user1Query += userBaseQuery + user1.accessToken;

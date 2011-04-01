@@ -16,35 +16,61 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 /**
+ * Represents every User that uses the service and stores all information about them including
+ * what other domain objects they are related to.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 @Entity
 public class User extends Item {
 	
-	@Email
-	@Required
+	/**
+	 * The email address of the User.
+	 */
 	@Column(unique=true) 
 	public String email;
 	
+	/**
+	 * The password hash used to verify the User's password.
+	 */
 	public String passwordHash;
 	
+	/**
+	 * The access token used to verify each request to the service for a User.
+	 */
 	public String accessToken;
 	
-	@Required
+	/**
+	 * The first name of the User.
+	 */
     public String firstName;
 	
-	@Required
+    /**
+     * The last name of the User.
+     */
     public String lastName;
 	
+    /**
+     * The mobile number of the User.
+     */
+	@Column(unique=true)
 	public String mobileNumber;
     
+	/**
+	 * The Meetings that the User has created.
+	 */
     @OneToMany(mappedBy="owner", cascade={CascadeType.ALL})
     public List<Meeting> meetingsCreated = new ArrayList<Meeting>();
     
+    /**
+     * The Meetings that the User is related to (an Attendee).
+     */
     @OneToMany(mappedBy="user", cascade={CascadeType.ALL})
     public List<Attendee> meetingsRelated = new ArrayList<Attendee>();
     
+    /**
+     * The Users that the User is connected to.
+     */
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name="USER_CONNECTIONS",
@@ -53,9 +79,15 @@ public class User extends Item {
     )
     public List<User> userConnectionsTo = new ArrayList<User>();
     
+    /**
+     * The Users that the User is connected to, but they created the connection.
+     */
     @ManyToMany(mappedBy="userConnectionsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<User> userConnectionsFrom = new ArrayList<User>();
     
+    /**
+     * The connection requests that the User has sent to other Users.
+     */
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name="USER_CONNECTION_REQUESTS",
@@ -64,9 +96,15 @@ public class User extends Item {
     )
     public List<User> userConnectionRequestsTo = new ArrayList<User>();
     
+    /**
+     * The connection requests that the User has received from other Users.
+     */
     @ManyToMany(mappedBy = "userConnectionRequestsTo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<User> userConnectionRequestsFrom = new ArrayList<User>();
     
+    /**
+     * The location history of the User.
+     */
     @OneToMany(mappedBy="user")
     public List<UserLocation> locationHistory = new ArrayList<UserLocation>();
     
@@ -87,5 +125,4 @@ public class User extends Item {
 		
 		return super.delete();
 	}
-    
 }

@@ -17,7 +17,14 @@ import controllers.oauth2.AccessTokenFilter;
 import controllers.websockets.LocationStreamHelper;
 
 /**
+ * This class is somewhat legacy and the LocationsSocket controller is intended to be used instead
+ * to obtain recent locations and to send location updates.
  * 
+ * It proved useful during development however as it enabled the development and testing of the
+ * LocationsAssembler and all the associated domain/DTO objects without the complexity of the
+ * WebSockets implementation which is much harder to test.
+ * 
+ * @see LocationsSocket
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class Locations extends ServiceApplicationController {

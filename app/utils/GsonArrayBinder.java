@@ -10,8 +10,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 /**
- * This class is another JSON binder but for when the JSON is an Array and not encapsulated by an object.
+ * This class is another JSON binder for Gson where the JSON is an array and not an object.
  * 
+ * A JSON array starts with square brackets and a JSON object with curly braces.
+ * 
+ * e.g. [1,2,3] or [{firstName:"Alex",lastName:"Jarvis"},{firstName:"John",lastName:"Smith"}]
+ * 
+ * instead of:
+ * 
+ * {firstName:"Alex",lastName:"Jarvis"}
+ * 
+ * @see GsonObjectBinder
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 

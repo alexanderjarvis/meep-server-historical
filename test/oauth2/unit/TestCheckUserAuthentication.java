@@ -10,6 +10,10 @@ import org.junit.Test;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class TestCheckUserAuthentication extends UnitTest {
 	
 	private static final String TEST_CLIENT_ID = "bob@gmail.com";
@@ -18,8 +22,8 @@ public class TestCheckUserAuthentication extends UnitTest {
 	
 	@Before
 	public void loadFixtures() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("test-data.yml");
 	}
 	
 	@Test

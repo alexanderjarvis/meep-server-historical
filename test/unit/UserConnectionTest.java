@@ -11,7 +11,10 @@ import play.test.Fixtures;
 import play.test.UnitTest;
 
 /**
+ * Tests creating and removing connections between Users using the UserConnectionHelper.
  * 
+ * @see User
+ * @see UserConnectionHelper
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserConnectionTest extends UnitTest {
@@ -21,8 +24,8 @@ public class UserConnectionTest extends UnitTest {
 	
 	@Before
 	public void setUp() {
-		Fixtures.deleteAll();
-		Fixtures.load("data.yml");
+		Fixtures.deleteDatabase();
+		Fixtures.loadModels("test-data.yml");
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
 		UserConnectionHelper.createUserConnection(user1, user2);
@@ -52,8 +55,7 @@ public class UserConnectionTest extends UnitTest {
 	@Test
 	public void testIsUsersConnected() {
 		assertTrue(UserConnectionHelper.isUsersConnected(user1, user2));
-		User user = new User();
-		assertFalse(UserConnectionHelper.isUsersConnected(user1, user));
+		assertFalse(UserConnectionHelper.isUsersConnected(user1, new User()));
 	}
 
 }

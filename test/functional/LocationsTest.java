@@ -21,9 +21,14 @@ import utils.GsonFactory;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class LocationsTest extends FunctionalTest {
 	
-	private Http.Request request;
+	public static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	
 	private Http.Response response;
 
 	private static final String BASE_CONTROLLER_PATH = "/locations";
@@ -40,11 +45,8 @@ public class LocationsTest extends FunctionalTest {
 	@Before
 	public void setUp() {
 		Fixtures.deleteDatabase();
-		Fixtures.loadModels("data.yml");
 		Cache.clear();
-		
-		request = new Http.Request();
-		request.headers.put("accept", new Http.Header("Accept", "application/json"));
+		Fixtures.loadModels("test-data.yml");
 		
 		user1 = User.find("byEmail", "bob@gmail.com").first();
 		user1Query += userBaseQuery + user1.accessToken;
@@ -71,7 +73,7 @@ public class LocationsTest extends FunctionalTest {
 		Calendar fifteenMinsFromNow = new GregorianCalendar();
 		fifteenMinsFromNow.setTime(now);
 		fifteenMinsFromNow.add(Calendar.MINUTE, 15);
-		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(ISO8601_DATE_FORMAT);
 		String fifteenMinsFromNowString = dateFormat.format(fifteenMinsFromNow.getTime());
 		
 		String body = "{\"time\":\"" + fifteenMinsFromNowString + "\","
@@ -103,7 +105,7 @@ public class LocationsTest extends FunctionalTest {
 
 	@Test
 	public void testUpdate() {
-		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(ISO8601_DATE_FORMAT);
 		String dateNow = dateFormat.format(new Date());
 		String body = "[{\"time\":\"" + dateNow + "\","
 			+ "\"coordinate\":{\"latitude\":52.416117,\"longitude\":-4.083803},"
@@ -123,7 +125,7 @@ public class LocationsTest extends FunctionalTest {
 	
 	@Test
 	public void testUpdateUser2() {
-		DateFormat dateFormat = new SimpleDateFormat(GsonFactory.ISO8601_DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(ISO8601_DATE_FORMAT);
 		String dateNow = dateFormat.format(new Date());
 		String body = "[{\"time\":\"" + dateNow + "\","
 			+ "\"coordinate\":{\"latitude\":52.416117,\"longitude\":-4.083803},"

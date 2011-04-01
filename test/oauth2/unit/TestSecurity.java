@@ -6,6 +6,10 @@ import org.junit.Test;
 
 import play.test.UnitTest;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class TestSecurity extends UnitTest {
 	
 	private final static String PASSWORD = "password";

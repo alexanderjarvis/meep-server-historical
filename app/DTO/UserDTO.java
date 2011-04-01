@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import play.data.validation.Email;
+import play.data.validation.Required;
 
 /**
  * 
@@ -16,12 +17,15 @@ public class UserDTO implements Serializable {
 	public String accessToken;
 	
 	@Email
+	@Required
 	public String email;
 	
 	public String password;
 	
+	@Required
     public String firstName;
 	
+	@Required
     public String lastName;
 	
 	public String mobileNumber;

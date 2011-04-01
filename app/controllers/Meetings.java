@@ -9,6 +9,7 @@ import models.Meeting;
 import models.User;
 import models.helpers.MeetingHelper;
 import play.Logger;
+import play.data.validation.Error;
 import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
@@ -42,6 +43,15 @@ public class Meetings extends ServiceApplicationController {
 	    	MeetingDTO meetingDTO = MeetingAssembler.meetingDTOWithJsonObject(body);
 	    	
 	    	if (meetingDTO != null) {
+	    		
+	    		validation.valid(meetingDTO);
+	    		if (validation.hasErrors()) {
+	        		for (Error error : validation.errors()) {
+	        			Logger.debug(error.getKey() + " : " + error.message());
+	        		}
+	    			error(400, "Validation Errors");
+	    		}
+	    		
 		    	MeetingDTO newMeetingDTO = MeetingAssembler.createMeeting(meetingDTO, getAuthorisedUser());
 		    	
 		    	// Send email to each attendee

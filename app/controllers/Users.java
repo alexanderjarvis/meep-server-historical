@@ -46,7 +46,6 @@ public class Users extends ServiceApplicationController {
         		for (Error error : validation.errors()) {
         			Logger.debug(error.getKey() + " : " + error.message());
         		}
-        		//TODO: output to an errors object for client parsing
     			error(400, "Validation Errors");
     		}
     		
