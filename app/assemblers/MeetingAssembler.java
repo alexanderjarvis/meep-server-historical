@@ -93,8 +93,6 @@ public class MeetingAssembler {
 		Meeting meeting = Meeting.findById(meetingDTO.id);
 		if (meeting != null) {
 			meeting.time = meetingDTO.time.toDate();
-			
-			
 			meeting.place = CoordinateAssembler.updateCoordinate(meetingDTO.place);
 			meeting.title = meetingDTO.title;
 			meeting.description = meetingDTO.description;

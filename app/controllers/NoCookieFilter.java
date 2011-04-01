@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import play.Play;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Finally;
+import play.mvc.Http;
 
 /**
  * Removes cookies from all responses.
  * 
- * This is because cookies are not required in stateless webservice and
+ * This is because cookies are not required in a stateless webservice and
  * we don't want to send any unnecessary information to the client.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
