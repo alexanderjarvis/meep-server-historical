@@ -1,8 +1,10 @@
 package DTO;
 
+/**
+ * 
+ * @author Alex Jarvis axj7@aber.ac.uk
+ */
 public class CoordinateDTO {
-	
-	public Long id;
 	
 	public Double latitude;
 	

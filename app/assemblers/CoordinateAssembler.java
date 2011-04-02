@@ -20,7 +20,6 @@ public class CoordinateAssembler {
 	public static CoordinateDTO writeDTO(Coordinate coordinate) {
 		if (coordinate != null) {
 			CoordinateDTO coordinateDTO = new CoordinateDTO();
-			coordinateDTO.id = coordinate.id;
 			coordinateDTO.latitude = coordinate.getLatitude();
 			coordinateDTO.longitude = coordinate.getLongitude();
 			return coordinateDTO;
