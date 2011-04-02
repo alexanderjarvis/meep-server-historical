@@ -11,7 +11,7 @@ import java.util.Timer;
 import oauth2.CheckUserAuthentication;
 import oauth2.OAuth2Constants;
 import play.Logger;
-import play.libs.F.Either3;
+import play.libs.F.E3;
 import play.libs.F.EventStream;
 import play.libs.F.Promise;
 import play.mvc.WebSocketController;
@@ -64,7 +64,7 @@ public class LocationsSocket extends WebSocketController {
 		// Loop while the socket is open
         while(inbound.isOpen()) {      	
         	
-        	Either3<WebSocketEvent, HeartbeatEvent, LocationEvent> e = await(Promise.waitEither(
+        	E3<WebSocketEvent, HeartbeatEvent, LocationEvent> e = await(Promise.waitEither(
         		inbound.nextEvent(),
         		heartbeatStream.nextEvent(),
         		locationStream.nextEvent()
