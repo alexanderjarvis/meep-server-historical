@@ -56,6 +56,7 @@ public class LocationsSocket extends WebSocketController {
         // Create a new heartbeat stream for this socket
         EventStream<HeartbeatEvent> heartbeatStream = new EventStream<HeartbeatEvent>();
         
+        // Schedule a heartbeat event every 10 seconds
         HeartbeatTask heartbeatMonitor = new HeartbeatTask(heartbeatStream);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(heartbeatMonitor, 10000, 10000);

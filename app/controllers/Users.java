@@ -218,7 +218,7 @@ public class Users extends ServiceApplicationController {
     }
     
     /**
-     * For now, just search by firstname
+     * Searches for users
      * @param query
      */
     public static void searchUsers(String query) {
@@ -232,7 +232,7 @@ public class Users extends ServiceApplicationController {
     		lastName = names[1];
     	}
     	
-    	// TODO: move this query away from the controller
+    	// TODO: move this query away from the controller and/or implement lucene based search
     	List<User> userResults = User.find("select u from User u "
     			+ "where LOWER(u.firstName) like LOWER(?) "
     			+ "or LOWER(u.lastName) like LOWER(?)", firstName+"%", lastName+"%").fetch(50);

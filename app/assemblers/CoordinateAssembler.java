@@ -28,27 +28,31 @@ public class CoordinateAssembler {
 	}
 	
 	/**
-	 * Creates a Coordinate from a CoordinateDTO
+	 * Creates and returns a Coordinate from a CoordinateDTO
 	 * @param coordinateDTO
 	 * @return
 	 */
 	public static Coordinate createCoordinate(CoordinateDTO coordinateDTO) {
-		Coordinate coordinate = Coordinate.find("byLatitudeAndLongitude", coordinateDTO.latitude, coordinateDTO.longitude).first();
-		if (coordinate == null) {
-			coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
-			coordinate.create();
-		}
-		//Coordinate coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);
-		
-		return coordinate;
+		return createOrUpdateCoordinate(coordinateDTO);
 	}
 	
 	/**
-	 * Updates a Coordinate using a CoordinateDTO
+	 * Updates and returns a Coordinate using a CoordinateDTO
 	 * @param coordinateDTO
 	 * @return
 	 */
 	public static Coordinate updateCoordinate(CoordinateDTO coordinateDTO) {
+		return createOrUpdateCoordinate(coordinateDTO);
+	}
+	
+	/**
+	 * Creating and updating a Coordinate has the same logic because the unique key constraint requires
+	 * that the application check for an existing Coordinate before creating a new one and similarly when
+	 * updating a Coordinate.
+	 * @param coordinateDTO
+	 * @return
+	 */
+	private static Coordinate createOrUpdateCoordinate(CoordinateDTO coordinateDTO) {
 		Coordinate coordinate = Coordinate.find("byLatitudeAndLongitude", coordinateDTO.latitude, coordinateDTO.longitude).first();
 		if (coordinate == null) {
 			coordinate = new Coordinate(coordinateDTO.latitude, coordinateDTO.longitude);

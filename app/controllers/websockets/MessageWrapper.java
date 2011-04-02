@@ -1,13 +1,14 @@
 package controllers.websockets;
 
 /**
+ * Wraps and unwraps messages to be sent/received by the WebSocket in a common format.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class MessageWrapper {
 	
 	/**
-	 * Addes the custom frame prefix including the length of the message  after the prefix.
+	 * Adds the custom frame prefix including the length of the message  after the prefix.
 	 * 
 	 *  e.g. ~m~5~m~hello
 	 * 

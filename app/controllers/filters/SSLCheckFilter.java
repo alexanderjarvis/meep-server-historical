@@ -5,6 +5,8 @@ import play.Play;
 import play.mvc.*;
 
 /**
+ * When the configuration property is enabled, this filter checks if the request
+ * is secure and if it is not throws a HTTP 400 error.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */

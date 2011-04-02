@@ -6,6 +6,7 @@ import play.mvc.Before;
 import play.mvc.Controller;
 
 /**
+ * Adds logging information for each request.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
@@ -21,7 +22,5 @@ public class LoggingFilter extends Controller {
 				Logger.debug("Request body: \n" + body);
 			}
 		}
-		
 	}
-
 }

@@ -47,6 +47,10 @@ public class AccessTokenFilter extends RenderJSONEnhancer {
 		return userAuth.getAuthorisedUser();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static UserDTO getAuthorisedUserDTO() {
 		return userAuth.getAuthorisedUserDTO();
 	}

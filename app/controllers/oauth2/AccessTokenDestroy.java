@@ -20,7 +20,7 @@ public class AccessTokenDestroy extends ServiceApplicationController {
 			Cache.delete(OAuth2Constants.CACHE_PREFIX + authorisedUser.accessToken);
 			authorisedUser.accessToken = "";
 			authorisedUser.save();
-			renderJSON("");
+			ok();
 		} else {
 			badRequest();
 		}

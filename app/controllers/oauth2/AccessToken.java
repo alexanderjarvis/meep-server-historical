@@ -19,7 +19,6 @@ import controllers.filters.SSLCheckFilter;
  *
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-
 @With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
 public class AccessToken extends Controller {
 	

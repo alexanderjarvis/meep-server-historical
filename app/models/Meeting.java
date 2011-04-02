@@ -26,35 +26,35 @@ import play.db.jpa.GenericModel;
 public class Meeting extends Item {
 	
 	/**
-	 * The time of the meeting.
+	 * The time of the Meeting.
 	 */
 	public Date time;
 	
 	/**
-	 * The location where the meeting will take place.
+	 * The location where the Meeting will take place.
 	 */
 	@OneToOne
 	public Coordinate place;
 	
 	/**
-	 * The Attendees that have been invited to the meeting.
+	 * The Attendees that have been invited to the Meeting.
 	 */
 	@OneToMany(mappedBy = "meeting", cascade = { CascadeType.ALL })
 	public List<Attendee> attendees = new ArrayList<Attendee>();
 	
 	/**
-	 * The User that created the meeting.
+	 * The User that created the Meeting.
 	 */
 	@ManyToOne
 	public User owner;
 	
 	/**
-	 * A descriptive title for the meeting.
+	 * A descriptive title for the Meeting.
 	 */
 	public String title;
 	
 	/**
-	 * Extra information about the meeting.
+	 * Extra information about the Meeting.
 	 */
 	public String description;
 

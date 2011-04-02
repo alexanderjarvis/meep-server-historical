@@ -18,7 +18,9 @@ import play.mvc.Http;
  */
 public class NoCookieFilter extends Controller {
 	
-	/** An empty cookie map to replace any cookies in the response. */
+	/** 
+	 * An empty cookie map to replace any cookies in the response. 
+	 */
 	private static final Map<String, Http.Cookie> cookies = new HashMap<String, Http.Cookie>(0);
 	
 	/**
