@@ -239,6 +239,12 @@ public class UsersTest extends FunctionalTest {
 	}
 	
 	@Test
+	public void testDeleteUserWithUser2() {
+		response = DELETE(BASE_CONTROLLER_PATH + "/" + user1.id + user2Query);
+		assertStatus(200, response);
+	}
+	
+	@Test
 	public void testAddUserRequest() {
 		UserConnectionHelper.removeUserConnection(user1, user2);
 		response = POST(BASE_CONTROLLER_PATH + "/" + user2.email + "/add/" + user1Query);
