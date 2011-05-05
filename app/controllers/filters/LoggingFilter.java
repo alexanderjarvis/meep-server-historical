@@ -15,11 +15,13 @@ public class LoggingFilter extends Controller {
 	@Before
 	public static void logBefore(String body) {
 		
+		// The remoteAddress is only shown in Prod mode because when accessed from localhost, the value is null.
 		if (Play.mode.isProd()) {
 			Logger.info("[" + request.remoteAddress + "] " + request.toString());
 			
 		} else if (Play.mode.isDev()) {
 			Logger.info(request.toString());
+			
 			if (body != null && body.length() > 0) {
 				Logger.debug("Request body: \n" + body);
 			}
