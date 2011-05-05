@@ -14,10 +14,12 @@ public class LoggingFilter extends Controller {
 	
 	@Before
 	public static void logBefore(String body) {
-
-		Logger.info("[" + request.remoteAddress + "]" + " " + request.toString());
 		
-		if (Play.mode == Play.Mode.DEV) {
+		if (Play.mode.isProd()) {
+			Logger.info("[" + request.remoteAddress + "] " + request.toString());
+			
+		} else if (Play.mode.isDev()) {
+			Logger.info(request.toString());
 			if (body != null && body.length() > 0) {
 				Logger.debug("Request body: \n" + body);
 			}
