@@ -14,9 +14,11 @@ import controllers.filters.NoCookieFilter;
 import controllers.filters.SSLCheckFilter;
 
 /**
+ * The OAuth 2 controller which handles authorising requests using the password grant_type.
  * 
+ * Upon successful authorisation an access token is generated and returned in the response
+ * which can then be used to authorise all future requests to the rest of the application.
  * 
- *
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 @With({JSONRequestTypeFilter.class, NoCookieFilter.class, LoggingFilter.class, SSLCheckFilter.class})
@@ -63,6 +65,5 @@ public class AccessToken extends Controller {
     	}
     	
     }
-    
     
 }

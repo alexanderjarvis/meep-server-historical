@@ -9,6 +9,8 @@ import javax.persistence.OneToOne;
 import play.db.jpa.Model;
 
 /**
+ * Represents every location entry persisted in the system, associated with the
+ * user that the location belongs to.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */

@@ -10,6 +10,14 @@ import play.libs.F.EventStream;
 import play.libs.F.IndexedEvent;
 import play.libs.F.Promise;
 
+/**
+ * Partially attributed to the ArchivedEventStream from Play.
+ * 
+ * @see play.libs.F.ArchivedEventStream
+ * @author Alex Jarvis axj7@aber.ac.uk
+ *
+ * @param <T>
+ */
 public class LocationEventStream<T> {
 	
 	final int archiveSize;

@@ -15,11 +15,12 @@ import DTO.MeetingDTO;
 import DTO.UserDTO;
 
 /**
+ * Sends emails to users on important events.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class Mails extends Mailer {
-
+	
 	public static void welcome(UserDTO user) {
 		setSubject("Welcome to Meep!");
 		addRecipient(user.email);
@@ -48,8 +49,6 @@ public class Mails extends Mailer {
 		}
 		
 	}
-	
-	// TODO: meeting deleted
 	
 	/**
 	 * Sets a single recipient as opposed to the 'addRecipient' method.

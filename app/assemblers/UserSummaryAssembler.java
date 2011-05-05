@@ -8,12 +8,15 @@ import models.helpers.UserConnectionHelper;
 import DTO.UserSummaryDTO;
 
 /**
+ * Assembler for the UserSummaryDTO class and related classes.
  * 
+ * @see UserSummaryDTO
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserSummaryAssembler {
 	
 	/**
+	 * Writes a list of UserSummaryDTO objects based on the connections of the specified User.
 	 * 
 	 * @param user
 	 * @return
@@ -31,7 +34,7 @@ public class UserSummaryAssembler {
 	}
 	
 	/**
-	 * 
+	 * Writes a UserSummaryDTO from the attributes of the User specified.
 	 * @param user
 	 * @return
 	 */
@@ -49,7 +52,7 @@ public class UserSummaryAssembler {
 	}
 	
 	/**
-	 * Returns a UserSummaryDTO that only contains elements which are globally
+	 * Writes a UserSummaryDTO that only contains elements which are globally
 	 * viewable e.g. the users do not have to be connected.
 	 * 
 	 * @param user

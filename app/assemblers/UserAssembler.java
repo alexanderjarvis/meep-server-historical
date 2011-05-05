@@ -13,7 +13,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 /**
+ * Assembler for the UserDTO and related classes.
  * 
+ * @see UserDTO
+ * @see User
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserAssembler {
@@ -65,7 +68,7 @@ public class UserAssembler {
 	}
 	
 	/**
-	 * 
+	 * Creates a new User object with the attributes provided by a UserDTO.
 	 * @param userDTO
 	 * @return
 	 */
@@ -84,6 +87,7 @@ public class UserAssembler {
 	}
 	
 	/**
+	 * Updates the User with the attributes provided by the UserDTO.
 	 * 
 	 * @param userDTO
 	 * @return
@@ -114,6 +118,8 @@ public class UserAssembler {
 	}
 	
 	/**
+	 * Creates a UserDTO from a JsonObject. Used when creating the UserDTO object 
+	 * from the body of a JSON request.
 	 * 
 	 * @param jsonObject
 	 * @return

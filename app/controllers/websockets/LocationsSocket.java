@@ -27,14 +27,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
+ * The WebSocket Controller class which handles sending and receiving
+ * location update events to/from clients.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class LocationsSocket extends WebSocketController {	
 	
-	/**
-	 * 
-	 */
 	public static void connect() {
 		
 		Logger.info("WebSocket opened");
@@ -52,7 +51,6 @@ public class LocationsSocket extends WebSocketController {
 		LocationStreamManager locationStreamManager = LocationStreamManager.getInstance();
 		EventStream<LocationEvent> locationStream = locationStreamManager.getLocationStreamForUserWithId(currentUserDTO.id);
 		
-        
         // Create a new heartbeat stream for this socket
         EventStream<HeartbeatEvent> heartbeatStream = new EventStream<HeartbeatEvent>();
         

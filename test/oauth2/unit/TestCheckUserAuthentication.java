@@ -11,7 +11,9 @@ import play.test.Fixtures;
 import play.test.UnitTest;
 
 /**
+ * Tests the CheckUserAuthentication class in isolation.
  * 
+ * @see CheckUserAuthentication
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class TestCheckUserAuthentication extends UnitTest {

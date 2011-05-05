@@ -15,7 +15,7 @@ public class LocationStreamManager {
 	
 	private static LocationStreamManager INSTANCE = null;
 	
-	// TODO: persist archived streams?
+	// TODO: persist archived streams
 	private Map<Long, LocationEventStream<LocationEvent>> archivedStreams = new HashMap<Long, LocationEventStream<LocationEvent>>();
 	
 	private Map<Long, EventStream<LocationEvent>> connectedStreams = new HashMap<Long, EventStream<LocationEvent>>();
@@ -81,7 +81,7 @@ public class LocationStreamManager {
 	}
 	
 	/**
-	 * 
+	 * Closes the stream with the specified user id.
 	 * @param id
 	 */
 	public void closeStreamForUserWithId(Long id) {

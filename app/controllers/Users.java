@@ -111,7 +111,8 @@ public class Users extends ServiceApplicationController {
     }
     
     /**
-     * Update
+     * Updates the User specified in the resource URI with the contents of the UserDTO
+     * in the body of the request.
      * 
      * @param user
      */

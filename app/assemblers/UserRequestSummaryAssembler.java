@@ -9,12 +9,16 @@ import DTO.UserRequestSummaryDTO;
 import DTO.UserSummaryDTO;
 
 /**
+ * Assembler for the UserRequestSummaryDTO.
  * 
+ * @see UserRequestSummaryDTO
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserRequestSummaryAssembler {
 	
 	/**
+	 * Writes a list of UserRequestSummaryDTO objects based on the users in the
+	 * userConnectionRequestsTo relationship of the specified User.
 	 * 
 	 * @param user
 	 * @return
@@ -32,6 +36,8 @@ public class UserRequestSummaryAssembler {
 	}
 	
 	/**
+	 * Writes a list of UserRequestSummaryDTO objects based on the users in the
+	 * usersConnectionRequests from relationship of the specified User.
 	 * 
 	 * @param user
 	 * @return
@@ -49,6 +55,7 @@ public class UserRequestSummaryAssembler {
 	}
 	
 	/**
+	 * Writes a UserRequestSummaryDTO from attributes of the specified User.
 	 * 
 	 * @param user
 	 * @return

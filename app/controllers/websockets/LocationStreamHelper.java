@@ -72,6 +72,9 @@ public class LocationStreamHelper {
 				timeAfterMeeting.setTime(meeting.time);
 				timeAfterMeeting.add(java.util.Calendar.MINUTE, 30);
 				
+				// To be added and tested for public release, but not necessary with this version.
+				// TODO: uncomment the code below when appropriate.
+				
 				// Time now between (or equal to) the valid meeting time range (30 minutes either side).
 				//if (timeNow.compareTo(timeBeforeMeeting) >= 0 && timeNow.compareTo(timeAfterMeeting) <= 0) {
 					

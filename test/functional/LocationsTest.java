@@ -22,7 +22,9 @@ import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
 /**
+ * Tests the Locations Controller
  * 
+ * @see Locations
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class LocationsTest extends FunctionalTest {

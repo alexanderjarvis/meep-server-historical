@@ -1,6 +1,7 @@
 package oauth2;
 
 /**
+ * String constants used by the OAuth 2 part of the application.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */

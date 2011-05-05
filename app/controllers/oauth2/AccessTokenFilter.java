@@ -10,6 +10,9 @@ import DTO.UserDTO;
 import controllers.RenderJSONEnhancer;
 
 /**
+ * The AccessTokenFilter intercepts requests and expects an access token parameter
+ * to be in the query string. If the access token is valid, the request proceeds,
+ * if not a 401 Unauthorized error is sent back in the response.
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
@@ -40,7 +43,7 @@ public class AccessTokenFilter extends RenderJSONEnhancer {
 	}
 	
 	/**
-	 * 
+	 * Returns the current User object of the user which is authorised with this request.
 	 * @return
 	 */
 	public static User getAuthorisedUser() {
@@ -48,7 +51,7 @@ public class AccessTokenFilter extends RenderJSONEnhancer {
 	}
 	
 	/**
-	 * 
+	 * Returns the current UserDTO object of the user which is authorised with this request.
 	 * @return
 	 */
 	public static UserDTO getAuthorisedUserDTO() {

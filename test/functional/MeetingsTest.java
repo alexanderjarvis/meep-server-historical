@@ -22,7 +22,9 @@ import DTO.MeetingDTO;
 import assemblers.MeetingAssembler;
 
 /**
+ * Tests the Meetings Controller.
  * 
+ * @see Meetings
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class MeetingsTest extends FunctionalTest {

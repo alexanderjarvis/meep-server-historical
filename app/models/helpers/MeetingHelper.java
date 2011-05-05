@@ -6,7 +6,9 @@ import models.User;
 import models.Attendee.MeetingResponse;
 
 /**
+ * Helps with various functions on model items relating to a Meeting.
  * 
+ * @see Meeting
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class MeetingHelper {

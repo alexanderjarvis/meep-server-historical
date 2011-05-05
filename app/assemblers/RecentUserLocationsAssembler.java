@@ -14,12 +14,15 @@ import DTO.RecentUserLocationsDTO;
 import DTO.UserLocationDTO;
 
 /**
+ * Assembler for the RecenUserLocationsDTO and associated classes.
  * 
+ * @see RecentUserLocationsDTO
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class RecentUserLocationsAssembler {
 	
 	/**
+	 * Writes a RecentUserLocationsDTO for the specified User with a list of their location history.
 	 * 
 	 * @param user
 	 * @param locationHistory
@@ -41,6 +44,7 @@ public class RecentUserLocationsAssembler {
 	 * Returns a list of Users with their locations, which are attending the same 
 	 * meetings as the user specified.
 	 */
+	@Deprecated
 	public static List<RecentUserLocationsDTO> recentUserLocations(User user) {
 		
 		List<RecentUserLocationsDTO> recentUserLocationsList = new ArrayList<RecentUserLocationsDTO>();
@@ -99,12 +103,14 @@ public class RecentUserLocationsAssembler {
 	
 	
 	/**
+	 * Returns a RecentUserLocationsDTO for a User with the locations inbetween the specified date range.
 	 * 
 	 * @param user
 	 * @param before
 	 * @param after
 	 * @return
 	 */
+	@Deprecated
 	public static RecentUserLocationsDTO recentUserLocation(User user, Date before, Date after) {
 		
 		RecentUserLocationsDTO recentUserLocation = null;

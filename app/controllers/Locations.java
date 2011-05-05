@@ -27,6 +27,7 @@ import controllers.websockets.LocationsSocket;
  * @see LocationsSocket
  * @author Alex Jarvis axj7@aber.ac.uk
  */
+@Deprecated
 public class Locations extends ServiceApplicationController {
 	
 	/**

@@ -14,7 +14,9 @@ import play.test.Fixtures;
 import play.test.FunctionalTest;
 
 /**
+ * Tests the Users Controller
  * 
+ * @see Users
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UsersTest extends FunctionalTest {

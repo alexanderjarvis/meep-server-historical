@@ -13,7 +13,9 @@ import play.test.Fixtures;
 import play.test.FunctionalTest;
 
 /**
+ * Tests the OAuth 2 AccessToken Controller
  * 
+ * @see AccessToken
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class AccessTokenTest extends FunctionalTest {

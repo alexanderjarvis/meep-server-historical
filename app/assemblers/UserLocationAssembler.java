@@ -24,12 +24,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 /**
+ * Assembler for the UserLocationDTO and related classes.
  * 
+ * @see UserLocationDTO
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class UserLocationAssembler {
 	
 	/**
+	 * Writes a UserLocationDTO with attributes from a UserLocation object.
 	 * 
 	 * @param userLocation
 	 * @return
@@ -47,6 +50,7 @@ public class UserLocationAssembler {
 	}
 	
 	/**
+	 * Writes a list of UserLocationDTO objects from a list of UserLocation objects.
 	 * 
 	 * @param userLocations
 	 * @return
@@ -81,6 +85,7 @@ public class UserLocationAssembler {
 	}
 	
 	/**
+	 * Persists the locations of a User when they update their location.
 	 * 
 	 * @param userLocationDTOs
 	 */
@@ -101,6 +106,8 @@ public class UserLocationAssembler {
 	}
 	
 	/**
+	 * Creates a list of UserLocationDTO objects from a JsonArray. Used when updating the users
+	 * location with an array of UserLocationDTO objects in the body of a request.
 	 * 
 	 * @param jsonObject
 	 * @return

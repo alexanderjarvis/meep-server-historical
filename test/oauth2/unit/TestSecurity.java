@@ -7,7 +7,9 @@ import org.junit.Test;
 import play.test.UnitTest;
 
 /**
+ * Tests the Security class in isolation.
  * 
+ * @see Security
  * @author Alex Jarvis axj7@aber.ac.uk
  */
 public class TestSecurity extends UnitTest {
