@@ -8,4 +8,5 @@ logs
 test-result
 tmp
 war
+bin
 exclude.txt
