@@ -116,7 +116,7 @@ public class MeetingAndAttendeeTest extends UnitTest {
 		testAddAttendee();
 		Attendee attendee = meeting.attendees.get(0);
 		assertTrue(MeetingHelper.updateAttendeesMinutesBefore(15, meeting, attendee.user));
-		assertEquals(attendee.minutesBefore, new Integer(15));
+		assertEquals(attendee.minutesBefore, Integer.valueOf(15));
 	}
 	
 	@Test

@@ -133,15 +133,16 @@ public class Users extends ServiceApplicationController {
                 		for (Error error : validation.errors()) {
                 			Logger.debug(error.getKey() + " : " + error.message());
                 		}
-                		//TODO: output to an errors object for client parsing
             			error(400, "Validation Errors");
             		}
             		
-        			// Check for existing users
-        	    	User checkUser = User.find("byEmail", userDTO.email).first();
-        	    	if (checkUser != null && !id.equals(checkUser.id)) {
-        				error(400, "Email already exists");
-        			}
+        			// If the email has changed check that another user does not have it.
+            		if (!authUser.email.equalsIgnoreCase(userDTO.email)) {
+            			User checkUser = User.find("byEmail", userDTO.email).first();
+            	    	if (checkUser != null) {
+            				error(400, "Email already exists");
+            			}
+            		}
         	    	
         	    	// Update user
         	    	userDTO.id = user.id;

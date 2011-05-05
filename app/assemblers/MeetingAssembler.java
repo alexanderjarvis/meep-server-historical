@@ -92,11 +92,21 @@ public class MeetingAssembler {
 	public static MeetingDTO updateMeeting(MeetingDTO meetingDTO) {
 		Meeting meeting = Meeting.findById(meetingDTO.id);
 		if (meeting != null) {
-			meeting.time = meetingDTO.time.toDate();
-			meeting.place = CoordinateAssembler.updateCoordinate(meetingDTO.place);
-			meeting.title = meetingDTO.title;
-			meeting.description = meetingDTO.description;
-			AttendeeAssembler.updateAttendees(meeting, meetingDTO.attendees);
+			if (meetingDTO.time != null) {
+				meeting.time = meetingDTO.time.toDate();
+			}
+			if (meetingDTO.place != null) {
+				meeting.place = CoordinateAssembler.updateCoordinate(meetingDTO.place);
+			}
+			if (meetingDTO.title != null) {
+				meeting.title = meetingDTO.title;
+			}
+			if (meetingDTO.description != null) {
+				meeting.description = meetingDTO.description;
+			}
+			if (meetingDTO.attendees != null) {
+				AttendeeAssembler.updateAttendees(meeting, meetingDTO.attendees);
+			}
 			
 			return writeDTO(meeting);
 		}

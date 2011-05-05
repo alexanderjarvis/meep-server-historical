@@ -20,7 +20,6 @@ import com.google.gson.JsonObject;
  * 
  * @author Alex Jarvis axj7@aber.ac.uk
  */
-
 public class Meetings extends ServiceApplicationController {
 	
 	/**

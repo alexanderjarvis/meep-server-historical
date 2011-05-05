@@ -14,11 +14,11 @@ public class UserDTO implements Serializable {
 	
 	public Long id;
 	
-	public String accessToken;
-	
 	@Email
 	@Required
 	public String email;
+	
+	public String accessToken;
 	
 	public String password;
 	

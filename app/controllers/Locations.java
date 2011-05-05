@@ -5,16 +5,16 @@ import java.util.List;
 import models.User;
 import play.Logger;
 import play.data.validation.Error;
-import play.mvc.With;
 import DTO.RecentUserLocationsDTO;
 import DTO.UserDTO;
 import DTO.UserLocationDTO;
+import assemblers.RecentUserLocationsAssembler;
 import assemblers.UserLocationAssembler;
 
 import com.google.gson.JsonArray;
 
-import controllers.oauth2.AccessTokenFilter;
 import controllers.websockets.LocationStreamHelper;
+import controllers.websockets.LocationsSocket;
 
 /**
  * This class is somewhat legacy and the LocationsSocket controller is intended to be used instead
@@ -34,7 +34,7 @@ public class Locations extends ServiceApplicationController {
 	 */
     public static void recent() {
     	User authUser = getAuthorisedUser();
-    	List<RecentUserLocationsDTO> recentUserLocations = UserLocationAssembler.recentUserLocations(authUser);
+    	List<RecentUserLocationsDTO> recentUserLocations = RecentUserLocationsAssembler.recentUserLocations(authUser);
     	renderJSON(recentUserLocations);
     }
     

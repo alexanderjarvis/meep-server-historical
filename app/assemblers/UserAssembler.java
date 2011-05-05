@@ -1,14 +1,13 @@
 package assemblers;
 
-import notifiers.Mails;
 import models.User;
 import oauth2.AccessTokenGenerator;
 import oauth2.Security;
-import results.RenderCustomJson;
+
+import org.apache.commons.lang.StringUtils;
+
 import utils.GsonFactory;
-import DTO.MeetingDTO;
 import DTO.UserDTO;
-import assemblers.helpers.ModelMerger;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -93,9 +92,19 @@ public class UserAssembler {
 		
 		User user = User.findById(userDTO.id);
 		
-		ModelMerger.merge(userDTO, user);
-		
-		if (userDTO.password != null) {
+		if (StringUtils.isNotBlank(userDTO.email)) {
+			user.email = userDTO.email;
+		}
+		if (StringUtils.isNotBlank(userDTO.firstName)) {
+			user.firstName = userDTO.firstName;
+		}
+		if (StringUtils.isNotBlank(userDTO.lastName)) {
+			user.lastName = userDTO.lastName;
+		}
+		if (StringUtils.isNotBlank(userDTO.mobileNumber)) {
+			user.mobileNumber = userDTO.mobileNumber;
+		}
+		if (StringUtils.isNotBlank(userDTO.password)) {
 			user.passwordHash = Security.sha256hexWithSalt(userDTO.password);
 		}
 		
