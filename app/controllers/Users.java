@@ -6,6 +6,9 @@ import java.util.List;
 import models.User;
 import models.helpers.UserConnectionHelper;
 import notifiers.Mails;
+
+import org.apache.commons.lang.StringUtils;
+
 import play.Logger;
 import play.data.validation.Error;
 import DTO.UserDTO;
@@ -57,9 +60,11 @@ public class Users extends ServiceApplicationController {
     			}
     			
     			// Check for existing phone number
-    			User checkNumber = User.find("byMobileNumber", userDTO.mobileNumber).first();
-    			if (checkNumber != null) {
-    				error(400, "Mobile number already exists");
+    			if (StringUtils.isNotBlank(userDTO.mobileNumber)) {
+	    			User checkNumber = User.find("byMobileNumber", userDTO.mobileNumber).first();
+	    			if (checkNumber != null) {
+	    				error(400, "Mobile number already exists");
+	    			}
     			}
     	    	
     	    	// Create user
