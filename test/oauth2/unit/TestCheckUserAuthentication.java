@@ -56,7 +56,7 @@ public class TestCheckUserAuthentication extends UnitTest {
 	
 	@After
 	public void deleteFixtures() {
-		Fixtures.deleteAll();
+		Fixtures.deleteDatabase();
 	}
 	
 }

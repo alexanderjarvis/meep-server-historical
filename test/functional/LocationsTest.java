@@ -38,11 +38,9 @@ public class LocationsTest extends FunctionalTest {
 	private String userBaseQuery = "?oauth_token=";
 	private String user1Query = "";
 	private String user2Query = "";
-	private String user3Query = "";
 	
 	private User user1;
 	private User user2;
-	private User user3;
 	
 	@Before
 	public void setUp() {
@@ -55,9 +53,6 @@ public class LocationsTest extends FunctionalTest {
 		
 		user2 = User.find("byEmail", "bob2@gmail.com").first();
 		user2Query += userBaseQuery + user2.accessToken;
-		
-		user3 = User.find("byEmail", "alex@jarvis.com").first();
-		user3Query += userBaseQuery + user3.accessToken;
 	}
 	
 	@After

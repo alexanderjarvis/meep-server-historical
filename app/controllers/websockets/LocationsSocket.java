@@ -153,18 +153,6 @@ public class LocationsSocket extends WebSocketController {
 	}
 	
 	/**
-	 * Returns a JsonObject from a String. Usually this is done automatically by GsonObjectBinder
-	 * for a normal play.mvc.Controller class.
-	 *  
-	 * @param jsonString
-	 * @return
-	 * @see play.mvc.Controller
-	 */
-	private static JsonObject stringToJsonObject(String jsonString) {
-		return (JsonObject) new JsonParser().parse(jsonString);
-	}
-	
-	/**
 	 * Returns a JsonArray from a String. Usually this is done automatically by GsonArrayBinder
 	 * for a normal play.mvc.Controller class.
 	 *  

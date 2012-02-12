@@ -27,7 +27,6 @@ public class UsersTest extends FunctionalTest {
 	private String userBaseQuery = "?oauth_token=";
 	private String user1Query = "";
 	private String user2Query = "";
-	private String user3Query = "";
 	
 	private User user1;
 	private User user2;
@@ -47,7 +46,6 @@ public class UsersTest extends FunctionalTest {
 		UserConnectionHelper.createUserConnection(user1, user2);
 		
 		user3 = User.find("byEmail", "alex@jarvis.com").first();
-		user3Query += userBaseQuery + user3.accessToken;
 	}
 	
 	@After
